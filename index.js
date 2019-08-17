@@ -40,32 +40,25 @@ const [up, right, down, left] = [0, 1, 2, 3];
 const defaultBlocked = { top: false, right: false, down: false, left: false };
 
 const getBlocked = (body, l = 2) => {
-  const col = { ...defaultBlocked };
+  body.blocked = { ...defaultBlocked };
+  const col = body.blocked;
 
   level.forEach(item => {
-    /*
-      1. Overlaps?
-    */
     const horizontal = item[0] === 0;
     const overlap = {};
-
     overlap.left = 16 + item[2] * 16 + 16 * (horizontal ? item[1] : 0) - body.x; // Överlapp på vänster sida
     overlap.right = 16 + body.x - item[2] * 16; // Överlapp på höger sida
-    // const ox = overlap.right > 0 && overlap.left > 0;
-
-    // FIX Y
     overlap.top = 16 + item[3] * 16 + 16 * (horizontal ? 0 : item[1]) - body.y;
     overlap.bottom = 16 + body.y - item[3] * 16;
-    // const oy = overlap.top > 0 && overlap.bottom > 0;
 
-    //if(![overlap.top,overlap.right,overlap.bottom,overlap.left].find(a=>a<0))
-    //if(overlap.top>=0&&overlap.right>=0&&overlap.bottom>=0&&overlap.left>=0)
+    // All sides overlap == collision
     if (
       overlap.top >= 0 &&
       overlap.right >= 0 &&
       overlap.bottom >= 0 &&
       overlap.left >= 0
     ) {
+      // Shortest overlap is collliding side
       let d = 99;
       let cdir = "";
       ["left", "right", "top", "bottom"].forEach(key => {
@@ -75,6 +68,10 @@ const getBlocked = (body, l = 2) => {
         }
       });
       col[cdir] = true;
+      // Separate bodies
+      body.y =
+        col.top || col.bottom ? 16 * Math.round(sprite.y / 16) : sprite.y;
+      body.x = col.left || col.right ? 16 * Math.round(body.x / 16) : sprite.x;
     }
   });
 
@@ -120,21 +117,7 @@ let loop = GameLoop({
 
     sprite.update();
 
-    sprite.blocked = getBlocked(sprite);
-    sprite.y =
-      sprite.blocked.top || sprite.blocked.bottom
-        ? 16 * Math.round(sprite.y / 16)
-        : sprite.y;
-    sprite.x =
-      sprite.blocked.left || sprite.blocked.right
-        ? 16 * Math.round(sprite.x / 16)
-        : sprite.x;
-
-    // wrap the sprites position when it reaches
-    // the edge of the screen
-    if (sprite.x > canvas.width) {
-      sprite.x = -sprite.width;
-    }
+    getBlocked(sprite);
   },
   render: function() {
     // draw level
