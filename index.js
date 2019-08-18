@@ -28,6 +28,12 @@ import {
   Level med fyra plattformar och 3 fiender blir 7*2 = 14bytes
 */
 
+const facing = {
+  left: -1,
+  none: 0,
+  right: 1
+};
+
 const level = [
   [0, 10, 1, 10],
   [1, 10, 6, 8],
@@ -39,14 +45,33 @@ const level = [
 
 const defaultBlocked = { top: false, right: false, bottom: false, left: false };
 
+const getCollidingEnemy = body => {
+  let col = null;
+  enemies.forEach(enemy => {
+    if (enemy.dead) {
+      return;
+    }
+    // Could share with getBlocked
+    if (
+      body.x < enemy.x + 16 &&
+      body.x + 16 > enemy.x &&
+      body.y < enemy.y + 32 &&
+      body.y + body.height > enemy.y
+    ) {
+      col = enemy;
+    }
+  });
+  return col;
+};
+
 const getBlocked = body => {
-  body.dy += 0.2;
   body.blocked = { ...defaultBlocked };
   const col = body.blocked;
 
   level.forEach(item => {
     const horizontal = item[0] === 0;
     const overlap = {};
+    // Break out share with body collision
     overlap.left = 16 + item[2] * 16 + 16 * (horizontal ? item[1] : 0) - body.x; // Överlapp på vänster sida
     overlap.right = 16 + body.x - item[2] * 16; // Överlapp på höger sida
     overlap.top = 16 + item[3] * 16 + 16 * (horizontal ? 0 : item[1]) - body.y;
@@ -89,14 +114,16 @@ const getBlocked = body => {
 let { canvas, context } = init();
 initKeys();
 
-let sprite = Sprite({
+let player = Sprite({
   x: 16 * 6, // starting x,y position of the sprite
   y: 16 * 5,
   color: "red", // fill color of the sprite rectangle
   width: 16, // width and height of the sprite rectangle
   height: 32,
   blocked: { ...defaultBlocked },
-  standing: true
+  standing: true,
+  facing: facing.right,
+  stabTimer: -1
 });
 
 const enemy1 = Sprite({
@@ -108,7 +135,7 @@ const enemy1 = Sprite({
   blocked: { ...defaultBlocked },
   facing: 1, // -1 0 1 == left, none, right
   dy: 0,
-  walks: true
+  walks: false
 });
 
 const enemy2 = Sprite({
@@ -133,20 +160,24 @@ const checkCliff = body => {
   };
   getBlocked(tmpBody);
   return tmpBody.blocked;
-  debugger;
 };
 
 const enemyLogic = enemy => {
-  enemy.dx = enemy.walks ? enemy.facing * 0.5 : 0;
   // console.log(enemy.blocked.right, enemy.blocked.left);
   const cliff = !checkCliff(enemy).bottom;
-  if (
-    (enemy.blocked.left && enemy.dx < 0) ||
-    (enemy.blocked.right && enemy.dx > 0) ||
-    (enemy.blocked.bottom && cliff)
-  ) {
-    // debugger;
-    enemy.facing = -enemy.facing;
+  enemy.dx = 0;
+  enemy.dy += 0.2;
+
+  if (enemy.walks) {
+    enemy.dx = enemy.facing * 0.5;
+    if (
+      (enemy.blocked.left && enemy.dx < 0) ||
+      (enemy.blocked.right && enemy.dx > 0) ||
+      (enemy.blocked.bottom && cliff)
+    ) {
+      // debugger;
+      enemy.facing = -enemy.facing;
+    }
   }
 };
 
@@ -154,46 +185,79 @@ let loop = GameLoop({
   // create the main game loop
   update: function() {
     // update the game state
-    if (!sprite.standing) {
-      sprite.standing = true;
-      sprite.y -= 16;
-      sprite.height = 32;
+
+    player.stabTimer--;
+    player.dy += 0.2;
+
+    if (player.stabTimer < 0 && player.stabTimer > -8) {
+      console.log("Stab cool");
     }
 
-    sprite.dx = 0;
+    if (!player.standing) {
+      player.standing = true;
+      player.y -= 16;
+      player.height = 32;
+    }
+
+    player.dx = 0;
     if (keyPressed("left")) {
-      sprite.dx = -1;
+      player.dx = -1;
+      player.facing = facing.left;
     }
     if (keyPressed("right")) {
-      sprite.dx = 1;
+      player.dx = 1;
+      player.facing = facing.right;
+    }
+    if (keyPressed("z") && player.stabTimer < -7) {
+      // 7 tick > 100ms
+      player.stabTimer = 32; // 1 = 16ms, 32 tick > 500ms (500/16 = 31.25)
     }
 
-    if (sprite.blocked.bottom) {
-      if (sprite.dy > 0) {
-        sprite.dy = 0;
+    if (player.blocked.bottom) {
+      if (player.dy > 0) {
+        player.dy = 0;
       }
 
       if (keyPressed("up")) {
-        sprite.dy = -4.5;
+        player.dy = -4.5;
       }
-      if (keyPressed("down") && sprite.standing) {
+      if (keyPressed("down") && player.standing) {
         console.log("duck");
-        sprite.standing = false;
-        sprite.y += 16;
-        sprite.height = 16;
+        player.standing = false;
+        player.y += 16;
+        player.height = 16;
       }
     }
 
-    if (sprite.dy < 0 && sprite.blocked.up) {
-      sprite.dy = 0;
+    if (player.dy < 0 && player.blocked.up) {
+      player.dy = 0;
     }
-    sprite.update();
-    getBlocked(sprite);
+    player.update();
+    getBlocked(player);
+
+    if (player.stabTimer > 0) {
+      console.log("Stabbing");
+      const stabbedEnemy = getCollidingEnemy({
+        height: 16,
+        x: player.x + player.facing * 16,
+        y: player.y
+      });
+      if (stabbedEnemy) {
+        console.log("Died");
+        stabbedEnemy.dead = true;
+      }
+    }
+
+    if (getCollidingEnemy(player)) {
+      console.log("Touch death");
+    }
 
     enemies.forEach(enemy => {
       enemyLogic(enemy);
       enemy.update();
-      getBlocked(enemy);
+      if (!enemy.dead) {
+        getBlocked(enemy);
+      }
     });
   },
   render: function() {
@@ -222,7 +286,7 @@ let loop = GameLoop({
       context.fill();
     });
     // render the game state
-    sprite.render();
+    player.render();
     enemies.forEach(enemy => {
       enemy.render();
     });
