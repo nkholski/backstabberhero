@@ -45,20 +45,25 @@ const level = [
 
 const defaultBlocked = { top: false, right: false, bottom: false, left: false };
 
-const getCollidingEnemy = body => {
+const checkCollidingBody = (body, other) => {
   let col = null;
-  enemies.forEach(enemy => {
+  const others = other ? [other] : enemies;
+
+  others.forEach(enemy => {
     if (enemy.dead) {
       return;
     }
     // Could share with getBlocked
     if (
-      body.x < enemy.x + 16 &&
+      body.x < enemy.x + enemy.width &&
       body.x + 16 > enemy.x &&
-      body.y < enemy.y + 32 &&
+      body.y < enemy.y + enemy.height &&
       body.y + body.height > enemy.y
     ) {
       col = enemy;
+    }
+    if (enemy.vision === true && enemy.y === 128) {
+      //  debugger;
     }
   });
   return col;
@@ -94,6 +99,7 @@ const getBlocked = body => {
         }
       });
       col[cdir] = true;
+      col.any = true;
       // Separate bodies
       body.y = col.top || col.bottom ? 16 * Math.round(body.y / 16) : body.y;
       body.x = col.left || col.right ? 16 * Math.round(body.x / 16) : body.x;
@@ -101,10 +107,6 @@ const getBlocked = body => {
       // Stop velocity if colliding
       body.dx = col.left || col.right ? 0 : body.dx;
       body.dy = col.top || col.bottom ? 0 : body.dy;
-    }
-
-    if (body.name === "hello") {
-      //  debugger;
     }
   });
 
@@ -115,8 +117,8 @@ let { canvas, context } = init();
 initKeys();
 
 let player = Sprite({
-  x: 16 * 6, // starting x,y position of the sprite
-  y: 16 * 5,
+  x: 16 * 4, // starting x,y position of the sprite
+  y: 16 * 7,
   color: "red", // fill color of the sprite rectangle
   width: 16, // width and height of the sprite rectangle
   height: 32,
@@ -127,15 +129,15 @@ let player = Sprite({
 });
 
 const enemy1 = Sprite({
-  x: 16 * 3, // starting x,y position of the sprite
+  x: 16 * 2, // starting x,y position of the sprite
   y: 16 * 5,
   color: "blue", // fill color of the sprite rectangle
   width: 16, // width and height of the sprite rectangle
   height: 32,
   blocked: { ...defaultBlocked },
-  facing: 1, // -1 0 1 == left, none, right
+  facing: -1, // -1 0 1 == left, none, right
   dy: 0,
-  walks: false
+  walks: true
 });
 
 const enemy2 = Sprite({
@@ -162,11 +164,42 @@ const checkCliff = body => {
   return tmpBody.blocked;
 };
 
+const vision = enemy => {
+  // 1. Linje i se-riktning tills stöter i ett objekt, hoppa 8px åt gången
+  let sight = 0;
+  while ((sight += 8)) {
+    const checkX = enemy.x + 8 + sight * enemy.facing;
+    if (
+      getBlocked({
+        x: checkX,
+        y: enemy.y,
+        height: 16
+      }).any ||
+      checkX < 0 ||
+      checkX > 232
+    ) {
+      break;
+    }
+  }
+  // 2. Boxkollision mellan player och synbody med höjd 12 eller något
+  return checkCollidingBody(player, {
+    x: enemy.x + 8 + (enemy.facing === -1 ? -sight : 0),
+    y: enemy.y,
+    height: 24, // Discover ducked player, but be fair if jumping and head sticks up a bit
+    width: sight
+  });
+};
+
 const enemyLogic = enemy => {
   // console.log(enemy.blocked.right, enemy.blocked.left);
   const cliff = !checkCliff(enemy).bottom;
+
   enemy.dx = 0;
   enemy.dy += 0.2;
+
+  if (vision(enemy)) {
+    console.log("Seen");
+  }
 
   if (enemy.walks) {
     enemy.dx = enemy.facing * 0.5;
@@ -188,10 +221,6 @@ let loop = GameLoop({
 
     player.stabTimer--;
     player.dy += 0.2;
-
-    if (player.stabTimer < 0 && player.stabTimer > -8) {
-      console.log("Stab cool");
-    }
 
     if (!player.standing) {
       player.standing = true;
@@ -218,14 +247,13 @@ let loop = GameLoop({
         player.dy = 0;
       }
 
-      if (keyPressed("up")) {
-        player.dy = -4.5;
-      }
       if (keyPressed("down") && player.standing) {
-        console.log("duck");
         player.standing = false;
         player.y += 16;
         player.height = 16;
+        player.dx = 0;
+      } else if (keyPressed("up")) {
+        player.dy = -4.5;
       }
     }
 
@@ -237,18 +265,18 @@ let loop = GameLoop({
 
     if (player.stabTimer > 0) {
       console.log("Stabbing");
-      const stabbedEnemy = getCollidingEnemy({
+      const stabbedEnemy = checkCollidingBody({
         height: 16,
         x: player.x + player.facing * 16,
         y: player.y
       });
       if (stabbedEnemy) {
-        console.log("Died");
+        console.log("Killed enemy");
         stabbedEnemy.dead = true;
       }
     }
 
-    if (getCollidingEnemy(player)) {
+    if (checkCollidingBody(player)) {
       console.log("Touch death");
     }
 
