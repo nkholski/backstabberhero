@@ -9,6 +9,9 @@ import {
 
 let { canvas, context } = init();
 
+let counter = 0;
+
+context.font = "12px Courier New";
 let player, knife, enemies;
 
 const defaultBlocked = { top: false, right: false, bottom: false, left: false };
@@ -412,6 +415,12 @@ let loop = GameLoop({
       );
       context.fill();
     });
+
+    context.fillStyle = "#FFF";
+
+    context.fillText("!!!", 10, 50);
+    context.fillText(counter++, 35, 50);
+
     // render the game state
     player.render();
     if (knife.visible) {
