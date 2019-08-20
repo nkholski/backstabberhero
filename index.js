@@ -6,10 +6,12 @@ import {
   initKeys,
   keyPressed
 } from "./dependencies/kontra.mjs";
+import Title from "./title.js";
 
 let { canvas, context } = init();
-
-let counter = 0;
+let image;
+const font = new Image();
+font.src = "assets/font.png";
 
 context.font = "12px Courier New";
 let player, knife, enemies;
@@ -25,7 +27,9 @@ const facing = {
 const level = [
   [0, 10, 1, 10],
   [1, 10, 6, 8],
+  //[0, 2, 2, 6],
   [0, 5, 9, 7]
+
   //[0, 5, 3, 5] // Horizontell, 5 bitar, start (x,y) = (3,5) // Horizontell, 5 bitar, start (x,y) = (3,5)
 
   //[1, 5, 3, 2] // Vertikal, 2 bitar
@@ -33,7 +37,7 @@ const level = [
 let spriteSheets = [];
 
 (() => {
-  let image = new Image();
+  image = new Image();
   image.src = "assets/gfx8colors.png";
   image.onload = function() {
     /** COLOR CHANGE */
@@ -121,6 +125,16 @@ let spriteSheets = [];
   Level med fyra plattformar och 3 fiender blir 7*2 = 14bytes
 */
 
+const writeText = (text, x, y, s) => {
+  for (let i = 0; i < text.length; i++) {
+    let code = (text.charCodeAt(i) - 65) * 8;
+    if (code === -256) {
+      code = 46 * 8;
+    }
+    context.drawImage(font, code, 0, 8, 8, x + i * 8 * s, y, s * 8, s * 8);
+  }
+};
+
 const vision = enemy => {
   // 1. Linje i se-riktning tills stöter i ett objekt, hoppa 8px åt gången
   let sight = 0;
@@ -157,9 +171,11 @@ const enemyLogic = enemy => {
   }
 
   enemy.dx = 0;
+  enemy.gotPlayer = false;
 
   if (vision(enemy)) {
-    console.log("Seen");
+    enemy.gotPlayer = true;
+    return;
   }
 
   if (enemy.walks) {
@@ -261,8 +277,8 @@ const checkCliff = body => {
 function boot() {
   initKeys();
   player = Sprite({
-    x: 16 * 4, // starting x,y position of the sprite
-    y: 16 * 7,
+    x: 16 * 8, // starting x,y position of the sprite
+    y: 16 * 8,
     color: "red", // fill color of the sprite rectangle
     width: 16, // width and height of the sprite rectangle
     height: 32,
@@ -281,7 +297,7 @@ function boot() {
 
   const enemy1 = Sprite({
     x: 16 * 2, // starting x,y position of the sprite
-    y: 16 * 5,
+    y: 16 * 7,
     color: "blue", // fill color of the sprite rectangle
     width: 16, // width and height of the sprite rectangle
     height: 32,
@@ -363,6 +379,10 @@ let loop = GameLoop({
       player.dy = 0;
     }
 
+    if (!player.blocked.bottom) {
+      anim = player.dy > 0 ? "jumpDown" : "jumpUp";
+    }
+
     knife.visible = false;
     if (player.stabTimer > 0) {
       anim = "stab";
@@ -383,10 +403,6 @@ let loop = GameLoop({
       }
     }
 
-    if (!player.blocked.bottom) {
-      anim = player.dy > 0 ? "jumpDown" : "jumpUp";
-    }
-
     player.playAnimation(anim + (player.facing === -1 ? "Left" : "Right"));
 
     player.update();
@@ -396,46 +412,64 @@ let loop = GameLoop({
 
     if (checkCollidingBody(player)) {
       console.log("Touch death");
+      loop.stop();
+      alert("Dead!");
+      boot();
+      //const title = new Title();
+      //title.boot();
+      return;
     }
 
+    let alive = false;
     enemies.forEach(enemy => {
       enemyLogic(enemy);
       enemy.update();
       if (!enemy.dead) {
+        alive = true;
         getBlocked(enemy);
       }
     });
   },
   render: function() {
     // draw level
+    writeText("FIRST LEVEL", 10, 10, 2);
     level.forEach(item => {
-      context.beginPath();
+      //context.beginPath();
 
-      context.fillStyle = "#662F00";
-      context.rect(
-        item[2] * 16,
-        item[3] * 16,
-        item[0] === 0 ? item[1] * 16 : 16,
-        item[0] === 1 ? item[1] * 16 : 16
-      );
-      context.fill();
+      // context.fillStyle = "#662F00";
+      // context.rect(
+      //   item[2] * 16,
+      //   item[3] * 16,
+      //   item[0] === 0 ? item[1] * 16 : 16,
+      //   item[0] === 1 ? item[1] * 16 : 16
+      // );
+      // context.fill();
 
-      context.beginPath();
+      // context.beginPath();
 
-      context.fillStyle = "#00B500";
-      context.rect(
-        item[2] * 16,
-        item[3] * 16 - 2,
-        item[0] === 0 ? item[1] * 16 : 16,
-        4
-      );
-      context.fill();
+      // context.fillStyle = "#00B500";
+      // context.rect(
+      //   item[2] * 16,
+      //   item[3] * 16 - 2,
+      //   item[0] === 0 ? item[1] * 16 : 16,
+      //   4
+      // );
+      // context.fill();
+      for (let i = 0; i < item[1]; i++) {
+        const top = -16 * (item[0] === 0 || i == 0);
+        context.drawImage(
+          image,
+          9 * 16,
+          16 + top,
+          16,
+          16,
+          item[2] * 16 + (item[0] === 0 ? i * 16 : 0),
+          item[3] * 16 + (item[0] === 1 ? i * 16 : 0),
+          16,
+          16
+        );
+      }
     });
-
-    context.fillStyle = "#FFF";
-
-    context.fillText("!!!", 10, 50);
-    context.fillText(counter++, 35, 50);
 
     // render the game state
     player.render();
@@ -444,6 +478,12 @@ let loop = GameLoop({
     }
     enemies.forEach(enemy => {
       if (!enemy.dead || (5 * Math.abs(Math.ceil(player.stabTimer / 5))) % 2) {
+        if (enemy.gotPlayer) {
+          writeText("HEY!", enemy.x - ((4 * 8) / 2 - 8), enemy.y - 8, 1);
+          // context.fillStyle = "#FFF";
+
+          // context.fillText("!!!", enemy.x, enemy.y - 3);
+        }
         enemy.render();
       }
     });
