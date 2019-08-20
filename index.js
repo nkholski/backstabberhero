@@ -63,11 +63,14 @@ let spriteSheets = [];
     /** END OF */
 
     const baseAnims = [
+      ["jumpUp", 0, null, false],
+      ["jumpDown", 1, null, false],
       ["walk", "0..3", 3, true],
       ["idle", 6, null, false],
       ["duck", 7, null, false],
       ["stab", 4, null, false],
-      ["knife", 5, null, false]
+      ["knife", 5, null, false],
+      ["dead", 10, null, false]
     ];
 
     let animations = {};
@@ -148,8 +151,12 @@ const enemyLogic = enemy => {
   // console.log(enemy.blocked.right, enemy.blocked.left);
   const cliff = !checkCliff(enemy).bottom;
 
-  enemy.dx = 0;
   enemy.dy += 0.2;
+  if (enemy.dead) {
+    return;
+  }
+
+  enemy.dx = 0;
 
   if (vision(enemy)) {
     console.log("Seen");
@@ -351,7 +358,8 @@ let loop = GameLoop({
       }
     }
 
-    if (player.dy < 0 && player.blocked.up) {
+    // Funkar utan denna verkar det som, varför?
+    if (player.dy < 0 && player.blocked.top) {
       player.dy = 0;
     }
 
@@ -366,9 +374,17 @@ let loop = GameLoop({
         y: player.y
       });
       if (stabbedEnemy) {
-        console.log("Killed enemy");
         stabbedEnemy.dead = true;
+        stabbedEnemy.dx = player.facing * 1;
+        stabbedEnemy.dy = -2;
+        stabbedEnemy.playAnimation(
+          "dead" + (player.facing === 1 ? "Left" : "Right")
+        );
       }
+    }
+
+    if (!player.blocked.bottom) {
+      anim = player.dy > 0 ? "jumpDown" : "jumpUp";
     }
 
     player.playAnimation(anim + (player.facing === -1 ? "Left" : "Right"));
@@ -427,7 +443,9 @@ let loop = GameLoop({
       knife.render();
     }
     enemies.forEach(enemy => {
-      enemy.render();
+      if (!enemy.dead || (5 * Math.abs(Math.ceil(player.stabTimer / 5))) % 2) {
+        enemy.render();
+      }
     });
   }
 });
