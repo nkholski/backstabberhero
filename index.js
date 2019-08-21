@@ -9,7 +9,11 @@ import {
 import Title from "./title.js";
 
 let { canvas, context } = init();
+let wellDone;
+let gameOver;
 let image;
+let jumpReleased;
+
 const font = new Image();
 font.src = "assets/font.png";
 
@@ -25,10 +29,13 @@ const facing = {
 };
 
 const level = [
+  [0, 5, 7, 5],
   [0, 10, 1, 10],
   [1, 10, 6, 8],
-  //[0, 2, 2, 6],
-  [0, 5, 9, 7]
+  [0, 2, 2, 6],
+  [0, 5, 9, 8],
+  [1, 2, 9, 7],
+  [0, 5, 9, 14]
 
   //[0, 5, 3, 5] // Horizontell, 5 bitar, start (x,y) = (3,5) // Horizontell, 5 bitar, start (x,y) = (3,5)
 
@@ -137,63 +144,84 @@ const writeText = (text, x, y, s) => {
 
 const vision = enemy => {
   // 1. Linje i se-riktning tills stöter i ett objekt, hoppa 8px åt gången
-  let sight = 0;
-  while ((sight += 8)) {
-    const checkX = enemy.x + 8 + sight * enemy.facing;
-    if (
-      getBlocked({
-        x: checkX,
-        y: enemy.y,
-        height: 16
-      }).any ||
-      checkX < 0 ||
-      checkX > 232
-    ) {
-      break;
+  let seen = false;
+  [1, 16].forEach(y => {
+    let sight = 0;
+
+    while ((sight += 8)) {
+      const checkX = enemy.x + 8 + sight * enemy.facing;
+      if (
+        getBlocked({
+          x: checkX,
+          y: enemy.y + y,
+          height: 14
+        }).any ||
+        checkX < 0 ||
+        checkX > 232
+      ) {
+        break;
+      }
     }
-  }
-  // 2. Boxkollision mellan player och synbody med höjd 12 eller något
-  return checkCollidingBody(player, {
-    x: enemy.x + 8 + (enemy.facing === -1 ? -sight : 0),
-    y: enemy.y,
-    height: 24, // Discover ducked player, but be fair if jumping and head sticks up a bit
-    width: sight
+    const body = checkCollidingBody(player, {
+      x: enemy.x + 8 + (enemy.facing === -1 ? -sight : 0),
+      y: enemy.y + y,
+      height: 24, // Discover ducked player, but be fair if jumping and head sticks up a bit
+      width: sight
+    });
+    seen =
+      seen ||
+      !!checkCollidingBody(player, {
+        x: enemy.x + 8 + (enemy.facing === -1 ? -sight : 0),
+        y: enemy.y,
+        height: 14, // Discover ducked player, but be fair if jumping and head sticks up a bit
+        width: sight
+      });
   });
+  // 2. Boxkollision mellan player och synbody med höjd 12 eller något
+  return seen;
 };
 
 const enemyLogic = enemy => {
   // console.log(enemy.blocked.right, enemy.blocked.left);
   const cliff = !checkCliff(enemy).bottom;
-
+  let anim = "idle";
   enemy.dy += 0.2;
   if (enemy.dead) {
     return;
   }
 
   enemy.dx = 0;
-  enemy.gotPlayer = false;
 
   if (vision(enemy)) {
-    enemy.gotPlayer = true;
-    return;
-  }
-
-  if (enemy.walks) {
-    enemy.dx = enemy.facing * 0.5;
-    if (
-      (enemy.blocked.left && enemy.dx < 0) ||
-      (enemy.blocked.right && enemy.dx > 0) ||
-      (enemy.blocked.bottom && cliff)
-    ) {
-      // debugger;
-      enemy.facing = -enemy.facing;
+    if (!gameOver) {
+      if (player.standing) {
+        player.y += 16;
+        player.height = 16;
+      }
+      enemy.gotPlayer = true;
+      gameOver = true;
+      player.stabTimer = -1;
     }
+    player.facing = -enemy.facing;
+
+    enemy.gotPlayer = true;
+  } else if (!enemy.gotPlayer) {
+    if (enemy.walks) {
+      enemy.dx = enemy.facing * 0.5;
+      if (
+        (enemy.blocked.left && enemy.dx < 0) ||
+        (enemy.blocked.right && enemy.dx > 0) ||
+        (enemy.blocked.bottom && cliff)
+      ) {
+        // debugger;
+        enemy.facing = -enemy.facing;
+      }
+    }
+
+    anim = enemy.walks ? "walk" : "idle";
   }
 
-  let anim =
-    (enemy.walks ? "walk" : "idle") + (enemy.facing == -1 ? "Left" : "Right");
-
-  enemy.playAnimation(anim);
+  enemy.playAnimation(anim + (enemy.facing == -1 ? "Left" : "Right"));
 };
 
 const checkCollidingBody = (body, other) => {
@@ -228,9 +256,11 @@ const getBlocked = body => {
     const horizontal = item[0] === 0;
     const overlap = {};
     // Break out share with body collision
-    overlap.left = 16 + item[2] * 16 + 16 * (horizontal ? item[1] : 0) - body.x; // Överlapp på vänster sida
+    overlap.left =
+      16 + item[2] * 16 + 16 * (horizontal ? item[1] - 1 : 0) - body.x; // Överlapp på vänster sida
     overlap.right = 16 + body.x - item[2] * 16; // Överlapp på höger sida
-    overlap.top = 16 + item[3] * 16 + 16 * (horizontal ? 0 : item[1]) - body.y;
+    overlap.top =
+      16 + item[3] * 16 + 16 * (horizontal ? 0 : item[1] - 1) - body.y;
     overlap.bottom = body.height + body.y - item[3] * 16;
 
     // All sides overlap == collision
@@ -267,7 +297,7 @@ const getBlocked = body => {
 const checkCliff = body => {
   const tmpBody = {
     ...body,
-    x: body.x + (body.facing === 1 ? 24 : -8),
+    x: body.x + (body.facing === 1 ? 8 : -8),
     y: body.y + 8
   };
   getBlocked(tmpBody);
@@ -275,10 +305,12 @@ const checkCliff = body => {
 };
 
 function boot() {
+  wellDone = false;
+  gameOver = false;
   initKeys();
   player = Sprite({
-    x: 16 * 8, // starting x,y position of the sprite
-    y: 16 * 8,
+    x: 16 * 7, // starting x,y position of the sprite
+    y: 16 * 7,
     color: "red", // fill color of the sprite rectangle
     width: 16, // width and height of the sprite rectangle
     height: 32,
@@ -286,6 +318,7 @@ function boot() {
     standing: true,
     facing: facing.right,
     stabTimer: -1,
+    gameOver: -1,
     animations: spriteSheets[0].animations
   });
 
@@ -309,8 +342,8 @@ function boot() {
   });
 
   const enemy2 = Sprite({
-    x: 16 * 9, // starting x,y position of the sprite
-    y: 16 * 5,
+    x: 16 * 11, // starting x,y position of the sprite
+    y: 16 * 6,
     color: "blue", // fill color of the sprite rectangle
     width: 16, // width and height of the sprite rectangle
     height: 32,
@@ -318,12 +351,27 @@ function boot() {
     facing: -1, // -1 0 1 == left, none, right
     dy: 0,
     walks: true,
+    turnTimer: 99,
+    animations: spriteSheets[1].animations
+  });
+
+  const enemy3 = Sprite({
+    x: 16 * 12, // starting x,y position of the sprite
+    y: 16 * 10,
+    color: "blue", // fill color of the sprite rectangle
+    width: 16, // width and height of the sprite rectangle
+    height: 32,
+    blocked: { ...defaultBlocked },
+    facing: -1, // -1 0 1 == left, none, right
+    dy: 0,
+    walks: true,
+    turnTimer: 99,
     animations: spriteSheets[1].animations
   });
 
   loop.start(); // start the game
 
-  enemies = [enemy1, enemy2];
+  enemies = [enemy1, enemy2, enemy3];
 }
 
 let loop = GameLoop({
@@ -334,75 +382,92 @@ let loop = GameLoop({
     player.stabTimer--;
     player.dy += 0.2;
 
-    if (!player.standing) {
-      player.standing = true;
-      player.y -= 16;
-      player.height = 32;
-    }
-
     player.dx = 0;
-    let anim = "idle";
-    if (keyPressed("left")) {
-      player.dx = -1;
-      player.facing = facing.left;
-      anim = "walk";
-    }
-    if (keyPressed("right")) {
-      player.dx = 1;
-      player.facing = facing.right;
-      anim = "walk";
+    let anim = wellDone ? "idle" : "duck";
+
+    if (player.y > 400) {
+      gameOver = true;
     }
 
-    if (keyPressed("z") && player.stabTimer < -7) {
-      // 7 tick > 100ms
-      player.stabTimer = 9; // 1 = 16ms, => 9 * 16ms
-    }
+    if (gameOver) {
+      if (keyPressed("z") && player.stabTimer < -7) {
+        loop.stop();
+        boot();
+        return;
+      }
+    } else {
+      if (!player.standing) {
+        player.standing = true;
+        player.y -= 16;
+        player.height = 32;
+      }
+      anim = "idle";
+      if (keyPressed("left")) {
+        player.dx = -1;
+        player.facing = facing.left;
+        anim = "walk";
+      }
+      if (keyPressed("right")) {
+        player.dx = 1;
+        player.facing = facing.right;
+        anim = "walk";
+      }
 
-    if (player.blocked.bottom) {
-      if (player.dy > 0) {
+      if (keyPressed("z") && player.stabTimer < -7) {
+        // 7 tick > 100ms
+        player.stabTimer = 9; // 1 = 16ms, => 9 * 16ms
+      }
+
+      jumpReleased = jumpReleased || !keyPressed("up");
+
+      if (player.blocked.bottom) {
+        if (player.dy > 0) {
+          player.dy = 0;
+        }
+
+        if (keyPressed("down") && player.standing) {
+          anim = "duck";
+          player.standing = false;
+          player.y += 16;
+          player.height = 16;
+          player.dx = 0;
+        } else if (keyPressed("up") && jumpReleased) {
+          player.dy = -4.5;
+          jumpReleased = false;
+        }
+      }
+
+      // Funkar utan denna verkar det som, varför?
+      if (player.dy < 0 && player.blocked.top) {
         player.dy = 0;
       }
 
-      if (keyPressed("down") && player.standing) {
-        anim = "duck";
-        player.standing = false;
-        player.y += 16;
-        player.height = 16;
-        player.dx = 0;
-      } else if (keyPressed("up")) {
-        player.dy = -4.5;
+      if (!player.blocked.bottom) {
+        anim = player.dy > 0 ? "jumpDown" : "jumpUp";
       }
-    }
 
-    // Funkar utan denna verkar det som, varför?
-    if (player.dy < 0 && player.blocked.top) {
-      player.dy = 0;
-    }
-
-    if (!player.blocked.bottom) {
-      anim = player.dy > 0 ? "jumpDown" : "jumpUp";
-    }
-
-    knife.visible = false;
-    if (player.stabTimer > 0) {
-      anim = "stab";
-      knife.visible = true;
-      knife.playAnimation("knife" + (player.facing === -1 ? "Left" : "Right"));
-      const stabbedEnemy = checkCollidingBody({
-        height: 16,
-        x: player.x + player.facing * 16,
-        y: player.y
-      });
-      if (stabbedEnemy) {
-        stabbedEnemy.dead = true;
-        stabbedEnemy.dx = player.facing * 1;
-        stabbedEnemy.dy = -2;
-        stabbedEnemy.playAnimation(
-          "dead" + (player.facing === 1 ? "Left" : "Right")
+      knife.visible = false;
+      if (player.stabTimer > 0) {
+        anim = "stab";
+        knife.visible = true;
+        knife.playAnimation(
+          "knife" + (player.facing === -1 ? "Left" : "Right")
         );
+        const stabbedEnemy = checkCollidingBody({
+          height: 16,
+          x: player.x + player.facing * 16,
+          y: player.y
+        });
+        if (stabbedEnemy) {
+          stabbedEnemy.dead = true;
+          stabbedEnemy.dx = player.facing * 1;
+          stabbedEnemy.dy = -2;
+          stabbedEnemy.playAnimation(
+            "dead" + (player.facing === 1 ? "Left" : "Right")
+          );
+        }
       }
     }
-
     player.playAnimation(anim + (player.facing === -1 ? "Left" : "Right"));
 
     player.update();
@@ -410,29 +475,36 @@ let loop = GameLoop({
     knife.y = player.y;
     getBlocked(player);
 
-    if (checkCollidingBody(player)) {
-      console.log("Touch death");
-      loop.stop();
-      alert("Dead!");
-      boot();
+    const collidingBody = checkCollidingBody(player);
+    if (collidingBody) {
+      collidingBody.facing = collidingBody.x < player.x ? 1 : -1;
+
+      //loop.stop();
+      //boot();
       //const title = new Title();
       //title.boot();
-      return;
     }
 
-    let alive = false;
+    const wasWellDone = wellDone;
+    wellDone = true;
+
     enemies.forEach(enemy => {
       enemyLogic(enemy);
       enemy.update();
       if (!enemy.dead) {
-        alive = true;
+        wellDone = false;
         getBlocked(enemy);
       }
     });
+    if (wellDone && !wasWellDone) {
+      gameOver = true;
+      player.stabTimer = 10;
+    }
   },
   render: function() {
     // draw level
-    writeText("FIRST LEVEL", 10, 10, 2);
+    const flash = (5 * Math.abs(Math.ceil(player.stabTimer / 5))) % 2 == 0;
+
     level.forEach(item => {
       //context.beginPath();
 
@@ -471,13 +543,24 @@ let loop = GameLoop({
       }
     });
 
-    // render the game state
-    player.render();
-    if (knife.visible) {
+    if (gameOver) {
+      if (wellDone) {
+        writeText("WELL DONE", 56, 50, 2);
+      } else {
+        writeText("GAME OVER", 56, 50, 2);
+      }
+      if (flash && player.stabTimer < -7) {
+        writeText(" PRESS Z", 56 + 36, 70, 1);
+      }
+    } else if (knife.visible) {
       knife.render();
     }
+
+    // render the game state
+    player.render();
+
     enemies.forEach(enemy => {
-      if (!enemy.dead || (5 * Math.abs(Math.ceil(player.stabTimer / 5))) % 2) {
+      if (!enemy.dead || flash) {
         if (enemy.gotPlayer) {
           writeText("HEY!", enemy.x - ((4 * 8) / 2 - 8), enemy.y - 8, 1);
           // context.fillStyle = "#FFF";
