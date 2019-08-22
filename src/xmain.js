@@ -6,7 +6,7 @@ import {
   initKeys,
   keyPressed
 } from "./dependencies/kontra.mjs";
-import Title from "./title.js";
+//import Title from "./scenes/title";
 
 let { canvas, context } = init();
 let wellDone;
@@ -232,7 +232,7 @@ const checkCollidingBody = (body, other) => {
     if (enemy.dead) {
       return;
     }
-    // Could share with getBlocked
+    // Could share with getBlocked!
     if (
       body.x < enemy.x + enemy.width &&
       body.x + 16 > enemy.x &&

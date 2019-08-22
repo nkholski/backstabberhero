@@ -5,7 +5,7 @@ import {
   GameLoop,
   initKeys,
   keyPressed
-} from "./dependencies/kontra.mjs";
+} from "../dependencies/kontra.js";
 
 export default class Title {
   loop = null;
