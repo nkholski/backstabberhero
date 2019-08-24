@@ -1,4 +1,5 @@
-import { flash } from "./../functions/flash";
+import { Levels } from "../common/levels";
+import { GetFlash } from "../functions/getFlash";
 import {
   init,
   Sprite,
@@ -9,18 +10,21 @@ import {
   keyPressed
 } from "../dependencies/kontra.js";
 import writeText from "../functions/writeText";
+import { GameScene } from "./game";
 
 export default class Title {
   loop = null;
-  spriteSheet: any;
+  spriteSheets: any;
   assets: any;
   context: any;
   tick = 0;
-  applitude = 100;
+  amplitude = 100;
   heroOpacity = 0;
+  state = -1;
 
-  boot(assets, spriteSheet) {
-    this.spriteSheet = spriteSheet;
+  boot(assets, spriteSheets) {
+    console.log("TitleScene");
+    this.spriteSheets = spriteSheets;
     this.assets = assets;
     this.context = getContext();
     this.start();
@@ -28,15 +32,24 @@ export default class Title {
   start() {
     this.loop = GameLoop({
       update: () => {
-        if (this.applitude > 0) {
-          this.applitude--;
+        if (this.amplitude > 0) {
+          this.amplitude--;
         } else if (this.heroOpacity < 100) {
           this.heroOpacity++;
+        }
+        if (keyPressed("z")) {
+          if (this.state == 1) {
+            this.loop.stop();
+            GameScene(this.assets, this.spriteSheets, Levels[0]);
+            this.state = 2;
+          }
+        } else {
+          this.state = 1;
         }
       },
       render: () => {
         this.context.drawImage(
-          this.assets.gfx,
+          this.assets.gfx8colors,
           64,
           0,
           32,
@@ -53,7 +66,7 @@ export default class Title {
           56,
           50,
           2,
-          this.applitude,
+          this.amplitude,
           this.tick++
         );
         this.context.globalAlpha = this.heroOpacity / 100;
@@ -70,7 +83,7 @@ export default class Title {
 
         this.context.globalAlpha = 1;
 
-        if (this.heroOpacity === 100 && flash(this.tick / 5)) {
+        if (this.heroOpacity === 100 && GetFlash(this.tick / 5)) {
           writeText(this.assets.font, "PRESS Z TO STAB", 75, 110, 1);
         }
       }

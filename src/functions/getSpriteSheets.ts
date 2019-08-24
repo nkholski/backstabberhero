@@ -27,16 +27,41 @@ const createAltGfx = assets => {
     };
   });
 
-  [[7, 57, 239], [104, 38, 104], [173, 87, 38]].forEach((rgb, t) => {
+  [
+    [7, 57, 239],
+    [104, 38, 104],
+    [173, 87, 38],
+    [104, 38, 104],
+    [173, 87, 38],
+    [104, 38, 104],
+    [173, 87, 38],
+    [104, 38, 104],
+    [173, 87, 38],
+    [104, 38, 104],
+    [173, 87, 38]
+  ].forEach((rgb, t) => {
     const tmpCanvas = document.createElement("canvas");
     const tmpContext = tmpCanvas.getContext("2d");
-    const img = assets.gfx;
+    const img = assets.gfx8colors;
     tmpCanvas.width = img.width;
     tmpCanvas.height = img.height;
     tmpContext.drawImage(img, 0, 0);
     var imageData = tmpContext.getImageData(0, 0, img.width, img.height);
 
-    for (var i = 0; i < imageData.data.length; i += 4) {
+    console.log("L=", imageData.data.length);
+
+    for (let i = 0; i < imageData.data.length; i += 4) {
+      // if (
+      //   imageData.data[i] !== 0 &&
+      //   imageData.data[i] !== 227 &&
+      //   imageData.data[i] !== 87 &&
+      //   imageData.data[i] !== 57 &&
+      //   imageData.data[i] !== 32 &&
+      //   imageData.data[i] !== 252
+      // ) {
+      //   console.log(i, imageData.data[i]);
+      //   debugger;
+      // }
       if (
         imageData.data[i] == 7 // &&
         // imageData.data[i + 1] == 57 &&
@@ -60,7 +85,6 @@ const createAltGfx = assets => {
 };
 
 const GetSpriteSheets = assets => {
-  console.log("alt", createAltGfx(assets));
-  console.log("boots", assets);
+  return createAltGfx(assets);
 };
 export default GetSpriteSheets;

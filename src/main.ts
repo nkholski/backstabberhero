@@ -1,3 +1,4 @@
+import { GameScene } from "./scenes/game";
 import {
   init,
   Sprite,
@@ -14,13 +15,18 @@ const assets = {};
 // 1. Preload all assets
 (() => {
   let l = 1;
-  ["gfx", "font"].forEach(file => {
+  ["gfx8colors", "font"].forEach(file => {
+    initKeys();
+
     assets[file] = new Image();
     assets[file].src = `assets/${file}.png`;
     assets[file].onload = () => {
       if (!--l) {
         let spriteSheets = GetSpriteSheets(assets);
+
         new Title().boot(assets, spriteSheets);
+
+        // GameScene(assets, spriteSheets, level);
       }
     };
   });

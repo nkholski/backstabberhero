@@ -5,7 +5,8 @@ import {
   GameLoop,
   initKeys,
   keyPressed
-} from "./dependencies/kontra.mjs";
+} from "../dependencies/kontra";
+
 //import Title from "./scenes/title";
 
 let { canvas, context } = init();
@@ -224,7 +225,7 @@ const enemyLogic = enemy => {
   enemy.playAnimation(anim + (enemy.facing == -1 ? "Left" : "Right"));
 };
 
-const checkCollidingBody = (body, other) => {
+const checkCollidingBody = (body, other?) => {
   let col = null;
   const others = other ? [other] : enemies;
 
@@ -232,7 +233,7 @@ const checkCollidingBody = (body, other) => {
     if (enemy.dead) {
       return;
     }
-    // Could share with getBlocked!
+    // Could share with getBlocked
     if (
       body.x < enemy.x + enemy.width &&
       body.x + 16 > enemy.x &&
@@ -254,7 +255,7 @@ const getBlocked = body => {
 
   level.forEach(item => {
     const horizontal = item[0] === 0;
-    const overlap = {};
+    const overlap: any = {};
     // Break out share with body collision
     overlap.left =
       16 + item[2] * 16 + 16 * (horizontal ? item[1] - 1 : 0) - body.x; // Överlapp på vänster sida
@@ -413,11 +414,6 @@ let loop = GameLoop({
         anim = "walk";
       }
 
-      if (keyPressed("z") && player.stabTimer < -7) {
-        // 7 tick > 100ms
-        player.stabTimer = 9; // 1 = 16ms, => 9 * 16ms
-      }
-
       jumpReleased = jumpReleased || !keyPressed("up");
 
       if (player.blocked.bottom) {
@@ -425,7 +421,7 @@ let loop = GameLoop({
           player.dy = 0;
         }
 
-        if (keyPressed("down") && player.standing) {
+        if (keyPressed("down")) {
           anim = "duck";
           player.standing = false;
           player.y += 16;
@@ -435,6 +431,11 @@ let loop = GameLoop({
           player.dy = -4.5;
           jumpReleased = false;
         }
+      }
+
+      if (keyPressed("z") && player.stabTimer < -7 && player.standing) {
+        // 7 tick > 100ms
+        player.stabTimer = 9; // 1 = 16ms, => 9 * 16ms
       }
 
       // Funkar utan denna verkar det som, varför?
@@ -471,10 +472,10 @@ let loop = GameLoop({
     player.playAnimation(anim + (player.facing === -1 ? "Left" : "Right"));
 
     player.update();
+
+    getBlocked(player);
     knife.x = player.x + player.facing * 16;
     knife.y = player.y;
-    getBlocked(player);
-
     const collidingBody = checkCollidingBody(player);
     if (collidingBody) {
       collidingBody.facing = collidingBody.x < player.x ? 1 : -1;
@@ -528,6 +529,7 @@ let loop = GameLoop({
       // );
       // context.fill();
       for (let i = 0; i < item[1]; i++) {
+        // @ts-ignore
         const top = -16 * (item[0] === 0 || i == 0);
         context.drawImage(
           image,
