@@ -1,3 +1,4 @@
+import { SetState } from "./functions/state";
 import { GameScene } from "./scenes/game";
 import {
   init,
@@ -23,6 +24,10 @@ const assets = {};
     assets[file].onload = () => {
       if (!--l) {
         let spriteSheets = GetSpriteSheets(assets);
+
+        const state: any = { font: assets["font"], assets, spriteSheets };
+
+        SetState(state);
 
         new Title().boot(assets, spriteSheets);
 

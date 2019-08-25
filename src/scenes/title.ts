@@ -11,6 +11,7 @@ import {
 } from "../dependencies/kontra.js";
 import writeText from "../functions/writeText";
 import { GameScene } from "./game";
+import { levelSelectScene } from "./levelSelect";
 
 export default class Title {
   loop = null;
@@ -23,7 +24,6 @@ export default class Title {
   state = -1;
 
   boot(assets, spriteSheets) {
-    console.log("TitleScene");
     this.spriteSheets = spriteSheets;
     this.assets = assets;
     this.context = getContext();
@@ -40,7 +40,8 @@ export default class Title {
         if (keyPressed("z")) {
           if (this.state == 1) {
             this.loop.stop();
-            GameScene(this.assets, this.spriteSheets, Levels[0]);
+            levelSelectScene();
+            // GameScene(this.assets, this.spriteSheets, Levels[0]);
             this.state = 2;
           }
         } else {
@@ -63,27 +64,27 @@ export default class Title {
         writeText(
           this.assets.font,
           "BACKSTABER",
-          56,
+          -1,
           50,
           2,
           this.amplitude,
           this.tick++
         );
         this.context.globalAlpha = this.heroOpacity / 100;
-        writeText(this.assets.font, "HERO", 57, 85 - this.heroOpacity / 5, 5);
+        writeText(this.assets.font, "HERO", -1, 85 - this.heroOpacity / 5, 5);
         this.context.globalAlpha = (0.4 * this.heroOpacity) / 100;
 
         writeText(
           this.assets.font,
           "HERO",
-          57 + 3,
+          -130,
           85 + 3 - this.heroOpacity / 5,
           5
         );
 
         this.context.globalAlpha = 1;
 
-        if (this.heroOpacity === 100 && GetFlash(this.tick / 5)) {
+        if (this.heroOpacity === 100 && GetFlash(this.tick / 9)) {
           writeText(this.assets.font, "PRESS Z TO STAB", 75, 110, 1);
         }
       }

@@ -1,3 +1,4 @@
+import { Levels } from "./../common/levels";
 import { MakeEnemies } from "./../functions/makeEnemies";
 import Title from "./title";
 import { CheckCollidingBody } from "./../functions/physics/checkCollidingBody";
@@ -14,8 +15,10 @@ import {
 } from "../dependencies/kontra.js";
 import writeText from "../functions/writeText";
 import { EnemyUpdate } from "../functions/enemyUpdate";
+import { levelSelectScene } from "./levelSelect";
 
-export const GameScene = (assets, spriteSheets, { l: level, e: enemyData }) => {
+export const GameScene = (assets, spriteSheets, lvl: number) => {
+  const { l: level, e: enemyData } = Levels[lvl];
   const context = getContext();
   console.log("GAME SCENE", enemyData);
 
@@ -107,7 +110,8 @@ export const GameScene = (assets, spriteSheets, { l: level, e: enemyData }) => {
         level,
         player,
         enemies,
-        gameOver
+        gameOver,
+        tick
       };
 
       tick++;
@@ -128,7 +132,7 @@ export const GameScene = (assets, spriteSheets, { l: level, e: enemyData }) => {
         if (keyPressed("z") && player.stabTimer < -7 && sceneState === 1) {
           sceneState = 2;
           gameLoop.stop();
-          new Title().boot(assets, spriteSheets);
+          levelSelectScene(wellDone ? lvl : -1);
           return;
         }
       } else {
@@ -291,20 +295,19 @@ export const GameScene = (assets, spriteSheets, { l: level, e: enemyData }) => {
       enemies.forEach(enemy => {
         if (!enemy.dead || flash) {
           if (enemy.gotPlayer) {
-            writeText(
-              assets.font,
-              "HEY!",
-              enemy.x - ((4 * 8) / 2 - 8),
-              enemy.y - 8,
-              1
-            );
+            writeText(assets.font, "HEY!", -(enemy.x + 8), enemy.y - 9, 1);
+          }
+
+          const sleepLeft = Math.ceil(enemy.sleepTimer / 1e3 - elapsedTime);
+          if (sleepLeft < 1) {
+            enemy.sleepTimer = 0;
           }
           if (enemy.sleepTimer > 0) {
             writeText(
               assets.font,
-              "" + Math.ceil(enemy.sleepTimer / 1e3 - elapsedTime),
-              enemy.x - ((4 * 8) / 2 - 8),
-              enemy.y - 8,
+              "" + sleepLeft,
+              -(enemy.x + 8),
+              enemy.y - 9,
               1
             );
           }

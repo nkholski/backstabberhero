@@ -3,3 +3,9 @@ export enum EFacing {
   None = 0,
   Right = 1
 }
+
+export enum EEnemyType {
+  Walker,
+  Stands,
+  Sleeper
+}
