@@ -970,6 +970,8 @@ function GameLoop({ fps = 60, clearCanvas = true, update, render } = {}) {
 
 let callbacks$1 = {};
 let pressedKeys = {};
+let justPressed = {};
+let wasPressed = {};
 
 /**
  * A map of keycodes to key names. Add to this object to expand the list of [available keys](#available-keys).
@@ -1004,7 +1006,10 @@ let keyMap = {
 function keydownEventHandler(evt) {
   let key = keyMap[evt.which];
   pressedKeys[key] = true;
+  justPressed[key] = !wasPressed[key];
+  console.log(justPressed, wasPressed);
 
+  wasPressed[key] = true;
   if (callbacks$1[key]) {
     callbacks$1[key](evt);
   }
@@ -1017,6 +1022,8 @@ function keydownEventHandler(evt) {
  */
 function keyupEventHandler(evt) {
   pressedKeys[keyMap[evt.which]] = false;
+  wasPressed[keyMap[evt.which]] = false;
+  justPressed[keyMap[evt.which]] = false;
 }
 
 /**
@@ -1128,7 +1135,14 @@ function unbindKeys(keys) {
  * @returns {Boolean} `true` if the key is pressed, `false` otherwise.
  */
 function keyPressed(key) {
+  if (key === "any") {
+    return Object.values(pressedKeys).indexOf(true) > -1;
+  }
   return !!pressedKeys[key];
+}
+
+function keyJustPressed(key) {
+  return !!(justPressed[key] && pressedKeys[key]);
 }
 
 /**
@@ -3768,6 +3782,7 @@ let kontra = {
   bindKeys,
   unbindKeys,
   keyPressed,
+  keyJustPressed,
 
   registerPlugin,
   unregisterPlugin,
@@ -3818,6 +3833,7 @@ export {
   bindKeys,
   unbindKeys,
   keyPressed,
+  keyJustPressed,
   registerPlugin,
   unregisterPlugin,
   extendObject,

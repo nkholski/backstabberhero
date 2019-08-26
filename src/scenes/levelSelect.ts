@@ -7,7 +7,8 @@ import {
   GameLoop,
   getContext,
   initKeys,
-  keyPressed
+  keyPressed,
+  keyJustPressed
 } from "../dependencies/kontra.js";
 import writeText from "../functions/writeText";
 import { GameScene } from "./game";
@@ -27,8 +28,7 @@ const updateLocalStorage = progress => {
 
 export const levelSelectScene = (lvl?) => {
   const { font, assets, spriteSheets } = GetState();
-
-  let lastTick = 0;
+  let transition;
   let killme = false;
   let tick = 0;
   let okToStart = false;
@@ -40,7 +40,6 @@ export const levelSelectScene = (lvl?) => {
     progress[lvl] = 1;
     updateLocalStorage(progress);
   }
-  console.log(lvl, lvl);
 
   const next = progress.indexOf(-1);
   let currentChoice = next;
@@ -58,7 +57,6 @@ export const levelSelectScene = (lvl?) => {
       if (currentChoice !== i || GetFlash(++tick / 6)) {
         writeText(font, i + 1, -(x * 45 + 16 + 19), y * 45 + 12 + 3, 2);
       }
-      // console.log(-(x * 45 + 16 + 20));
     });
     context.stroke();
     context.globalAlpha = 1;
@@ -66,21 +64,54 @@ export const levelSelectScene = (lvl?) => {
 
   const gameLoop = GameLoop({
     update: () => {
-      if (killme) {
-        return;
-      }
-      okToStart = okToStart || !keyPressed("z");
-      if (okToStart && keyPressed("z")) {
-        killme = true;
-        GameScene(assets, spriteSheets, currentChoice);
-        gameLoop.stop();
+      if (!transition) {
+        if (killme) {
+          return;
+        }
+
+        if (keyPressed("any")) {
+          if (!okToStart) {
+            return;
+          }
+          okToStart = false;
+        } else {
+          okToStart = true;
+        }
+
+        if (keyJustPressed("up")) {
+          currentChoice -= 5;
+        }
+        if (keyPressed("down")) {
+          currentChoice += 5;
+        }
+        if (keyJustPressed("left")) {
+          currentChoice--;
+        }
+        if (keyPressed("right")) {
+          currentChoice++;
+        }
+
+        currentChoice =
+          currentChoice > 24 ? 24 : currentChoice < 0 ? 0 : currentChoice;
+
+        if (keyPressed("z")) {
+          killme = true;
+          transition = true;
+          setTimeout(() => {
+            GameScene(assets, spriteSheets, currentChoice);
+            gameLoop.stop();
+          }, 2e3);
+        }
       }
     },
 
     render: () => {
-      // console.log(lastTick - new Date().getMilliseconds());
-      lastTick = new Date().getMilliseconds();
-      selectLevel();
+      if (!transition) {
+        selectLevel();
+      } else {
+        writeText(font, "LEVEL " + (currentChoice + 1), -1, 50, 3);
+        writeText(font, Levels[currentChoice].t, -1, 90, 2);
+      }
     }
   });
   gameLoop.start();

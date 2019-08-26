@@ -32,7 +32,7 @@ export const GameScene = (assets, spriteSheets, lvl: number) => {
     elapsedTime;
   let tick = 0;
   let sceneState = 1;
-
+  let okToQuit = false;
   // Parse Level
   wellDone = false;
   gameOver = false;
@@ -116,7 +116,7 @@ export const GameScene = (assets, spriteSheets, lvl: number) => {
 
       tick++;
       elapsedTime = tick / 60; // Elapsed time in ms
-      flash = GetFlash(tick);
+      flash = GetFlash(tick / 20);
 
       player.stabTimer--;
       player.dy += 0.2;
@@ -129,7 +129,7 @@ export const GameScene = (assets, spriteSheets, lvl: number) => {
       }
 
       if (gameOver) {
-        if (keyPressed("z") && player.stabTimer < -7 && sceneState === 1) {
+        if (keyPressed("z") && okToQuit && sceneState === 1) {
           sceneState = 2;
           gameLoop.stop();
           levelSelectScene(wellDone ? lvl : -1);
@@ -185,30 +185,30 @@ export const GameScene = (assets, spriteSheets, lvl: number) => {
         if (!player.blocked.bottom) {
           anim = player.dy > 0 ? "jumpDown" : "jumpUp";
         }
+      }
 
-        knife.visible = false;
-        if (player.stabTimer > 0) {
-          anim = "stab";
-          knife.visible = true;
-          knife.playAnimation(
-            "knife" + (player.facing === -1 ? "Left" : "Right")
+      knife.visible = false;
+      if (player.stabTimer > 0) {
+        anim = "stab";
+        knife.visible = true;
+        knife.playAnimation(
+          "knife" + (player.facing === -1 ? "Left" : "Right")
+        );
+        const stabbedEnemy = CheckCollidingBody(
+          {
+            height: 16,
+            x: player.x + player.facing * 16,
+            y: player.y
+          },
+          enemies
+        );
+        if (stabbedEnemy) {
+          stabbedEnemy.dead = true;
+          stabbedEnemy.dx = player.facing * 1;
+          stabbedEnemy.dy = -2;
+          stabbedEnemy.playAnimation(
+            "dead" + (player.facing === 1 ? "Left" : "Right")
           );
-          const stabbedEnemy = CheckCollidingBody(
-            {
-              height: 16,
-              x: player.x + player.facing * 16,
-              y: player.y
-            },
-            enemies
-          );
-          if (stabbedEnemy) {
-            stabbedEnemy.dead = true;
-            stabbedEnemy.dx = player.facing * 1;
-            stabbedEnemy.dy = -2;
-            stabbedEnemy.playAnimation(
-              "dead" + (player.facing === 1 ? "Left" : "Right")
-            );
-          }
         }
       }
       player.playAnimation(
@@ -231,8 +231,9 @@ export const GameScene = (assets, spriteSheets, lvl: number) => {
         //boot();
       }
 
-      const wasWellDone = wellDone;
       wellDone = true;
+
+      const wasGameOver = gameOver;
 
       enemies.forEach(enemy => {
         EnemyUpdate(enemy, state);
@@ -247,14 +248,17 @@ export const GameScene = (assets, spriteSheets, lvl: number) => {
                 player.height = 16;
               }
               gameOver = true;
-              player.stabTimer = -1;
             }
           }
         }
       });
-      if (wellDone && !wasWellDone) {
+      if (wellDone) {
         gameOver = true;
-        player.stabTimer = 10;
+      }
+      if (gameOver && !wasGameOver) {
+        setTimeout(() => {
+          okToQuit = true;
+        }, 1000);
       }
     },
     render: function() {
@@ -282,10 +286,11 @@ export const GameScene = (assets, spriteSheets, lvl: number) => {
         } else {
           writeText(assets.font, "STAB OVER", 56, 50, 2);
         }
-        if (flash && player.stabTimer < -7) {
+        if (flash && okToQuit) {
           writeText(assets.font, " PRESS Z", 56 + 36, 70, 1);
         }
-      } else if (knife.visible) {
+      }
+      if (knife.visible) {
         knife.render();
       }
 
@@ -293,26 +298,26 @@ export const GameScene = (assets, spriteSheets, lvl: number) => {
       player.render();
 
       enemies.forEach(enemy => {
-        if (!enemy.dead || flash) {
-          if (enemy.gotPlayer) {
-            writeText(assets.font, "HEY!", -(enemy.x + 8), enemy.y - 9, 1);
-          }
-
-          const sleepLeft = Math.ceil(enemy.sleepTimer / 1e3 - elapsedTime);
-          if (sleepLeft < 1) {
-            enemy.sleepTimer = 0;
-          }
-          if (enemy.sleepTimer > 0) {
-            writeText(
-              assets.font,
-              "" + sleepLeft,
-              -(enemy.x + 8),
-              enemy.y - 9,
-              1
-            );
-          }
-          enemy.render();
+        //if (!enemy.dead || flash) {
+        if (enemy.gotPlayer) {
+          writeText(assets.font, "HEY!", -(enemy.x + 8), enemy.y - 9, 1);
         }
+
+        const sleepLeft = Math.ceil(enemy.sleepTimer / 1e3 - elapsedTime);
+        if (sleepLeft < 1) {
+          enemy.sleepTimer = 0;
+        }
+        if (enemy.sleepTimer > 0) {
+          writeText(
+            assets.font,
+            "" + sleepLeft,
+            -(enemy.x + 8),
+            enemy.y - 9,
+            1
+          );
+        }
+        enemy.render();
+        // }
       });
     }
   });
