@@ -63,7 +63,7 @@ export default class Title {
 
         writeText(
           this.assets.font,
-          "BACKSTABER",
+          "BACKSTABBER",
           -1,
           50,
           2,
@@ -71,7 +71,7 @@ export default class Title {
           this.tick++
         );
         this.context.globalAlpha = this.heroOpacity / 100;
-        writeText(this.assets.font, "HERO", -1, 85 - this.heroOpacity / 5, 5);
+        writeText(this.assets.font, "HERO", -1, 85 - this.heroOpacity / 5, 5.5);
         this.context.globalAlpha = (0.4 * this.heroOpacity) / 100;
 
         writeText(

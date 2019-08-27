@@ -16,7 +16,7 @@ export const MakeEnemies = (enemiesData, spriteSheets) => {
         facing: enemyData[3] - 1, // -1 0 1 == left, none, right
         walks: enemyData[2] < 4, // Behövs, dx!==0 är ju walks?
         speed: enemyData[2] < 2 ? 0.5 : 0.2,
-        animations: spriteSheets[enemyData[3] + 1].animations,
+        animations: spriteSheets[enemyData[2] + 1].animations,
         turns: enemyData[2] % 2 > 0,
         sleeper: enemyData[2] > 5,
         sleepTimer: enemyData[2] > 5 ? (enemyData[2] - 5) * 1e4 : -1,

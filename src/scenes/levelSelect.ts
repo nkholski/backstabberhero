@@ -22,7 +22,8 @@ const resetLocalStorage = () => {
 };
 
 const updateLocalStorage = progress => {
-  console.log("PR", progress);
+  progress[0] = 2;
+  progress[2] = 3;
   localStorage.setItem("nkholski", JSON.stringify(progress));
 };
 
@@ -48,11 +49,28 @@ export const levelSelectScene = (lvl?) => {
     hej.forEach((level, i) => {
       const x = i % 5;
       const y = (i - x) / 5;
-      if (i > next) {
-        context.stroke();
 
+      if (i > next && context.globalAlpha == 1) {
+        context.stroke();
         context.globalAlpha = 0.5;
       }
+
+      for (let knife = 0; knife < progress[i]; knife++) {
+        const x = i % 5;
+        const y = (i - x) / 5;
+        context.drawImage(
+          assets.gfx8colors,
+          11 * 16 + 8,
+          0,
+          8,
+          8,
+          x * 45 + 16 + 19 - 8 - 10 + knife * 10,
+          y * 45 + 12 + 3 + 18,
+          16,
+          16
+        );
+      }
+
       context.rect(x * 45 + 16, y * 45 + 12, 40, 40);
       if (currentChoice !== i || GetFlash(++tick / 6)) {
         writeText(font, i + 1, -(x * 45 + 16 + 19), y * 45 + 12 + 3, 2);
@@ -60,6 +78,24 @@ export const levelSelectScene = (lvl?) => {
     });
     context.stroke();
     context.globalAlpha = 1;
+    // hej.forEach((level, i) => {
+    //   for (let knife = 0; knife < 3; knife++) {
+    //     const x = i % 5;
+    //     const y = (i - x) / 5;
+    //     context.drawImage(
+    //       assets.gfx8colors,
+    //       11 * 16 + 8,
+    //       0,
+    //       8,
+    //       8,
+    //       x * 45 + 16 + 19 - 8 - 10 + knife * 10,
+    //       y * 45 + 12 + 3 + 18,
+    //       16,
+    //       16
+    //     );
+    //   }
+    //   debugger;
+    // });
   };
 
   const gameLoop = GameLoop({

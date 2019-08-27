@@ -28,17 +28,34 @@ const createAltGfx = assets => {
   });
 
   [
-    [7, 57, 239],
     [104, 38, 104],
     [173, 87, 38],
-    [104, 38, 104],
-    [173, 87, 38],
-    [104, 38, 104],
-    [173, 87, 38],
-    [104, 38, 104],
-    [173, 87, 38],
-    [104, 38, 104],
-    [173, 87, 38]
+    [12, 38, 255],
+    [
+      Math.floor(255 * Math.random()),
+      Math.floor(255 * Math.random()),
+      Math.floor(255 * Math.random())
+    ],
+    [
+      Math.floor(255 * Math.random()),
+      Math.floor(255 * Math.random()),
+      Math.floor(255 * Math.random())
+    ],
+    [
+      Math.floor(255 * Math.random()),
+      Math.floor(255 * Math.random()),
+      Math.floor(255 * Math.random())
+    ],
+    [
+      Math.floor(255 * Math.random()),
+      Math.floor(255 * Math.random()),
+      Math.floor(255 * Math.random())
+    ],
+    [
+      Math.floor(255 * Math.random()),
+      Math.floor(255 * Math.random()),
+      Math.floor(255 * Math.random())
+    ]
   ].forEach((rgb, t) => {
     const tmpCanvas = document.createElement("canvas");
     const tmpContext = tmpCanvas.getContext("2d");
@@ -47,8 +64,6 @@ const createAltGfx = assets => {
     tmpCanvas.height = img.height;
     tmpContext.drawImage(img, 0, 0);
     var imageData = tmpContext.getImageData(0, 0, img.width, img.height);
-
-    console.log("L=", imageData.data.length);
 
     for (let i = 0; i < imageData.data.length; i += 4) {
       // if (

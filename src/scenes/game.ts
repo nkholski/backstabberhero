@@ -18,7 +18,7 @@ import { EnemyUpdate } from "../functions/enemyUpdate";
 import { levelSelectScene } from "./levelSelect";
 
 export const GameScene = (assets, spriteSheets, lvl: number) => {
-  const { l: level, e: enemyData } = Levels[lvl];
+  const { l: level, e: enemyData, h: heroCoordinates } = Levels[lvl];
   const context = getContext();
   let turnTimer = 100;
 
@@ -40,8 +40,8 @@ export const GameScene = (assets, spriteSheets, lvl: number) => {
   gameOver = false;
   initKeys();
   player = Sprite({
-    x: 16 * 7, // starting x,y position of the sprite
-    y: 16 * 7,
+    x: heroCoordinates[0], // starting x,y position of the sprite
+    y: heroCoordinates[1],
     color: "red", // fill color of the sprite rectangle
     width: 16, // width and height of the sprite rectangle
     height: 32,
@@ -316,7 +316,7 @@ export const GameScene = (assets, spriteSheets, lvl: number) => {
         if (sleepLeft < 1) {
           enemy.sleepTimer = 0;
         }
-        if (enemy.sleepTimer > 0) {
+        if (enemy.sleepTimer > 0 && !enemy.dead) {
           writeText(
             assets.font,
             "" + sleepLeft,

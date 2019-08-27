@@ -13,6 +13,7 @@ export const EnemyUpdate = (
   if (enemy.dead || enemy.sleepTimer > 0) {
     return;
   }
+  turnState = enemy.turns ? turnState : ETurnState.Walk;
 
   enemy.dx = 0;
 
