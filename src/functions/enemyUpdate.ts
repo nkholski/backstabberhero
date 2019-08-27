@@ -1,8 +1,12 @@
 import { EnemyVision } from "./physics/enemyVision";
 import { CheckCliff } from "./physics/checkCliff";
 import { GetFlash } from "./getFlash";
+import { ETurnState } from "../common/enums";
 
-export const EnemyUpdate = (enemy, { player, level, gameOver, tick }) => {
+export const EnemyUpdate = (
+  enemy,
+  { turnState, player, level, gameOver, tick }
+) => {
   const cliff = !CheckCliff(enemy, level).bottom;
   let anim = "idle";
   enemy.dy += 0.2;
@@ -18,7 +22,11 @@ export const EnemyUpdate = (enemy, { player, level, gameOver, tick }) => {
 
     enemy.gotPlayer = true;
   } else if (!enemy.gotPlayer) {
-    if (enemy.walks) {
+    if (turnState === ETurnState.Turn) {
+      enemy.facing = -enemy.facing;
+    }
+
+    if (enemy.walks && turnState === ETurnState.Walk) {
       enemy.dx = enemy.facing * enemy.speed;
       if (
         (enemy.blocked.left && enemy.dx < 0) ||
@@ -36,7 +44,7 @@ export const EnemyUpdate = (enemy, { player, level, gameOver, tick }) => {
       enemy.facing = GetFlash(tick / 5) ? 1 : -1;
     }
 
-    anim = enemy.walks ? "walk" : "idle";
+    anim = enemy.walks && turnState === ETurnState.Walk ? "walk" : "idle";
   }
 
   enemy.playAnimation(anim + (enemy.facing == -1 ? "Left" : "Right"));

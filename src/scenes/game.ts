@@ -4,7 +4,7 @@ import Title from "./title";
 import { CheckCollidingBody } from "./../functions/physics/checkCollidingBody";
 import { GetBlocked } from "./../functions/physics/getBlocked";
 import { CDefaultBlocked } from "./../common/constants";
-import { EFacing } from "./../common/enums";
+import { EFacing, ETurnState, ETurnTimes } from "./../common/enums";
 import { GetFlash } from "../functions/getFlash";
 import {
   Sprite,
@@ -20,6 +20,8 @@ import { levelSelectScene } from "./levelSelect";
 export const GameScene = (assets, spriteSheets, lvl: number) => {
   const { l: level, e: enemyData } = Levels[lvl];
   const context = getContext();
+  let turnTimer = 100;
+
   console.log("GAME SCENE", enemyData);
 
   let player,
@@ -111,8 +113,17 @@ export const GameScene = (assets, spriteSheets, lvl: number) => {
         player,
         enemies,
         gameOver,
-        tick
+        tick,
+        turnState:
+          turnTimer < 300
+            ? ETurnState.Walk
+            : turnTimer === 310 || turnTimer === 330
+            ? ETurnState.Turn
+            : ETurnState.Watch
       };
+      const wasGameOver = gameOver;
+
+      turnTimer += turnTimer === 330 ? -turnTimer : 1;
 
       tick++;
       elapsedTime = tick / 60; // Elapsed time in ms
@@ -232,8 +243,6 @@ export const GameScene = (assets, spriteSheets, lvl: number) => {
       }
 
       wellDone = true;
-
-      const wasGameOver = gameOver;
 
       enemies.forEach(enemy => {
         EnemyUpdate(enemy, state);

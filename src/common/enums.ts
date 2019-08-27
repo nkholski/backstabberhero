@@ -9,3 +9,15 @@ export enum EEnemyType {
   Stands,
   Sleeper
 }
+
+export enum ETurnState {
+  Walk,
+  Turn,
+  Watch,
+  TurnBack
+}
+
+export enum ETurnTimes {
+  WalkTime = 200,
+  TurnTime = 50
+}
