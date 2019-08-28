@@ -13,6 +13,8 @@ import {
   initKeys,
   keyPressed
 } from "../dependencies/kontra.js";
+import { zzfx } from "../dependencies/zzfx";
+
 import writeText from "../functions/writeText";
 import { EnemyUpdate } from "../functions/enemyUpdate";
 import { levelSelectScene } from "./levelSelect";
@@ -21,7 +23,7 @@ export const GameScene = (assets, spriteSheets, lvl: number) => {
   const { l: level, e: enemyData, h: heroCoordinates } = Levels[lvl];
   const context = getContext();
   let turnTimer = 100;
-
+  let starCount = 0;
   console.log("GAME SCENE", enemyData);
 
   let player,
@@ -31,6 +33,7 @@ export const GameScene = (assets, spriteSheets, lvl: number) => {
     gameOver,
     jumpReleased,
     flash,
+    stars,
     elapsedTime;
   let tick = 0;
   let sceneState = 1;
@@ -100,9 +103,46 @@ export const GameScene = (assets, spriteSheets, lvl: number) => {
     animations: spriteSheets[1].animations
   });
 
+  stars = [
+    Sprite({
+      x: 16 * 12, // starting x,y position of the sprite
+      y: 16 * 12,
+      height: 16,
+      color: "blue", // fill color of the sprite rectangle
+      sleepTimer: 20000,
+      animations: spriteSheets[0].animations
+    }),
+    Sprite({
+      x: 16 * 10, // starting x,y position of the sprite
+      y: 16 * 9,
+      height: 16,
+      color: "blue", // fill color of the sprite rectangle
+      sleepTimer: 20000,
+      animations: spriteSheets[0].animations
+    })
+  ];
+  stars[0].playAnimation("starLeft");
+  stars[1].playAnimation("starLeft");
+
   enemies = [enemy1, enemy2, enemy3];
 
   enemies = MakeEnemies(enemyData, spriteSheets);
+
+  const counter = subject => {
+    const sleepLeft = Math.ceil(subject.sleepTimer / 1e3 - elapsedTime);
+    if (sleepLeft < 1) {
+      subject.sleepTimer = 0;
+    }
+    if (subject.sleepTimer > 0 && !subject.dead) {
+      writeText(
+        assets.font,
+        "" + sleepLeft,
+        -(subject.x + 8),
+        subject.y - 9,
+        1
+      );
+    }
+  };
 
   // Define gameLoop
 
@@ -143,7 +183,7 @@ export const GameScene = (assets, spriteSheets, lvl: number) => {
         if (keyPressed("z") && okToQuit && sceneState === 1) {
           sceneState = 2;
           gameLoop.stop();
-          levelSelectScene(wellDone ? lvl : -1);
+          levelSelectScene(wellDone ? lvl : -1, starCount + 1);
           return;
         }
       } else {
@@ -178,6 +218,7 @@ export const GameScene = (assets, spriteSheets, lvl: number) => {
             player.height = 16;
             player.dx = 0;
           } else if (keyPressed("up") && jumpReleased) {
+            zzfx(1, 0, 200, 0.4, 0, 2, 0, 0, 5); // ZzFX 6010
             player.dy = -4.5;
             jumpReleased = false;
           }
@@ -185,6 +226,7 @@ export const GameScene = (assets, spriteSheets, lvl: number) => {
 
         if (keyPressed("z") && player.stabTimer < -7 && player.standing) {
           // 7 tick > 100ms
+          zzfx(1, 0.1, 800, 0.1, 0.66, 1.1, 3.1, 0.1, 0.85);
           player.stabTimer = 9; // 1 = 16ms, => 9 * 16ms
         }
 
@@ -214,6 +256,7 @@ export const GameScene = (assets, spriteSheets, lvl: number) => {
           enemies
         );
         if (stabbedEnemy) {
+          zzfx(1, 0, 100, 0.4, 0, 0.9, 7, 15, 0);
           stabbedEnemy.dead = true;
           stabbedEnemy.dx = player.facing * 1;
           stabbedEnemy.dy = -2;
@@ -231,6 +274,15 @@ export const GameScene = (assets, spriteSheets, lvl: number) => {
       GetBlocked(player, level);
       knife.x = player.x + player.facing * 16;
       knife.y = player.y;
+
+      // Check stars
+      stars.forEach((star, i) => {
+        if (CheckCollidingBody(player, [star])) {
+          zzfx(1, 0, 400, 0.5, 0.5, 0, 0, 5, 0);
+          starCount++;
+          stars.splice(i, 1);
+        }
+      });
 
       // Run into enemy
       const collidingBody = CheckCollidingBody(player, enemies);
@@ -291,7 +343,13 @@ export const GameScene = (assets, spriteSheets, lvl: number) => {
 
       if (gameOver) {
         if (wellDone) {
-          writeText(assets.font, "GREAT STABBING", -1, 50, 2); // OK, GOOD eller GREATz
+          writeText(
+            assets.font,
+            ["OK", "GOOD", "GREAT"][starCount] + " STABBING",
+            -1,
+            50,
+            2
+          ); // OK, GOOD eller GREATz
         } else {
           writeText(assets.font, "STAB OVER", 56, 50, 2);
         }
@@ -306,25 +364,22 @@ export const GameScene = (assets, spriteSheets, lvl: number) => {
       // render the game state
       player.render();
 
+      stars.forEach((star, i) => {
+        counter(star);
+        if (star.sleepTimer == 0) {
+          stars.splice(i, 1);
+        }
+        star.render();
+      });
+
       enemies.forEach(enemy => {
         //if (!enemy.dead || flash) {
         if (enemy.gotPlayer) {
           writeText(assets.font, "HEY!", -(enemy.x + 8), enemy.y - 9, 1);
         }
 
-        const sleepLeft = Math.ceil(enemy.sleepTimer / 1e3 - elapsedTime);
-        if (sleepLeft < 1) {
-          enemy.sleepTimer = 0;
-        }
-        if (enemy.sleepTimer > 0 && !enemy.dead) {
-          writeText(
-            assets.font,
-            "" + sleepLeft,
-            -(enemy.x + 8),
-            enemy.y - 9,
-            1
-          );
-        }
+        counter(enemy);
+
         enemy.render();
         // }
       });

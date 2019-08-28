@@ -2,6 +2,7 @@ import { EnemyVision } from "./physics/enemyVision";
 import { CheckCliff } from "./physics/checkCliff";
 import { GetFlash } from "./getFlash";
 import { ETurnState } from "../common/enums";
+import { zzfx } from "../dependencies/zzfx";
 
 export const EnemyUpdate = (
   enemy,
@@ -20,7 +21,7 @@ export const EnemyUpdate = (
   if (EnemyVision(enemy, player, level)) {
     enemy.gotPlayer = true;
     player.facing = -enemy.facing;
-
+    zzfx(1, 0, 100, 0.7, 0.42, 1.5, 0.6, 0.7, 0.2);
     enemy.gotPlayer = true;
   } else if (!enemy.gotPlayer) {
     if (turnState === ETurnState.Turn) {
@@ -40,7 +41,7 @@ export const EnemyUpdate = (
     }
 
     // Means it was sleeping
-    if (enemy.sleeper && enemy.sleepTimer === 0) {
+    if (enemy.sleeper && enemy.sleepTimer < 0) {
       console.log("Sleep");
       enemy.facing = GetFlash(tick / 5) ? 1 : -1;
     }

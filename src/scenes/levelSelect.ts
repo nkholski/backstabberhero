@@ -14,6 +14,7 @@ import writeText from "../functions/writeText";
 import { GameScene } from "./game";
 import { start } from "repl";
 import { GetState } from "../functions/state";
+import { zzfx } from "../dependencies/zzfx";
 
 const resetLocalStorage = () => {
   const progress = new Array(25).fill(-1);
@@ -22,12 +23,10 @@ const resetLocalStorage = () => {
 };
 
 const updateLocalStorage = progress => {
-  progress[0] = 2;
-  progress[2] = 3;
   localStorage.setItem("nkholski", JSON.stringify(progress));
 };
 
-export const levelSelectScene = (lvl?) => {
+export const levelSelectScene = (lvl?, stars?) => {
   const { font, assets, spriteSheets } = GetState();
   let transition;
   let killme = false;
@@ -37,8 +36,8 @@ export const levelSelectScene = (lvl?) => {
   const progress = localStorage.getItem("nkholski")
     ? JSON.parse(localStorage.getItem("nkholski"))
     : resetLocalStorage();
-  if (lvl > -1) {
-    progress[lvl] = 1;
+  if (lvl > -1 && progress[lvl] < stars) {
+    progress[lvl] = stars;
     updateLocalStorage(progress);
   }
 
@@ -114,6 +113,8 @@ export const levelSelectScene = (lvl?) => {
           okToStart = true;
         }
 
+        let wasCurrentChoice = currentChoice;
+
         if (keyJustPressed("up")) {
           currentChoice -= 5;
         }
@@ -125,6 +126,10 @@ export const levelSelectScene = (lvl?) => {
         }
         if (keyPressed("right")) {
           currentChoice++;
+        }
+
+        if (wasCurrentChoice !== currentChoice) {
+          zzfx(1, 0.3, 100, 0.4, 0.27, 0.1, 2, 2.9, 0.68);
         }
 
         currentChoice =

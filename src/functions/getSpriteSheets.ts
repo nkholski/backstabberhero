@@ -9,7 +9,8 @@ const baseAnims = [
   ["duck", 7, null, false],
   ["stab", 4, null, false],
   ["knife", 5, null, false],
-  ["dead", 10, null, false]
+  ["dead", 10, null, false],
+  ["star", 8, null, false]
 ];
 
 const createAltGfx = assets => {

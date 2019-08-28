@@ -16,6 +16,7 @@ const assets = {};
 // 1. Preload all assets
 (() => {
   let l = 1;
+  window["zzfx_x"] = new AudioContext();
   ["gfx8colors", "font"].forEach(file => {
     initKeys();
 

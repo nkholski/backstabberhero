@@ -9,6 +9,7 @@ import {
   initKeys,
   keyPressed
 } from "../dependencies/kontra.js";
+import { zzfx } from "../dependencies/zzfx";
 import writeText from "../functions/writeText";
 import { GameScene } from "./game";
 import { levelSelectScene } from "./levelSelect";
@@ -38,6 +39,7 @@ export default class Title {
           this.heroOpacity++;
         }
         if (keyPressed("z")) {
+          zzfx(1, 0.1, 568, 0.5, 0.9, 1.5, 0, 4.5, 0.69);
           if (this.state == 1) {
             this.loop.stop();
             levelSelectScene();
