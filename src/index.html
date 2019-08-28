@@ -12,3 +12,78 @@
   }
 </style>
 <canvas height="240px" width="256px"></canvas>
+<script>
+  playMusic = () => {
+    with (new AudioContext())
+      with ((G = createGain()))
+        for (i in (D = [
+          13,
+          13,
+          13,
+          13,
+          13,
+          13,
+          13,
+          13,
+          13,
+          13,
+          13,
+          13,
+          13,
+          ,
+          ,
+          13,
+          13,
+          ,
+          ,
+          13,
+          13,
+          ,
+          ,
+          13,
+          13,
+          12,
+          ,
+          11,
+          ,
+          13,
+          13,
+          ,
+          ,
+          13,
+          13,
+          ,
+          ,
+          13,
+          13,
+          12,
+          ,
+          9,
+          ,
+          13,
+          13,
+          ,
+          ,
+          13,
+          13,
+          ,
+          ,
+          13,
+          13,
+          14,
+          14,
+          15,
+          15
+        ]))
+          with (createOscillator())
+            if (D[i])
+              connect(G),
+                G.connect(destination),
+                start(i * 0.1),
+                frequency.setValueAtTime(340 * 1.06 ** (13 - D[i]), i * 0.1),
+                (type = "triangle"),
+                gain.setValueAtTime(1, i * 0.1),
+                gain.setTargetAtTime(0.0001, i * 0.1 + 0.08, 0.005),
+                stop(i * 0.1 + 0.09);
+  };
+</script>

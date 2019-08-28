@@ -10,6 +10,8 @@ import {
   keyPressed
 } from "../dependencies/kontra.js";
 import { zzfx } from "../dependencies/zzfx";
+import { playMusic } from "../common/music";
+
 import writeText from "../functions/writeText";
 import { GameScene } from "./game";
 import { levelSelectScene } from "./levelSelect";
@@ -28,6 +30,7 @@ export default class Title {
     this.spriteSheets = spriteSheets;
     this.assets = assets;
     this.context = getContext();
+    window["playMusic"]();
     this.start();
   }
   start() {
