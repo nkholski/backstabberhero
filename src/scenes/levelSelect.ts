@@ -33,6 +33,7 @@ export const levelSelectScene = (lvl?, stars?) => {
   let tick = 0;
   let okToStart = false;
   const context = getContext();
+  context.save();
   const progress = localStorage.getItem("nkholski")
     ? JSON.parse(localStorage.getItem("nkholski"))
     : resetLocalStorage();
@@ -139,6 +140,9 @@ export const levelSelectScene = (lvl?, stars?) => {
           killme = true;
           transition = true;
           setTimeout(() => {
+            context.stroke();
+            context.restore();
+
             GameScene(assets, spriteSheets, currentChoice);
             gameLoop.stop();
           }, 2e3);
@@ -149,6 +153,7 @@ export const levelSelectScene = (lvl?, stars?) => {
     render: () => {
       if (!transition) {
         selectLevel();
+        context.endPath();
       } else {
         writeText(font, "LEVEL " + (currentChoice + 1), -1, 50, 3);
         writeText(font, Levels[currentChoice].t, -1, 90, 2);

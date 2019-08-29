@@ -323,6 +323,33 @@ export const GameScene = (assets, spriteSheets, lvl: number) => {
       }
     },
     render: function() {
+      context.restore();
+      context.fillStyle = "hsl(202, 51%, 50%)";
+      context.fillRect(0, 0, 256, 240);
+
+      for (let i = 2; i > 0; i--) {
+        let x = 0;
+        context.fillStyle = "hsl(205, 15%, 53%)";
+        if (i === 2) {
+          context.fillStyle = "hsl(205, 15%, 38%)";
+        }
+        let w = 0;
+        while (x < 256) {
+          w = (16 + 16 * 2 * Math.random()) / (i / 2);
+          context.fillRect(x, Math.floor(80 + 50 * Math.random()), w, 500);
+          Math.floor((x = x + w + 10 * Math.random()));
+          // Windows
+          for (let num = 5 * Math.random(), i2 = 0; i2 < num; i2++) {
+            context.save();
+            context.fillStyle = "hsl(205, 15%, 12%)";
+            context.fillRect(x + 10, 100, 10, 20);
+            context.restore();
+          }
+        }
+      }
+      // context.fill();
+      debugger;
+
       level.forEach(item => {
         for (let i = 0; i < item[1]; i++) {
           // @ts-ignore

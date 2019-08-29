@@ -46,6 +46,7 @@ export default class Title {
           if (this.state == 1) {
             this.loop.stop();
             levelSelectScene();
+
             // GameScene(this.assets, this.spriteSheets, Levels[0]);
             this.state = 2;
           }

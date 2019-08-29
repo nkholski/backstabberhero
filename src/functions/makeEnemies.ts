@@ -19,13 +19,13 @@ export const MakeEnemies = (enemiesData, spriteSheets) => {
         animations: spriteSheets[enemyData[2] + 1].animations,
         turns: enemyData[2] % 2 > 0,
         sleeper: enemyData[2] > 5,
-        sleepTimer: enemyData[2] > 5 ? (enemyData[2] - 5) * 1e4 : -1,
-        type:
-          enemyData[2] < 4
-            ? EEnemyType.Walker
-            : enemyData[2] > 5
-            ? EEnemyType.Sleeper
-            : EEnemyType.Stands
+        sleepTimer: enemyData[2] > 5 ? (enemyData[2] - 5) * 1e4 : -1
+        // type:
+        //   enemyData[2] < 4
+        //     ? EEnemyType.Walker
+        //     : enemyData[2] > 5
+        //     ? EEnemyType.Sleeper
+        //     : EEnemyType.Stands
       })
     );
   });
