@@ -89,20 +89,19 @@ export const levelSelectScene = (lvl?, stars?) => {
 
   const selectLevel = () => {
     context.beginPath();
-    context.strokeStyle = "#FF0000";
+
     context.drawImage(backgroundImage, 0, 0);
 
-    context.rect(
-      (currentChoice % 5) * 45 + 16,
-      Math.floor(currentChoice / 5) * 45 + 12,
-      40,
-      40
-    );
-    //@ts-ignore
-    window.ctx = context;
-    //@ts-ignore
+    context.strokeStyle = "#fff";
 
-    console.log(window.ctx === context);
+    if (GetFlash(++tick / 9)) {
+      context.rect(
+        (currentChoice % 5) * 45 + 16,
+        Math.floor(currentChoice / 5) * 45 + 12,
+        40,
+        40
+      );
+    }
 
     context.stroke();
 
