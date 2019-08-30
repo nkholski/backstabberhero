@@ -1,4 +1,4 @@
-import { GameLoop, getContext, keyPressed } from "../dependencies/kontra.js";
+import { GameLoop, keyPressed } from "../dependencies/kontra.js";
 import { zzfx } from "../dependencies/zzfx";
 import { GetFlash } from "../functions/getFlash";
 import writeText from "../functions/writeText";

@@ -1,3 +1,4 @@
+import { GetState } from "./../functions/state";
 import { MakeBackground } from "./../functions/makeBackground";
 import { Levels } from "./../common/levels";
 import { MakeEnemies } from "./../functions/makeEnemies";
@@ -10,7 +11,6 @@ import { GetFlash } from "../functions/getFlash";
 import {
   Sprite,
   GameLoop,
-  getContext,
   initKeys,
   keyPressed
 } from "../dependencies/kontra.js";
@@ -20,12 +20,11 @@ import writeText from "../functions/writeText";
 import { EnemyUpdate } from "../functions/enemyUpdate";
 import { levelSelectScene } from "./levelSelect";
 
-export const GameScene = (assets, spriteSheets, lvl: number) => {
+export const GameScene = (lvl: number) => {
   const { l: level, e: enemyData, h: heroCoordinates } = Levels[lvl];
-  const context = getContext();
+  const { spriteSheets, assets, context } = GetState();
   let turnTimer = 100;
   let starCount = 0;
-  console.log("GAME SCENE", enemyData);
 
   let player,
     knife,
@@ -63,47 +62,6 @@ export const GameScene = (assets, spriteSheets, lvl: number) => {
     animations: spriteSheets[0].animations
   });
 
-  const enemy1 = Sprite({
-    x: 16 * 2, // starting x,y position of the sprite
-    y: 16 * 7,
-    color: "blue", // fill color of the sprite rectangle
-    width: 16, // width and height of the sprite rectangle
-    height: 32,
-    blocked: { ...CDefaultBlocked },
-    facing: -1, // -1 0 1 == left, none, right
-    dy: 0,
-    walks: true,
-    animations: spriteSheets[1].animations
-  });
-
-  const enemy2 = Sprite({
-    x: 16 * 11, // starting x,y position of the sprite
-    y: 16 * 6,
-    color: "blue", // fill color of the sprite rectangle
-    width: 16, // width and height of the sprite rectangle
-    height: 32,
-    blocked: { ...CDefaultBlocked },
-    facing: -1, // -1 0 1 == left, none, right
-    dy: 0,
-    walks: true,
-    turnTimer: 99,
-    animations: spriteSheets[1].animations
-  });
-
-  const enemy3 = Sprite({
-    x: 16 * 12, // starting x,y position of the sprite
-    y: 16 * 10,
-    color: "blue", // fill color of the sprite rectangle
-    width: 16, // width and height of the sprite rectangle
-    height: 32,
-    blocked: { ...CDefaultBlocked },
-    facing: -1, // -1 0 1 == left, none, right
-    dy: 0,
-    walks: true,
-    turnTimer: 99,
-    animations: spriteSheets[1].animations
-  });
-
   stars = [
     Sprite({
       x: 16 * 12, // starting x,y position of the sprite
@@ -125,8 +83,6 @@ export const GameScene = (assets, spriteSheets, lvl: number) => {
   stars[0].playAnimation("starLeft");
   stars[1].playAnimation("starLeft");
 
-  enemies = [enemy1, enemy2, enemy3];
-
   enemies = MakeEnemies(enemyData, spriteSheets);
 
   const counter = subject => {
@@ -145,10 +101,9 @@ export const GameScene = (assets, spriteSheets, lvl: number) => {
     }
   };
 
-  const background = MakeBackground(lvl);
+  const background = MakeBackground(lvl, level, assets);
 
   // Define gameLoop
-
   const gameLoop = GameLoop({
     update: function() {
       const state = {
@@ -327,23 +282,6 @@ export const GameScene = (assets, spriteSheets, lvl: number) => {
     },
     render: function() {
       context.drawImage(background, 0, 0);
-      level.forEach(item => {
-        for (let i = 0; i < item[1]; i++) {
-          // @ts-ignore
-          const top = -16 * (item[0] === 0 || i == 0);
-          context.drawImage(
-            assets.gfx8colors,
-            9 * 16,
-            16 + top,
-            16,
-            16,
-            item[2] * 16 + (item[0] === 0 ? i * 16 : 0),
-            item[3] * 16 + (item[0] === 1 ? i * 16 : 0),
-            16,
-            16
-          );
-        }
-      });
 
       if (gameOver) {
         if (wellDone) {

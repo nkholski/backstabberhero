@@ -104,28 +104,6 @@ export const levelSelectScene = (lvl?, stars?) => {
     }
 
     context.stroke();
-
-    // if (currentChoice !== i || GetFlash(++tick / 6)) {
-    //   writeText(font, i + 1, -(x * 45 + 16 + 19), y * 45 + 12 + 3, 2);
-    // }
-    // hej.forEach((level, i) => {
-    //   for (let knife = 0; knife < 3; knife++) {
-    //     const x = i % 5;
-    //     const y = (i - x) / 5;
-    //     context.drawImage(
-    //       assets.gfx8colors,
-    //       11 * 16 + 8,
-    //       0,
-    //       8,
-    //       8,
-    //       x * 45 + 16 + 19 - 8 - 10 + knife * 10,
-    //       y * 45 + 12 + 3 + 18,
-    //       16,
-    //       16
-    //     );
-    //   }
-    //   debugger;
-    // });
   };
 
   const gameLoop = GameLoop({
@@ -172,8 +150,7 @@ export const levelSelectScene = (lvl?, stars?) => {
           setTimeout(() => {
             context.stroke();
             context.restore();
-
-            GameScene(assets, spriteSheets, currentChoice);
+            GameScene(currentChoice);
             gameLoop.stop();
           }, 2e3);
         }

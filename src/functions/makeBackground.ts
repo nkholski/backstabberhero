@@ -1,6 +1,6 @@
 import { MakeTempCanvas } from "./makeTempCanvas";
 import { makeRandom } from "./makeRandom";
-export const MakeBackground = (lvl: number) => {
+export const MakeBackground = (lvl: number, level, assets) => {
   return MakeTempCanvas((context: CanvasRenderingContext2D) => {
     const rnd = makeRandom(lvl);
     context.beginPath();
@@ -36,6 +36,23 @@ export const MakeBackground = (lvl: number) => {
         }
       }
     }
-    // context.fill();
+
+    level.forEach(item => {
+      for (let i = 0; i < item[1]; i++) {
+        // @ts-ignore
+        const top = -16 * (item[0] === 0 || i == 0);
+        context.drawImage(
+          assets.gfx8colors,
+          9 * 16,
+          16 + top,
+          16,
+          16,
+          item[2] * 16 + (item[0] === 0 ? i * 16 : 0),
+          item[3] * 16 + (item[0] === 1 ? i * 16 : 0),
+          16,
+          16
+        );
+      }
+    });
   });
 };
