@@ -1,3 +1,4 @@
+import { MakeTempCanvas } from "./../functions/makeTempCanvas";
 import { Levels } from "../common/levels";
 import { GetFlash } from "../functions/getFlash";
 import {
@@ -44,9 +45,9 @@ export const levelSelectScene = (lvl?, stars?) => {
 
   const next = progress.indexOf(-1);
   let currentChoice = next;
-  const selectLevel = () => {
-    const hej = new Array(25).fill(1);
-    hej.forEach((level, i) => {
+
+  const backgroundImage = MakeTempCanvas(context => {
+    for (let i = 0; i < 25; i++) {
       const x = i % 5;
       const y = (i - x) / 5;
 
@@ -72,12 +73,42 @@ export const levelSelectScene = (lvl?, stars?) => {
       }
 
       context.rect(x * 45 + 16, y * 45 + 12, 40, 40);
-      if (currentChoice !== i || GetFlash(++tick / 6)) {
-        writeText(font, i + 1, -(x * 45 + 16 + 19), y * 45 + 12 + 3, 2);
-      }
-    });
+      writeText(
+        font,
+        i + 1,
+        -(x * 45 + 16 + 19),
+        y * 45 + 12 + 3,
+        2,
+        null,
+        null,
+        context
+      );
+    }
     context.stroke();
-    context.globalAlpha = 1;
+  });
+
+  const selectLevel = () => {
+    context.beginPath();
+    context.strokeStyle = "#FF0000";
+    context.drawImage(backgroundImage, 0, 0);
+
+    context.rect(
+      (currentChoice % 5) * 45 + 16,
+      Math.floor(currentChoice / 5) * 45 + 12,
+      40,
+      40
+    );
+    //@ts-ignore
+    window.ctx = context;
+    //@ts-ignore
+
+    console.log(window.ctx === context);
+
+    context.stroke();
+
+    // if (currentChoice !== i || GetFlash(++tick / 6)) {
+    //   writeText(font, i + 1, -(x * 45 + 16 + 19), y * 45 + 12 + 3, 2);
+    // }
     // hej.forEach((level, i) => {
     //   for (let knife = 0; knife < 3; knife++) {
     //     const x = i % 5;
@@ -153,7 +184,6 @@ export const levelSelectScene = (lvl?, stars?) => {
     render: () => {
       if (!transition) {
         selectLevel();
-        context.endPath();
       } else {
         writeText(font, "LEVEL " + (currentChoice + 1), -1, 50, 3);
         writeText(font, Levels[currentChoice].t, -1, 90, 2);

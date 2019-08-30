@@ -1,6 +1,15 @@
 import { getContext } from "../dependencies/kontra";
 
-const writeText = (font, text, x, y, scale = 1, amplitude = 0, tick = 0) => {
+const writeText = (
+  font,
+  text,
+  x,
+  y,
+  scale = 1,
+  amplitude = 0,
+  tick = 0,
+  context = getContext()
+) => {
   text = "" + text;
 
   x = x === -1 ? -128 : x;
@@ -16,7 +25,7 @@ const writeText = (font, text, x, y, scale = 1, amplitude = 0, tick = 0) => {
       if (code < 0) {
         code += 47;
       }
-      getContext().drawImage(
+      context.drawImage(
         font,
         code * 8,
         0,
