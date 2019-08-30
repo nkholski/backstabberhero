@@ -19,37 +19,15 @@
          "name":"ground",
          "objects":[
                 {
-                 "height":32,
-                 "id":1,
-                 "name":"",
-                 "rotation":0,
-                 "type":"ground",
-                 "visible":true,
-                 "width":256,
-                 "x":0,
-                 "y":208
-                }, 
-                {
-                 "height":16,
-                 "id":2,
-                 "name":"",
-                 "rotation":0,
-                 "type":"ground",
-                 "visible":true,
-                 "width":96,
-                 "x":160,
-                 "y":144
-                }, 
-                {
-                 "height":32,
+                 "height":64,
                  "id":4,
                  "name":"",
                  "rotation":0,
                  "type":"ground",
                  "visible":true,
-                 "width":96,
-                 "x":0,
-                 "y":80
+                 "width":48,
+                 "x":48,
+                 "y":144
                 }, 
                 {
                  "gid":9,
@@ -126,7 +104,7 @@
  "tilesets":[
         {
          "firstgid":1,
-         "source":"gfx8colors.tsx"
+         "source":"gfx8colors.json"
         }],
  "tilewidth":16,
  "type":"map",

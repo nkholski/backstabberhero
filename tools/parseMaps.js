@@ -1,5 +1,7 @@
 const fs = require("fs");
 
+console.log("---------START--------------");
+
 try {
   fs.readFile("../assets/maps.json", "utf8", (err, data) => {
     if (err) throw "WTF!";
@@ -50,23 +52,23 @@ parseFile = data => {
         2. Max height: 13 tiles
         */
 
+        console.log(width, width / 16);
         // No image, En 13*16 + 35 = 243
         height /= 16; // 1-13
         width /= 16; // 1-16 3bit // * 16
         x /= 16; // 0-15 4 bit // * 15
-        y = (240 - y) / 16; // (3+) 0-13 // * 13 renderas underifrån
+        y = 15 - y / 16 - height; // (3+) 0-13 // * 13 renderas underifrån
+
+        console.log("X" + ".", x, height, y, width);
 
         let ord = height + x * 13;
+        console.log("ORD=", ord);
 
         levelData.ground += charFromNumber(ord);
 
         //
-        char = charFromNumber(ord);
-        decoded = decode13x16(char.charCodeAt(0));
-        console.log(ord, height, x, decoded);
-        throw "stop";
 
-        ord = y + height * 13;
+        ord = y + width * 13;
 
         levelData.ground += charFromNumber(ord);
 
@@ -93,17 +95,20 @@ decodeData = data => {
   const [ground, lvl] = data.split("!");
 
   for (i = ground.length - 1; i > 0; i -= 2) {
-    const [x, w] = decode13x16(ground.charCodeAt(i));
-    let [y, h] = decode13x16(ground.charCodeAt(i - 1));
-    y = 240 / 16 - y;
-    console.log(i + ".", x, h, y, w);
+    console.log("DECODE=", ground.substring(i, 1));
+
+    let [y, w] = decode13x16(ground.charCodeAt(i));
+    let [h, x] = decode13x16(ground.charCodeAt(i - 1));
+    // y = 240 / 16 - y;
+    console.log(i + ". x=", x, "h=", h, "y=", y, "w=", w);
   }
 };
 
 decode13x16 = c => {
   c -= 35;
-  console.log("C", c);
   const d = c % 13;
+  console.log("DECODE=", c, "first", d);
+
   return [d, (c - d) / 13];
 };
 
@@ -116,10 +121,10 @@ makeStarString = (stars, player) => {
 };
 
 charFromNumber = num => {
+  console.log("NUM", num);
   num += 35;
   if (num > 254 || num === 127) {
     throw "Bad character: " + num;
   }
-  console.log("OK");
   return String.fromCharCode(num);
 };
