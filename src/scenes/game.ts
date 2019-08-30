@@ -1,7 +1,7 @@
 import { MakeBackground } from "./../functions/makeBackground";
 import { Levels } from "./../common/levels";
 import { MakeEnemies } from "./../functions/makeEnemies";
-import Title from "./title";
+import { Title } from "./title";
 import { CheckCollidingBody } from "./../functions/physics/checkCollidingBody";
 import { GetBlocked } from "./../functions/physics/getBlocked";
 import { CDefaultBlocked } from "./../common/constants";

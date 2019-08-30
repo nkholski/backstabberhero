@@ -1,100 +1,48 @@
-import { Levels } from "../common/levels";
-import { GetFlash } from "../functions/getFlash";
-import {
-  init,
-  Sprite,
-  SpriteSheet,
-  GameLoop,
-  getContext,
-  initKeys,
-  keyPressed
-} from "../dependencies/kontra.js";
+import { GameLoop, getContext, keyPressed } from "../dependencies/kontra.js";
 import { zzfx } from "../dependencies/zzfx";
-import { playMusic } from "../common/music";
-
+import { GetFlash } from "../functions/getFlash";
 import writeText from "../functions/writeText";
-import { GameScene } from "./game";
 import { levelSelectScene } from "./levelSelect";
+import { GetState } from "../functions/state";
 
-export default class Title {
-  loop = null;
-  spriteSheets: any;
-  assets: any;
-  context: any;
-  tick = 0;
-  amplitude = 100;
-  heroOpacity = 0;
-  state = -1;
+export const Title = () => {
+  let tick = 0;
+  let amplitude = 100;
+  let heroOpacity = 0;
+  let state = -1;
+  let { context, assets, font } = GetState();
+  window["playMusic"]();
 
-  boot(assets, spriteSheets) {
-    this.spriteSheets = spriteSheets;
-    this.assets = assets;
-    this.context = getContext();
-    window["playMusic"]();
-    this.start();
-  }
-  start() {
-    this.loop = GameLoop({
-      update: () => {
-        if (this.amplitude > 0) {
-          this.amplitude--;
-        } else if (this.heroOpacity < 100) {
-          this.heroOpacity++;
-        }
-        if (keyPressed("z")) {
-          zzfx(1, 0.1, 568, 0.5, 0.9, 1.5, 0, 4.5, 0.69);
-          if (this.state == 1) {
-            this.loop.stop();
-            levelSelectScene();
-
-            // GameScene(this.assets, this.spriteSheets, Levels[0]);
-            this.state = 2;
-          }
-        } else {
-          this.state = 1;
-        }
-      },
-      render: () => {
-        this.context.drawImage(
-          this.assets.gfx8colors,
-          64,
-          0,
-          32,
-          32,
-          0,
-          120,
-          120,
-          120
-        );
-
-        writeText(
-          this.assets.font,
-          "BACKSTABBER",
-          -1,
-          50,
-          2,
-          this.amplitude,
-          this.tick++
-        );
-        this.context.globalAlpha = this.heroOpacity / 100;
-        writeText(this.assets.font, "HERO", -1, 85 - this.heroOpacity / 5, 5.5);
-        this.context.globalAlpha = (0.4 * this.heroOpacity) / 100;
-
-        writeText(
-          this.assets.font,
-          "HERO",
-          -130,
-          85 + 3 - this.heroOpacity / 5,
-          5
-        );
-
-        this.context.globalAlpha = 1;
-
-        if (this.heroOpacity === 100 && GetFlash(this.tick / 9)) {
-          writeText(this.assets.font, "PRESS Z TO STAB", 75, 110, 1);
-        }
+  let loop = GameLoop({
+    update: () => {
+      if (amplitude > 0) {
+        amplitude--;
+      } else if (heroOpacity < 100) {
+        heroOpacity++;
       }
-    });
-    this.loop.start();
-  }
-}
+      if (keyPressed("z")) {
+        zzfx(1, 0.1, 568, 0.5, 0.9, 1.5, 0, 4.5, 0.69);
+        if (state == 1) {
+          loop.stop();
+          levelSelectScene();
+          state = 2;
+        }
+      } else {
+        state = 1;
+      }
+    },
+    render: () => {
+      context.drawImage(assets.gfx8colors, 64, 0, 32, 32, 0, 120, 120, 120);
+      writeText(font, "BACKSTABBER", -1, 50, 2, amplitude, tick++);
+      context.globalAlpha = heroOpacity / 100;
+      writeText(assets.font, "HERO", -1, 85 - heroOpacity / 5, 5.5);
+      context.globalAlpha = (0.4 * heroOpacity) / 100;
+      writeText(assets.font, "HERO", -130, 85 + 3 - heroOpacity / 5, 5);
+      context.globalAlpha = 1;
+      if (heroOpacity === 100 && GetFlash(tick / 9)) {
+        writeText(assets.font, "PRESS Z TO STAB", 75, 110, 1);
+      }
+    }
+  });
+  loop.start();
+};
