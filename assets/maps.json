@@ -2,32 +2,20 @@
  "infinite":false,
  "layers":[
         {
-         "data":[0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-         "height":15,
-         "id":1,
-         "name":"sprites",
-         "opacity":1,
-         "type":"tilelayer",
-         "visible":true,
-         "width":16,
-         "x":0,
-         "y":0
-        }, 
-        {
          "draworder":"topdown",
          "id":2,
          "name":"ground",
          "objects":[
                 {
-                 "height":64,
+                 "height":97,
                  "id":4,
                  "name":"",
                  "rotation":0,
                  "type":"ground",
                  "visible":true,
-                 "width":48,
-                 "x":48,
-                 "y":144
+                 "width":256,
+                 "x":0,
+                 "y":143
                 }, 
                 {
                  "gid":9,
@@ -76,35 +64,111 @@
                  "width":16,
                  "x":96,
                  "y":48
+                }, 
+                {
+                 "gid":2,
+                 "height":16,
+                 "id":14,
+                 "name":"",
+                 "properties":[
+                        {
+                         "name":"sleep",
+                         "type":"int",
+                         "value":2
+                        }, 
+                        {
+                         "name":"turns",
+                         "type":"bool",
+                         "value":true
+                        }, 
+                        {
+                         "name":"walks",
+                         "type":"bool",
+                         "value":false
+                        }],
+                 "rotation":0,
+                 "type":"",
+                 "visible":true,
+                 "width":16,
+                 "x":32,
+                 "y":64
                 }],
          "opacity":1,
+         "properties":[
+                {
+                 "name":"enemy",
+                 "type":"bool",
+                 "value":true
+                }, 
+                {
+                 "name":"facingLeft",
+                 "type":"bool",
+                 "value":true
+                }, 
+                {
+                 "name":"notEnemyType",
+                 "type":"int",
+                 "value":0
+                }, 
+                {
+                 "name":"sleep",
+                 "type":"int",
+                 "value":0
+                }, 
+                {
+                 "name":"speed",
+                 "type":"int",
+                 "value":2
+                }, 
+                {
+                 "name":"turns",
+                 "type":"bool",
+                 "value":true
+                }],
          "type":"objectgroup",
          "visible":true,
          "x":0,
          "y":0
-        }, 
-        {
-         "data":[0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-         "height":15,
-         "id":3,
-         "name":"Tile Layer 2",
-         "opacity":1,
-         "type":"tilelayer",
-         "visible":true,
-         "width":16,
-         "x":0,
-         "y":0
         }],
  "nextlayerid":4,
- "nextobjectid":14,
+ "nextobjectid":17,
  "orientation":"orthogonal",
  "renderorder":"right-down",
  "tiledversion":"1.2.4",
  "tileheight":16,
  "tilesets":[
         {
+         "columns":14,
          "firstgid":1,
-         "source":"gfx8colors.json"
+         "image":"gfx8colors.png",
+         "imageheight":32,
+         "imagewidth":224,
+         "margin":0,
+         "name":"gfx8colors",
+         "spacing":0,
+         "tilecount":28,
+         "tileheight":16,
+         "tiles":[
+                {
+                 "id":1,
+                 "properties":[
+                        {
+                         "name":"sleep",
+                         "type":"int",
+                         "value":5
+                        }, 
+                        {
+                         "name":"turns",
+                         "type":"bool",
+                         "value":false
+                        }, 
+                        {
+                         "name":"walks",
+                         "type":"int",
+                         "value":100
+                        }]
+                }],
+         "tilewidth":16
         }],
  "tilewidth":16,
  "type":"map",

@@ -284,6 +284,7 @@ export const GameScene = (lvl: number) => {
       context.drawImage(background, 0, 0);
 
       if (gameOver) {
+        stars = [];
         if (wellDone) {
           writeText(
             assets.font,
@@ -308,10 +309,10 @@ export const GameScene = (lvl: number) => {
 
       stars.forEach((star, i) => {
         counter(star);
+        star.render();
         if (star.sleepTimer == 0) {
           stars.splice(i, 1);
         }
-        star.render();
       });
 
       enemies.forEach(enemy => {

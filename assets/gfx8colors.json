@@ -8,6 +8,26 @@
  "tilecount":28,
  "tiledversion":"1.2.4",
  "tileheight":16,
+ "tiles":[
+        {
+         "id":1,
+         "properties":[
+                {
+                 "name":"sleep",
+                 "type":"int",
+                 "value":5
+                }, 
+                {
+                 "name":"turns",
+                 "type":"bool",
+                 "value":false
+                }, 
+                {
+                 "name":"walks",
+                 "type":"int",
+                 "value":100
+                }]
+        }],
  "tilewidth":16,
  "type":"tileset",
  "version":1.2
