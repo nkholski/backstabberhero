@@ -172,22 +172,19 @@ decodeData = data => {
     let [y, x] = decode(lvl.charCodeAt(i - 1));
     y++;
     let data = lvl.charCodeAt(i) - 35;
-    // const isEnemy = !!(data % 2);
     data = Math.floor(data / 2);
-    const facingLeft = !!(data % 2);
-    data = Math.floor(data / 2);
-    const turns = !!(data % 2);
-    data = Math.floor(data / 2);
-    const walks = !!(data % 2);
-    data = Math.floor(data / 2);
-    const sleeper = data > 0 && !walks;
+    const enemy = {};
+    ["facing", "turns", "walks"].forEach(key => {
+      enemy[key] = !!(data % 2);
+      data = Math.floor(data / 2);
+    });
+    const sleeper = data > 0 && !enemy.walks;
     level.enemies.push({
       x,
       y,
-      color: turns + sleeper * 2 + walks * 4,
-      facing: facingLeft ? -1 : 1,
-      turns,
-      walks,
+      ...enemy,
+      color: enemy.turns + sleeper * 2 + enemy.walks * 4,
+      facing: enemy.facing ? -1 : 1,
       sleeper,
       data
     });
@@ -195,11 +192,9 @@ decodeData = data => {
 
   return level;
 };
-
 decode = (c, base = 13) => {
   c -= 35;
   const d = c % base;
-
   return [d, (c - d) / base];
 };
 
