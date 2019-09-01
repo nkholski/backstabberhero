@@ -1,3 +1,4 @@
+import { getLevel } from "./../functions/getLevel";
 import { GetState } from "./../functions/state";
 import { MakeBackground } from "./../functions/makeBackground";
 import { Levels } from "./../common/levels";
@@ -21,7 +22,9 @@ import { EnemyUpdate } from "../functions/enemyUpdate";
 import { levelSelectScene } from "./levelSelect";
 
 export const GameScene = (lvl: number) => {
-  const { l: level, e: enemyData, h: heroCoordinates } = Levels[lvl];
+  //const { l: level, e: enemyData, h: heroCoordinates } = getLevel(lvl);
+  const level = getLevel(lvl);
+  console.log(level);
   const { spriteSheets, assets, context } = GetState();
   let turnTimer = 100;
   let starCount = 0;
@@ -43,8 +46,8 @@ export const GameScene = (lvl: number) => {
   gameOver = false;
   initKeys();
   player = Sprite({
-    x: heroCoordinates[0], // starting x,y position of the sprite
-    y: heroCoordinates[1],
+    x: level.player.x, // starting x,y position of the sprite
+    y: level.player.y,
     color: "red", // fill color of the sprite rectangle
     width: 16, // width and height of the sprite rectangle
     height: 32,
@@ -62,28 +65,20 @@ export const GameScene = (lvl: number) => {
     animations: spriteSheets[0].animations
   });
 
-  stars = [
-    Sprite({
-      x: 16 * 12, // starting x,y position of the sprite
-      y: 16 * 12,
+  stars = [];
+  level.stars.forEach(star => {
+    const s = Sprite({
+      x: star.x * 16, // starting x,y position of the sprite
+      y: star.y * 16,
       height: 16,
-      color: "blue", // fill color of the sprite rectangle
-      sleepTimer: 20000,
+      sleepTimer: star.t * 5,
       animations: spriteSheets[0].animations
-    }),
-    Sprite({
-      x: 16 * 10, // starting x,y position of the sprite
-      y: 16 * 9,
-      height: 16,
-      color: "blue", // fill color of the sprite rectangle
-      sleepTimer: 20000,
-      animations: spriteSheets[0].animations
-    })
-  ];
-  stars[0].playAnimation("starLeft");
-  stars[1].playAnimation("starLeft");
+    });
+    stars.push(s);
+    s.playAnimation("starLeft");
+  });
 
-  enemies = MakeEnemies(enemyData, spriteSheets);
+  enemies = []; //MakeEnemies(enemyData, spriteSheets);
 
   const counter = subject => {
     const sleepLeft = Math.ceil(subject.sleepTimer / 1e3 - elapsedTime);

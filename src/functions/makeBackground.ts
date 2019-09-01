@@ -37,21 +37,23 @@ export const MakeBackground = (lvl: number, level, assets) => {
       }
     }
 
-    level.forEach(item => {
-      for (let i = 0; i < item[1]; i++) {
-        // @ts-ignore
-        const top = -16 * (item[0] === 0 || i == 0);
-        context.drawImage(
-          assets.gfx8colors,
-          9 * 16,
-          16 + top,
-          16,
-          16,
-          item[2] * 16 + (item[0] === 0 ? i * 16 : 0),
-          item[3] * 16 + (item[0] === 1 ? i * 16 : 0),
-          16,
-          16
-        );
+    level.platforms.forEach(item => {
+      for (let y = 0; y < item.w; y++) {
+        for (let x = 0; x < item.h; x++) {
+          const top = -16 * (y === 0 ? 1 : 0);
+          // @ts-ignore
+          context.drawImage(
+            assets.gfx8colors,
+            9 * 16,
+            16 + top,
+            16,
+            16,
+            item.x + x * 16,
+            item.y + y * 16,
+            16,
+            16
+          );
+        }
       }
     });
   });

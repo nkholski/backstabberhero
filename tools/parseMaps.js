@@ -7,16 +7,46 @@ const fs = require("fs");
 
 console.log("---------START--------------");
 
-try {
-  fs.readFile("../assets/maps.json", "utf8", (err, data) => {
-    if (err) throw "WTF!";
-    parseFile(data);
-  });
-} catch {
-  throw "Oh no!";
+let tryNextFile = true;
+let levelNumber = 1;
+let parsedString = "";
+
+while (tryNextFile) {
+  try {
+    data = fs.readFileSync("../rawAssets/maps/map" + levelNumber + ".json");
+    console.log("Parsing level " + levelNumber);
+    parsedString += parseFile(data) + " ";
+
+    levelNumber++;
+    // fs.readFile("../assets/maps.json", "utf8", (err, data) => {
+    //   if (err) throw "WTF!";
+    //   parseFile(data);
+    // });
+  } catch (error) {
+    if (error.code === "ENOENT") {
+      console.log(
+        "Finished " +
+          (levelNumber - 1) +
+          " levels" +
+          " (map" +
+          levelNumber +
+          ".json not found)."
+      );
+      tryNextFile = false;
+    } else {
+      throw error;
+    }
+  }
 }
 
-parseFile = data => {
+parsedString = parsedString.replace(/\s$/, "");
+
+fs.writeFileSync(
+  "../src/common/levels.ts",
+  `export const levels = "${parsedString}";`
+);
+
+function parseFile(data) {
   const json = JSON.parse(data);
   const tilesetData = json.tilesets[0].tiles;
 
@@ -147,11 +177,12 @@ parseFile = data => {
   levelData.starsAndStart = makeStarString(stars, player);
   const dataString =
     levelData.ground + "!" + levelData.starsAndStart + levelData.enemies;
-  console.log("Data: '" + dataString + "'");
-  console.log(decodeData(dataString));
-};
+  // console.log("Data: '" + dataString + "'");
+  // console.log(decodeData(dataString));
+  return dataString;
+}
 
-decodeData = data => {
+function decodeData(data) {
   const [ground, lvl] = data.split("!");
   const level = { platforms: [], enemies: [] };
   for (let i = ground.length - 1; i > 0; i -= 2) {
@@ -191,25 +222,25 @@ decodeData = data => {
   }
 
   return level;
-};
-decode = (c, base = 13) => {
+}
+function decode(c, base = 13) {
   c -= 35;
   const d = c % base;
   return [d, (c - d) / base];
-};
+}
 
-makeStarString = (stars, player) => {
+function makeStarString(stars, player) {
   let encoded = charFromNumber(player.y - 1 + 13 * player.x);
   encoded += charFromNumber(stars[0].y - 1 + 13 * stars[0].x);
   encoded += charFromNumber(stars[1].y - 1 + 13 * stars[0].y);
   encoded += charFromNumber(stars[0].time + 13 * stars[1].time);
   return encoded;
-};
+}
 
-charFromNumber = num => {
+function charFromNumber(num) {
   num += 35;
   if (num > 254 || num === 127) {
     throw "Bad character: " + num;
   }
   return String.fromCharCode(num);
-};
+}
