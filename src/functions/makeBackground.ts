@@ -38,8 +38,8 @@ export const MakeBackground = (lvl: number, level, assets) => {
     }
 
     level.platforms.forEach(item => {
-      for (let y = 0; y < item.w; y++) {
-        for (let x = 0; x < item.h; x++) {
+      for (let y = 0; y < item.h; y += 16) {
+        for (let x = 0; x < item.w; x += 16) {
           const top = -16 * (y === 0 ? 1 : 0);
           // @ts-ignore
           context.drawImage(
@@ -48,8 +48,8 @@ export const MakeBackground = (lvl: number, level, assets) => {
             16 + top,
             16,
             16,
-            item.x + x * 16,
-            item.y + y * 16,
+            item.x + x,
+            item.y + y,
             16,
             16
           );

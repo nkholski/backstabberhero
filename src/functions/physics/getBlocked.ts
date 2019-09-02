@@ -1,18 +1,26 @@
 import { CDefaultBlocked } from "./../../common/constants";
-export const GetBlocked = (body, level) => {
+export const GetBlocked = (body, platforms) => {
   body.blocked = { ...CDefaultBlocked };
   const col = body.blocked;
 
-  level.forEach(item => {
-    const horizontal = item[0] === 0;
+  if (body.color === "red") {
+    console.log(platforms);
+  }
+  platforms.forEach((platform, i) => {
     const overlap: any = {};
+
     // Break out share with body collision
-    overlap.left =
-      16 + item[2] * 16 + 16 * (horizontal ? item[1] - 1 : 0) - body.x; // Överlapp på vänster sida
-    overlap.right = 16 + body.x - item[2] * 16; // Överlapp på höger sida
-    overlap.top =
-      16 + item[3] * 16 + 16 * (horizontal ? 0 : item[1] - 1) - body.y;
-    overlap.bottom = body.height + body.y - item[3] * 16;
+    // overlap.left =
+    //   16 + item[2] * 16 + 16 * (horizontal ? item[1] - 1 : 0) - body.x; // Överlapp på vänster sida
+    // overlap.right = 16 + body.x - item[2] * 16; // Överlapp på höger sida
+    // overlap.top =
+    //   16 + item[3] * 16 + 16 * (horizontal ? 0 : item[1] - 1) - body.y;
+    // overlap.bottom = body.height + body.y - item[3] * 16;
+
+    overlap.left = platform.x + platform.w - body.x; // Överlapp på vänster sida
+    overlap.right = 16 + body.x - platform.x; // Överlapp på höger sida
+    overlap.top = 16 + platform.y + platform.h - body.y;
+    overlap.bottom = body.height + body.y - platform.y;
 
     // All sides overlap == collision
     if (

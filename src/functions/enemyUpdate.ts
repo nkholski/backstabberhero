@@ -8,7 +8,8 @@ export const EnemyUpdate = (
   enemy,
   { turnState, player, level, gameOver, tick }
 ) => {
-  const cliff = !CheckCliff(enemy, level).bottom;
+  const cliff = !CheckCliff(enemy, level.platforms).bottom;
+
   let anim = "idle";
   enemy.dy += 0.2;
   if (enemy.dead || enemy.sleepTimer > 0) {
@@ -18,7 +19,7 @@ export const EnemyUpdate = (
 
   enemy.dx = 0;
 
-  if (EnemyVision(enemy, player, level)) {
+  if (EnemyVision(enemy, player, level.platforms)) {
     enemy.gotPlayer = true;
     player.facing = -enemy.facing;
     zzfx(1, 0, 100, 0.7, 0.42, 1.5, 0.6, 0.7, 0.2);
@@ -35,7 +36,6 @@ export const EnemyUpdate = (
         (enemy.blocked.right && enemy.dx > 0) ||
         (enemy.blocked.bottom && cliff)
       ) {
-        // debugger;
         enemy.facing = -enemy.facing;
       }
     }

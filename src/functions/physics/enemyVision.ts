@@ -1,6 +1,6 @@
 import { CheckCollidingBody } from "./checkCollidingBody";
 import { GetBlocked } from "./getBlocked";
-export const EnemyVision = (enemy, player, level) => {
+export const EnemyVision = (enemy, player, platforms) => {
   // 1. Linje i se-riktning tills stöter i ett objekt, hoppa 8px åt gången
   let seen = false;
   [1, 16].forEach(y => {
@@ -15,7 +15,7 @@ export const EnemyVision = (enemy, player, level) => {
             y: enemy.y + y,
             height: 14
           },
-          level
+          platforms
         ).any ||
         checkX < 0 ||
         checkX > 232

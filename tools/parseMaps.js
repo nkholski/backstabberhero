@@ -43,7 +43,7 @@ parsedString = parsedString.replace(/\s$/, "");
 
 fs.writeFileSync(
   "../src/common/levels.ts",
-  `export const levels = "${parsedString}";`
+  `export const Levels = "${parsedString}";`
 );
 
 function parseFile(data) {
@@ -76,15 +76,13 @@ function parseFile(data) {
         };
 
         break;
-      case 9: // STAR
-        if (!properties[0]) {
-          throw "Missin star time";
-        }
+      case 5: // STAR
+        const time = !properties || !properties[0] ? 0 : properties[0].value;
 
         stars.push({
           x,
           y,
-          time: properties[0].value - 1
+          time
         });
         break;
 
@@ -94,14 +92,22 @@ function parseFile(data) {
         2. Max height: 13 tiles
         */
 
+        if (y < 0 || y + height > 15 || x < 0 || x + width > 16) {
+          throw "Ground outside screen: xy=" +
+            x +
+            "," +
+            y +
+            " wh = " +
+            width +
+            "," +
+            height;
+        }
+
         // No image, En 13*16 + 35 = 243
         y = 15 - y - height; // (3+) 0-13 // * 13 renderas underifrån
 
         let ord = height + x * 13;
-
         levelData.ground += charFromNumber(ord);
-
-        //
 
         ord = y + width * 13;
 
@@ -135,7 +141,10 @@ function parseFile(data) {
 
           let fromObjectProperty = null;
 
-          if (groundObject.properties.find(x => x.name === propertyName)) {
+          if (
+            groundObject.hasOwnProperty("properties") &&
+            groundObject.properties.find(x => x.name === propertyName)
+          ) {
             let tmpVal = groundObject.properties.find(
               x => x.name === propertyName
             ).value;
@@ -160,9 +169,9 @@ function parseFile(data) {
           thisProperties.turns * 2 * 2 +
           thisProperties.walks * 2 * 2 * 2 +
           thisProperties.sleep * 2 * 2 * 2 * 2;
+
         levelData.enemies +=
           charFromNumber(y - 2 + x * 13) + charFromNumber(enemyOrd);
-
         break;
     }
   });
@@ -177,8 +186,7 @@ function parseFile(data) {
   levelData.starsAndStart = makeStarString(stars, player);
   const dataString =
     levelData.ground + "!" + levelData.starsAndStart + levelData.enemies;
-  // console.log("Data: '" + dataString + "'");
-  // console.log(decodeData(dataString));
+
   return dataString;
 }
 
@@ -232,7 +240,7 @@ function decode(c, base = 13) {
 function makeStarString(stars, player) {
   let encoded = charFromNumber(player.y - 1 + 13 * player.x);
   encoded += charFromNumber(stars[0].y - 1 + 13 * stars[0].x);
-  encoded += charFromNumber(stars[1].y - 1 + 13 * stars[0].y);
+  encoded += charFromNumber(stars[1].y - 1 + 13 * stars[1].x);
   encoded += charFromNumber(stars[0].time + 13 * stars[1].time);
   return encoded;
 }
@@ -240,7 +248,7 @@ function makeStarString(stars, player) {
 function charFromNumber(num) {
   num += 35;
   if (num > 254 || num === 127) {
-    throw "Bad character: " + num;
+    throw "Bad generated character: " + num;
   }
   return String.fromCharCode(num);
 }

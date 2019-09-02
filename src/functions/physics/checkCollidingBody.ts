@@ -14,9 +14,6 @@ export const CheckCollidingBody = (body, others) => {
     ) {
       col = enemy;
     }
-    if (enemy.vision === true && enemy.y === 128) {
-      //  debugger;
-    }
   });
   return col;
 };

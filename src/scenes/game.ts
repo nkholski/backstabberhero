@@ -71,14 +71,14 @@ export const GameScene = (lvl: number) => {
       x: star.x * 16, // starting x,y position of the sprite
       y: star.y * 16,
       height: 16,
-      sleepTimer: star.t * 5,
+      sleepTimer: star.t * 5000,
       animations: spriteSheets[0].animations
     });
     stars.push(s);
     s.playAnimation("starLeft");
   });
 
-  enemies = []; //MakeEnemies(enemyData, spriteSheets);
+  enemies = MakeEnemies(level.enemies, spriteSheets);
 
   const counter = subject => {
     const sleepLeft = Math.ceil(subject.sleepTimer / 1e3 - elapsedTime);
@@ -224,7 +224,7 @@ export const GameScene = (lvl: number) => {
 
       player.update();
 
-      GetBlocked(player, level);
+      GetBlocked(player, level.platforms);
       knife.x = player.x + player.facing * 16;
       knife.y = player.y;
 
@@ -232,6 +232,8 @@ export const GameScene = (lvl: number) => {
       stars.forEach((star, i) => {
         if (CheckCollidingBody(player, [star])) {
           zzfx(1, 0, 400, 0.5, 0.5, 0, 0, 5, 0);
+          //
+          // zzfx(1,0,600,.1,.49,2.5,.5,-2,.75); // ZzFX 67823
           starCount++;
           stars.splice(i, 1);
         }
@@ -254,7 +256,7 @@ export const GameScene = (lvl: number) => {
         enemy.update();
         if (!enemy.dead) {
           wellDone = false;
-          GetBlocked(enemy, level);
+          GetBlocked(enemy, level.platforms);
           if (enemy.gotPlayer) {
             if (!gameOver) {
               if (player.standing) {
@@ -306,6 +308,7 @@ export const GameScene = (lvl: number) => {
         counter(star);
         star.render();
         if (star.sleepTimer == 0) {
+          zzfx(1, 0, -250, 0.7, 0.7, 1.4, 0, 5, 1.49); // ZzFX 342
           stars.splice(i, 1);
         }
       });

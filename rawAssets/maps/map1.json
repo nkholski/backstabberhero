@@ -7,51 +7,15 @@
          "name":"ground",
          "objects":[
                 {
-                 "height":97,
+                 "height":64,
                  "id":4,
                  "name":"",
                  "rotation":0,
                  "type":"ground",
                  "visible":true,
-                 "width":256,
+                 "width":176,
                  "x":0,
-                 "y":143
-                }, 
-                {
-                 "gid":9,
-                 "height":16,
-                 "id":5,
-                 "name":"",
-                 "properties":[
-                        {
-                         "name":"secondsx5",
-                         "type":"int",
-                         "value":3
-                        }],
-                 "rotation":0,
-                 "type":"",
-                 "visible":true,
-                 "width":16,
-                 "x":160,
-                 "y":96
-                }, 
-                {
-                 "gid":9,
-                 "height":16,
-                 "id":12,
-                 "name":"",
-                 "properties":[
-                        {
-                         "name":"secondsx5",
-                         "type":"int",
-                         "value":4
-                        }],
-                 "rotation":0,
-                 "type":"",
-                 "visible":true,
-                 "width":16,
-                 "x":208,
-                 "y":80
+                 "y":176
                 }, 
                 {
                  "gid":1,
@@ -62,7 +26,7 @@
                  "type":"",
                  "visible":true,
                  "width":16,
-                 "x":96,
+                 "x":64,
                  "y":48
                 }, 
                 {
@@ -71,11 +35,6 @@
                  "id":14,
                  "name":"",
                  "properties":[
-                        {
-                         "name":"sleep",
-                         "type":"int",
-                         "value":2
-                        }, 
                         {
                          "name":"turns",
                          "type":"bool",
@@ -90,8 +49,107 @@
                  "type":"",
                  "visible":true,
                  "width":16,
-                 "x":32,
+                 "x":80,
+                 "y":112
+                }, 
+                {
+                 "height":32,
+                 "id":17,
+                 "name":"",
+                 "rotation":0,
+                 "type":"ground",
+                 "visible":true,
+                 "width":112,
+                 "x":144,
                  "y":64
+                }, 
+                {
+                 "height":48,
+                 "id":19,
+                 "name":"",
+                 "rotation":0,
+                 "type":"ground",
+                 "visible":true,
+                 "width":32,
+                 "x":96,
+                 "y":144
+                }, 
+                {
+                 "gid":3,
+                 "height":16,
+                 "id":21,
+                 "name":"",
+                 "rotation":0,
+                 "type":"",
+                 "visible":true,
+                 "width":16,
+                 "x":160,
+                 "y":48
+                }, 
+                {
+                 "gid":15,
+                 "height":16,
+                 "id":22,
+                 "name":"",
+                 "properties":[
+                        {
+                         "name":"walks",
+                         "type":"int",
+                         "value":3
+                        }],
+                 "rotation":0,
+                 "type":"",
+                 "visible":true,
+                 "width":16,
+                 "x":224,
+                 "y":48
+                }, 
+                {
+                 "gid":4,
+                 "height":16,
+                 "id":23,
+                 "name":"",
+                 "rotation":0,
+                 "type":"",
+                 "visible":true,
+                 "width":16,
+                 "x":144,
+                 "y":160
+                }, 
+                {
+                 "gid":5,
+                 "height":16,
+                 "id":24,
+                 "name":"",
+                 "rotation":0,
+                 "type":"",
+                 "visible":true,
+                 "width":16,
+                 "x":80,
+                 "y":96
+                }, 
+                {
+                 "gid":5,
+                 "height":16,
+                 "id":25,
+                 "name":"",
+                 "rotation":0,
+                 "type":"",
+                 "visible":true,
+                 "width":16,
+                 "x":192,
+                 "y":48
+                }, 
+                {
+                 "height":96,
+                 "id":26,
+                 "name":"",
+                 "rotation":0,
+                 "type":"ground",
+                 "visible":true,
+                 "width":48,
+                 "x":64,
+                 "y":112
                 }],
          "opacity":1,
          "properties":[
@@ -130,32 +188,37 @@
          "x":0,
          "y":0
         }],
- "nextlayerid":4,
- "nextobjectid":17,
+ "nextlayerid":5,
+ "nextobjectid":27,
  "orientation":"orthogonal",
  "renderorder":"right-down",
  "tiledversion":"1.2.4",
  "tileheight":16,
  "tilesets":[
         {
-         "columns":14,
+         "columns":12,
          "firstgid":1,
-         "image":"gfx8colors.png",
+         "image":"..\/gfx4tiled.png",
          "imageheight":32,
-         "imagewidth":224,
+         "imagewidth":192,
          "margin":0,
          "name":"gfx8colors",
          "spacing":0,
-         "tilecount":28,
+         "tilecount":24,
          "tileheight":16,
          "tiles":[
                 {
                  "id":1,
                  "properties":[
                         {
+                         "name":"facingLeft",
+                         "type":"bool",
+                         "value":false
+                        }, 
+                        {
                          "name":"sleep",
                          "type":"int",
-                         "value":5
+                         "value":0
                         }, 
                         {
                          "name":"turns",
@@ -165,7 +228,117 @@
                         {
                          "name":"walks",
                          "type":"int",
-                         "value":100
+                         "value":0
+                        }]
+                }, 
+                {
+                 "id":2,
+                 "properties":[
+                        {
+                         "name":"facingLeft",
+                         "type":"bool",
+                         "value":false
+                        }, 
+                        {
+                         "name":"sleeps",
+                         "type":"int",
+                         "value":0
+                        }, 
+                        {
+                         "name":"turns",
+                         "type":"bool",
+                         "value":false
+                        }, 
+                        {
+                         "name":"walks",
+                         "type":"int",
+                         "value":1
+                        }]
+                }, 
+                {
+                 "id":3,
+                 "properties":[
+                        {
+                         "name":"facingLeft",
+                         "type":"bool",
+                         "value":false
+                        }, 
+                        {
+                         "name":"sleeps",
+                         "type":"int",
+                         "value":1
+                        }, 
+                        {
+                         "name":"turns",
+                         "type":"bool",
+                         "value":false
+                        }, 
+                        {
+                         "name":"walks",
+                         "type":"int",
+                         "value":0
+                        }]
+                }, 
+                {
+                 "id":13,
+                 "properties":[
+                        {
+                         "name":"facingLeft",
+                         "type":"bool",
+                         "value":true
+                        }, 
+                        {
+                         "name":"sleep",
+                         "type":"int",
+                         "value":0
+                        }, 
+                        {
+                         "name":"turns",
+                         "type":"bool",
+                         "value":false
+                        }, 
+                        {
+                         "name":"walks",
+                         "type":"int",
+                         "value":0
+                        }]
+                }, 
+                {
+                 "id":14,
+                 "properties":[
+                        {
+                         "name":"facingLeft",
+                         "type":"bool",
+                         "value":true
+                        }, 
+                        {
+                         "name":"sleeps",
+                         "type":"int",
+                         "value":0
+                        }, 
+                        {
+                         "name":"turns",
+                         "type":"bool",
+                         "value":false
+                        }, 
+                        {
+                         "name":"walks",
+                         "type":"int",
+                         "value":1
+                        }]
+                }, 
+                {
+                 "id":15,
+                 "properties":[
+                        {
+                         "name":"sleeps",
+                         "type":"int",
+                         "value":1
+                        }, 
+                        {
+                         "name":"turns",
+                         "type":"bool",
+                         "value":false
                         }]
                 }],
          "tilewidth":16
