@@ -26,8 +26,8 @@
                  "type":"",
                  "visible":true,
                  "width":16,
-                 "x":64,
-                 "y":48
+                 "x":16,
+                 "y":144
                 }, 
                 {
                  "gid":2,
@@ -71,7 +71,7 @@
                  "type":"ground",
                  "visible":true,
                  "width":32,
-                 "x":96,
+                 "x":48,
                  "y":144
                 }, 
                 {
@@ -125,8 +125,8 @@
                  "type":"",
                  "visible":true,
                  "width":16,
-                 "x":80,
-                 "y":96
+                 "x":16,
+                 "y":112
                 }, 
                 {
                  "gid":5,
@@ -148,8 +148,8 @@
                  "type":"ground",
                  "visible":true,
                  "width":48,
-                 "x":64,
-                 "y":112
+                 "x":80,
+                 "y":128
                 }],
          "opacity":1,
          "properties":[
