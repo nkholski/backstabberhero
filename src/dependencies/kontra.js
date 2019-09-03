@@ -308,8 +308,8 @@ class Animation {
       row * height + (row * 2 + 1) * this.margin,
       width,
       height,
-      x,
-      y,
+      Math.round(x),
+      Math.round(y),
       width,
       height
     );

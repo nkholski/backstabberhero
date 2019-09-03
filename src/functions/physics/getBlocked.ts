@@ -1,11 +1,10 @@
 import { CDefaultBlocked } from "./../../common/constants";
 export const GetBlocked = (body, platforms) => {
-  body.blocked = { ...CDefaultBlocked };
+  body.blocked = { ...CDefaultBlocked, left: body.x < 0, right: body.x > 240 };
+  body.x = body.blocked.left ? 0 : body.x;
+
   const col = body.blocked;
 
-  if (body.color === "red") {
-    console.log(platforms);
-  }
   platforms.forEach((platform, i) => {
     const overlap: any = {};
 
@@ -19,7 +18,7 @@ export const GetBlocked = (body, platforms) => {
 
     overlap.left = platform.x + platform.w - body.x; // Överlapp på vänster sida
     overlap.right = 16 + body.x - platform.x; // Överlapp på höger sida
-    overlap.top = 16 + platform.y + platform.h - body.y;
+    overlap.top = platform.y + platform.h - body.y;
     overlap.bottom = body.height + body.y - platform.y;
 
     // All sides overlap == collision

@@ -9,7 +9,6 @@ export const EnemyUpdate = (
   { turnState, player, level, gameOver, tick }
 ) => {
   const cliff = !CheckCliff(enemy, level.platforms).bottom;
-
   let anim = "idle";
   enemy.dy += 0.2;
   if (enemy.dead || enemy.sleepTimer > 0) {
@@ -41,7 +40,7 @@ export const EnemyUpdate = (
     }
 
     // Means it was sleeping
-    if (enemy.sleeper && enemy.sleepTimer < 0) {
+    if (enemy.sleeper && enemy.sleepTimer === 0) {
       console.log("Sleep");
       enemy.facing = GetFlash(tick / 5) ? 1 : -1;
     }

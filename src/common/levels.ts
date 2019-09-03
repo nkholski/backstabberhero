@@ -1,1 +1,1 @@
-export const Levels = "'²M@jK!86Á#i(¦,Ú> $";
+export const Levels = "'²§kM@jK!®6Á1ÏR(i&%8%";

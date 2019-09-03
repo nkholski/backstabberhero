@@ -16,12 +16,7 @@ while (tryNextFile) {
     data = fs.readFileSync("../rawAssets/maps/map" + levelNumber + ".json");
     console.log("Parsing level " + levelNumber);
     parsedString += parseFile(data) + " ";
-
     levelNumber++;
-    // fs.readFile("../assets/maps.json", "utf8", (err, data) => {
-    //   if (err) throw "WTF!";
-    //   parseFile(data);
-    // });
   } catch (error) {
     if (error.code === "ENOENT") {
       console.log(
@@ -77,13 +72,19 @@ function parseFile(data) {
 
         break;
       case 5: // STAR
-        const time = !properties || !properties[0] ? 0 : properties[0].value;
+        const time = !properties || !properties[0] ? 2 : properties[0].value;
 
         stars.push({
           x,
           y,
-          time
+          time: time - 1
         });
+        break;
+
+      case 6: // Barrel
+        const barrelOrd = 0 + 2; // 1 == not enemy, 2 = Barrel
+        levelData.enemies +=
+          charFromNumber(y - 2 + x * 13) + charFromNumber(barrelOrd);
         break;
 
       case undefined:
@@ -118,14 +119,13 @@ function parseFile(data) {
       default:
         tileProperties = tilesetData.find(set => set.id === gid - 1).properties;
         // const sleep = tileData.find(x => x.)
-        let thisEnemyString = "";
         const thisProperties = { enemy: true };
-        ["facingLeft", "turns", "walks", "sleep"].forEach(propertyName => {
+        ["facingLeft", "turns", "walks", "sleeps"].forEach(propertyName => {
           const defaultValue = {
             facingLeft: false,
             turns: false,
             speed: 0,
-            sleep: 0
+            sleeps: 0
           }[propertyName];
 
           let fromTileProperty = null;
@@ -163,12 +163,28 @@ function parseFile(data) {
               : defaultValue;
         });
 
+        thisProperties.data = 0;
+
+        if (thisProperties.walks > 0) {
+          console.log("walks");
+          thisProperties.data = thisProperties.walks;
+          thisProperties.walks = 1;
+        }
+        if (thisProperties.sleeps > 0) {
+          thisProperties.data = thisProperties.sleeps;
+          thisProperties.sleeps = 1;
+        }
+
         const enemyOrd =
           thisProperties.enemy +
           thisProperties.facingLeft * 2 +
-          thisProperties.turns * 2 * 2 +
-          thisProperties.walks * 2 * 2 * 2 +
-          thisProperties.sleep * 2 * 2 * 2 * 2;
+          thisProperties.turns * Math.pow(2, 2) +
+          thisProperties.walks * Math.pow(2, 3) +
+          thisProperties.sleeps * Math.pow(2, 4) +
+          thisProperties.data * Math.pow(2, 5);
+
+        console.log(thisProperties);
+        console.log("LETTER=" + charFromNumber(enemyOrd));
 
         levelData.enemies +=
           charFromNumber(y - 2 + x * 13) + charFromNumber(enemyOrd);
@@ -186,6 +202,8 @@ function parseFile(data) {
   levelData.starsAndStart = makeStarString(stars, player);
   const dataString =
     levelData.ground + "!" + levelData.starsAndStart + levelData.enemies;
+
+  console.log(decodeData(dataString));
 
   return dataString;
 }

@@ -11,12 +11,11 @@ export const MakeEnemies = (enemiesData, spriteSheets) => {
         width: 16, // width and height of the sprite rectangle
         height: 32,
         blocked: { ...CDefaultBlocked },
-        speed: enemy.data,
+        speed: enemy.walks ? (1 + enemy.data) / 4 : 0,
         animations: spriteSheets[enemy.color].animations,
-        sleepTimer: enemy.data * 1e4
+        sleepTimer: enemy.sleeper ? (enemy.walks ? 0 : enemy.data * 1e4) : 0
       })
     );
   });
-
   return enemies;
 };

@@ -7,7 +7,7 @@
   "license": "MIT",
   "scripts": {
     "build": "webpack --mode=production",
-    "start": "webpack-dev-server --open && nodemon --watch ./rawAssets/maps/ .parseMaps.js",
+    "start": "webpack-dev-server --open",
     "watchMaps": "nodemon --watch ./rawAssets/maps/ ./tools/parseMaps.js"
   },
   "devDependencies": {

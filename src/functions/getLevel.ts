@@ -29,27 +29,31 @@ export const getLevel = (levelIndex: number) => {
     let [t0, t1] = decode(lvl.charCodeAt(i));
     console.log(x0, y0, x1, y1);
     level.stars = [{ x: x0, y: y0, t: t0 }, { x: x1, y: y1, t: t1 }];
+    console.log(level.stars);
     level.player = { x: x * 16, y: y * 16 };
   }
   for (let i = lvl.length - 1; i > 3; i -= 2) {
     let [y, x] = decode(lvl.charCodeAt(i - 1));
     y++;
     let data = lvl.charCodeAt(i) - 35;
-    data = Math.floor(data / 2);
+    //data = Math.floor(data / 2);
     const enemy: any = {};
-    ["facing", "turns", "walks"].forEach(key => {
+    ["isEnemy", "facing", "turns", "walks", "sleeper"].forEach(key => {
       enemy[key] = !!(data % 2);
       data = Math.floor(data / 2);
     });
-    const sleeper = data > 0 && !enemy.walks;
+
+    if (!enemy.isEnemy) {
+      console.log("barell", enemy.facing);
+    }
+
     level.enemies.push({
       ...enemy,
       x: x * 16,
       y: y * 16,
       //@ts-ignore Boolean is used as a number (0 = false, 1 = true) and Typescript rightly protests
-      color: enemy.turns + sleeper * 2 + enemy.walks * 4,
+      color: enemy.turns + enemy.sleeper * 2 + enemy.walks * 4,
       facing: enemy.facing ? -1 : 1,
-      sleeper,
       data
     });
   }
