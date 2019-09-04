@@ -73,10 +73,6 @@ function parseFile(data) {
         break;
       case 5: // STAR
         const time = !properties || !properties[0] ? 2 : properties[0].value;
-
-        console.log(properties);
-        console.log(time);
-
         stars.push({
           x,
           y,

@@ -18,9 +18,7 @@ const assets = {};
         let spriteSheets = GetSpriteSheets(assets);
         const state: any = { font: assets["font"], assets, spriteSheets };
         SetState(state);
-        GameScene(3);
-
-        // Title();
+        Title();
       }
     };
   });
