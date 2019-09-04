@@ -74,6 +74,9 @@ function parseFile(data) {
       case 5: // STAR
         const time = !properties || !properties[0] ? 2 : properties[0].value;
 
+        console.log(properties);
+        console.log(time);
+
         stars.push({
           x,
           y,
@@ -166,7 +169,6 @@ function parseFile(data) {
         thisProperties.data = 0;
 
         if (thisProperties.walks > 0) {
-          console.log("walks");
           thisProperties.data = thisProperties.walks;
           thisProperties.walks = 1;
         }
@@ -183,9 +185,6 @@ function parseFile(data) {
           thisProperties.sleeps * Math.pow(2, 4) +
           thisProperties.data * Math.pow(2, 5);
 
-        console.log(thisProperties);
-        console.log("LETTER=" + charFromNumber(enemyOrd));
-
         levelData.enemies +=
           charFromNumber(y - 2 + x * 13) + charFromNumber(enemyOrd);
         break;
@@ -193,7 +192,7 @@ function parseFile(data) {
   });
 
   if (stars.length !== 2) {
-    throw "Need two stars";
+    throw "Need two stars (got " + stars.length + ")";
   }
   if (!player) {
     throw "No player";
@@ -202,8 +201,6 @@ function parseFile(data) {
   levelData.starsAndStart = makeStarString(stars, player);
   const dataString =
     levelData.ground + "!" + levelData.starsAndStart + levelData.enemies;
-
-  console.log(decodeData(dataString));
 
   return dataString;
 }

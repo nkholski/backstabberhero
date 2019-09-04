@@ -7,7 +7,7 @@
          "name":"ground",
          "objects":[
                 {
-                 "height":64,
+                 "height":32,
                  "id":4,
                  "name":"",
                  "rotation":0,
@@ -15,7 +15,7 @@
                  "visible":true,
                  "width":256,
                  "x":0,
-                 "y":176
+                 "y":208
                 }, 
                 {
                  "gid":1,
@@ -26,7 +26,7 @@
                  "type":"",
                  "visible":true,
                  "width":16,
-                 "x":208,
+                 "x":16,
                  "y":64
                 }, 
                 {
@@ -85,7 +85,7 @@
                  "type":"",
                  "visible":true,
                  "width":16,
-                 "x":48,
+                 "x":224,
                  "y":64
                 }, 
                 {
@@ -106,27 +106,39 @@
                  "rotation":0,
                  "type":"ground",
                  "visible":true,
+                 "width":96,
+                 "x":160,
+                 "y":176
+                }, 
+                {
+                 "gid":4,
+                 "height":16,
+                 "id":60,
+                 "name":"",
+                 "rotation":0,
+                 "type":"",
+                 "visible":true,
                  "width":16,
-                 "x":112,
+                 "x":224,
                  "y":160
                 }, 
                 {
-                 "gid":15,
+                 "gid":14,
                  "height":16,
-                 "id":58,
+                 "id":61,
                  "name":"",
                  "properties":[
                         {
-                         "name":"walks",
-                         "type":"int",
-                         "value":3
+                         "name":"turns",
+                         "type":"bool",
+                         "value":true
                         }],
                  "rotation":0,
                  "type":"",
                  "visible":true,
                  "width":16,
-                 "x":207,
-                 "y":160
+                 "x":32,
+                 "y":192
                 }],
          "opacity":1,
          "properties":[
@@ -166,7 +178,7 @@
          "y":0
         }],
  "nextlayerid":5,
- "nextobjectid":60,
+ "nextobjectid":62,
  "orientation":"orthogonal",
  "renderorder":"right-down",
  "tiledversion":"1.2.4",

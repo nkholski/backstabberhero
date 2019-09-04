@@ -1,3 +1,4 @@
+import { GameScene } from "./scenes/game";
 import { init, initKeys } from "./dependencies/kontra";
 import GetSpriteSheets from "./functions/getSpriteSheets";
 import { SetState } from "./functions/state";
@@ -17,7 +18,9 @@ const assets = {};
         let spriteSheets = GetSpriteSheets(assets);
         const state: any = { font: assets["font"], assets, spriteSheets };
         SetState(state);
-        Title();
+        GameScene(3);
+
+        // Title();
       }
     };
   });

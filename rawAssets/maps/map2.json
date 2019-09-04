@@ -26,19 +26,31 @@
                  "type":"",
                  "visible":true,
                  "width":16,
-                 "x":208,
-                 "y":64
+                 "x":32,
+                 "y":112
                 }, 
                 {
-                 "height":32,
+                 "height":96,
                  "id":40,
                  "name":"",
                  "rotation":0,
                  "type":"ground",
                  "visible":true,
-                 "width":80,
+                 "width":64,
                  "x":0,
-                 "y":80
+                 "y":128
+                }, 
+                {
+                 "gid":3,
+                 "height":16,
+                 "id":48,
+                 "name":"",
+                 "rotation":0,
+                 "type":"",
+                 "visible":true,
+                 "width":16,
+                 "x":112,
+                 "y":160
                 }, 
                 {
                  "gid":5,
@@ -56,7 +68,7 @@
                  "visible":true,
                  "width":16,
                  "x":80,
-                 "y":160
+                 "y":144
                 }, 
                 {
                  "gid":5,
@@ -73,59 +85,7 @@
                  "type":"",
                  "visible":true,
                  "width":16,
-                 "x":160,
-                 "y":160
-                }, 
-                {
-                 "gid":6,
-                 "height":16,
-                 "id":54,
-                 "name":"",
-                 "rotation":0,
-                 "type":"",
-                 "visible":true,
-                 "width":16,
-                 "x":48,
-                 "y":64
-                }, 
-                {
-                 "height":32,
-                 "id":55,
-                 "name":"",
-                 "rotation":0,
-                 "type":"ground",
-                 "visible":true,
-                 "width":144,
-                 "x":112,
-                 "y":80
-                }, 
-                {
-                 "height":48,
-                 "id":57,
-                 "name":"",
-                 "rotation":0,
-                 "type":"ground",
-                 "visible":true,
-                 "width":16,
-                 "x":112,
-                 "y":160
-                }, 
-                {
-                 "gid":15,
-                 "height":16,
-                 "id":58,
-                 "name":"",
-                 "properties":[
-                        {
-                         "name":"walks",
-                         "type":"int",
-                         "value":3
-                        }],
-                 "rotation":0,
-                 "type":"",
-                 "visible":true,
-                 "width":16,
-                 "x":207,
+                 "x":193,
                  "y":160
                 }],
          "opacity":1,
@@ -166,7 +126,7 @@
          "y":0
         }],
  "nextlayerid":5,
- "nextobjectid":60,
+ "nextobjectid":52,
  "orientation":"orthogonal",
  "renderorder":"right-down",
  "tiledversion":"1.2.4",

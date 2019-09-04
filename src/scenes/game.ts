@@ -32,6 +32,7 @@ export const GameScene = (lvl: number) => {
   let player,
     knife,
     enemies,
+    items = [],
     wellDone,
     gameOver,
     jumpReleased,
@@ -56,7 +57,8 @@ export const GameScene = (lvl: number) => {
     facing: EFacing.Right,
     stabTimer: -1,
     gameOver: -1,
-    animations: spriteSheets[0].animations
+    animations: spriteSheets[0].animations,
+    barrel: false
   });
 
   knife = Sprite({
@@ -80,6 +82,17 @@ export const GameScene = (lvl: number) => {
 
   enemies = MakeEnemies(level.enemies, spriteSheets);
 
+  level.items.forEach(item => {
+    const s = Sprite({
+      x: item.x * 16,
+      y: item.y * 16,
+      height: 32,
+      animations: spriteSheets[0].animations
+    });
+    items.push(s);
+    s.playAnimation("barrelLeft");
+  });
+
   const counter = subject => {
     const sleepLeft = Math.ceil(subject.sleepTimer / 1e3 - elapsedTime);
     if (sleepLeft < 1) {
@@ -94,6 +107,16 @@ export const GameScene = (lvl: number) => {
         1
       );
     }
+  };
+
+  const removeBarrel = dir => {
+    let b = player.barrel;
+    items.push(b);
+    b.x = player.x;
+    b.y = player.y;
+    b.dx = player.facing * dir;
+    b.dy = -2;
+    player.barrel = null;
   };
 
   const background = MakeBackground(lvl, level, assets);
@@ -181,6 +204,9 @@ export const GameScene = (lvl: number) => {
           // 7 tick > 100ms
           zzfx(1, 0.1, 800, 0.1, 0.66, 1.1, 3.1, 0.1, 0.85);
           player.stabTimer = 9; // 1 = 16ms, => 9 * 16ms
+          if (player.barrel) {
+            removeBarrel(1);
+          }
         }
 
         // Funkar utan denna verkar det som, varför?
@@ -218,6 +244,11 @@ export const GameScene = (lvl: number) => {
           );
         }
       }
+      if (player.barrel) {
+        anim = "barrel" + (anim === "walk" ? "Player" : "");
+        console.log(anim);
+      }
+
       player.playAnimation(
         anim + (player.facing === EFacing.Left ? "Left" : "Right")
       );
@@ -239,9 +270,20 @@ export const GameScene = (lvl: number) => {
         }
       });
 
+      items.forEach((item, i) => {
+        if (!item.dx && CheckCollidingBody(player, [item])) {
+          player.barrel = item;
+          items.splice(i, 1);
+        }
+        if (item.dx) {
+          item.dy += 0.1;
+          item.update();
+        }
+      });
+
       // Run into enemy
       const collidingBody = CheckCollidingBody(player, enemies);
-      if (collidingBody) {
+      if (collidingBody && !player.barrel) {
         collidingBody.facing =
           collidingBody.x < player.x ? EFacing.Right : EFacing.Left;
 
@@ -250,6 +292,8 @@ export const GameScene = (lvl: number) => {
       }
 
       wellDone = true;
+
+      items;
 
       enemies.forEach(enemy => {
         EnemyUpdate(enemy, state);
@@ -272,6 +316,10 @@ export const GameScene = (lvl: number) => {
         gameOver = true;
       }
       if (gameOver && !wasGameOver) {
+        if (player.barrel) {
+          removeBarrel(-1);
+        }
+
         setTimeout(() => {
           okToQuit = true;
         }, 1000);
@@ -323,6 +371,10 @@ export const GameScene = (lvl: number) => {
 
         enemy.render();
         // }
+      });
+
+      items.forEach(item => {
+        item.render();
       });
     }
   });

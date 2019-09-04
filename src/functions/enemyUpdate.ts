@@ -21,6 +21,7 @@ export const EnemyUpdate = (
   if (EnemyVision(enemy, player, level.platforms)) {
     enemy.gotPlayer = true;
     player.facing = -enemy.facing;
+
     zzfx(1, 0, 100, 0.7, 0.42, 1.5, 0.6, 0.7, 0.2);
     enemy.gotPlayer = true;
   } else if (!enemy.gotPlayer) {

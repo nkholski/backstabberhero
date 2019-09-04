@@ -13,7 +13,7 @@
                  "rotation":0,
                  "type":"ground",
                  "visible":true,
-                 "width":256,
+                 "width":176,
                  "x":0,
                  "y":176
                 }, 
@@ -26,106 +26,136 @@
                  "type":"",
                  "visible":true,
                  "width":16,
-                 "x":208,
-                 "y":64
+                 "x":160,
+                 "y":160
                 }, 
                 {
                  "height":32,
-                 "id":40,
+                 "id":17,
                  "name":"",
                  "rotation":0,
                  "type":"ground",
                  "visible":true,
                  "width":80,
-                 "x":0,
-                 "y":80
+                 "x":160,
+                 "y":96
+                }, 
+                {
+                 "height":48,
+                 "id":19,
+                 "name":"",
+                 "rotation":0,
+                 "type":"ground",
+                 "visible":true,
+                 "width":32,
+                 "x":48,
+                 "y":144
                 }, 
                 {
                  "gid":5,
                  "height":16,
-                 "id":49,
+                 "id":24,
+                 "name":"",
+                 "rotation":0,
+                 "type":"",
+                 "visible":true,
+                 "width":16,
+                 "x":16,
+                 "y":112
+                }, 
+                {
+                 "gid":5,
+                 "height":16,
+                 "id":25,
+                 "name":"",
+                 "rotation":0,
+                 "type":"",
+                 "visible":true,
+                 "width":16,
+                 "x":192,
+                 "y":48
+                }, 
+                {
+                 "height":96,
+                 "id":26,
+                 "name":"",
+                 "rotation":0,
+                 "type":"ground",
+                 "visible":true,
+                 "width":48,
+                 "x":80,
+                 "y":128
+                }, 
+                {
+                 "gid":15,
+                 "height":16,
+                 "id":34,
                  "name":"",
                  "properties":[
                         {
-                         "name":"time",
-                         "type":"int",
-                         "value":3
+                         "name":"turns",
+                         "type":"bool",
+                         "value":true
                         }],
+                 "rotation":0,
+                 "type":"",
+                 "visible":true,
+                 "width":16,
+                 "x":208,
+                 "y":80
+                }, 
+                {
+                 "gid":2,
+                 "height":16,
+                 "id":35,
+                 "name":"",
+                 "properties":[
+                        {
+                         "name":"turns",
+                         "type":"bool",
+                         "value":true
+                        }],
+                 "rotation":0,
+                 "type":"",
+                 "visible":true,
+                 "width":16,
+                 "x":112,
+                 "y":112
+                }, 
+                {
+                 "gid":14,
+                 "height":16,
+                 "id":36,
+                 "name":"",
                  "rotation":0,
                  "type":"",
                  "visible":true,
                  "width":16,
                  "x":80,
-                 "y":160
+                 "y":112
                 }, 
                 {
-                 "gid":5,
+                 "gid":6,
                  "height":16,
-                 "id":50,
+                 "id":37,
                  "name":"",
-                 "properties":[
-                        {
-                         "name":"time",
-                         "type":"int",
-                         "value":5
-                        }],
                  "rotation":0,
                  "type":"",
                  "visible":true,
                  "width":16,
-                 "x":160,
+                 "x":128,
                  "y":160
                 }, 
                 {
                  "gid":6,
                  "height":16,
-                 "id":54,
+                 "id":38,
                  "name":"",
                  "rotation":0,
                  "type":"",
                  "visible":true,
                  "width":16,
-                 "x":48,
-                 "y":64
-                }, 
-                {
-                 "height":32,
-                 "id":55,
-                 "name":"",
-                 "rotation":0,
-                 "type":"ground",
-                 "visible":true,
-                 "width":144,
-                 "x":112,
-                 "y":80
-                }, 
-                {
-                 "height":48,
-                 "id":57,
-                 "name":"",
-                 "rotation":0,
-                 "type":"ground",
-                 "visible":true,
-                 "width":16,
-                 "x":112,
-                 "y":160
-                }, 
-                {
-                 "gid":15,
-                 "height":16,
-                 "id":58,
-                 "name":"",
-                 "properties":[
-                        {
-                         "name":"walks",
-                         "type":"int",
-                         "value":3
-                        }],
-                 "rotation":0,
-                 "type":"",
-                 "visible":true,
-                 "width":16,
-                 "x":207,
+                 "x":16,
                  "y":160
                 }],
          "opacity":1,
@@ -166,7 +196,7 @@
          "y":0
         }],
  "nextlayerid":5,
- "nextobjectid":60,
+ "nextobjectid":39,
  "orientation":"orthogonal",
  "renderorder":"right-down",
  "tiledversion":"1.2.4",
@@ -254,15 +284,6 @@
                          "name":"walks",
                          "type":"int",
                          "value":0
-                        }]
-                }, 
-                {
-                 "id":4,
-                 "properties":[
-                        {
-                         "name":"time",
-                         "type":"int",
-                         "value":2
                         }]
                 }, 
                 {

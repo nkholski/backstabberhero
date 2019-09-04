@@ -3,37 +3,64 @@ import { makeRandom } from "./makeRandom";
 export const MakeBackground = (lvl: number, level, assets) => {
   return MakeTempCanvas((context: CanvasRenderingContext2D) => {
     const rnd = makeRandom(lvl);
+    const night = lvl % 2;
     context.beginPath();
 
-    context.fillStyle = lvl % 2 ? "#036" : "#39F";
+    context.fillStyle = night ? "#036" : "#39F";
     context.fillRect(0, 0, 256, 240);
 
-    if (lvl % 2) {
+    // STARS
+    if (night) {
       context.fillStyle = "#FFF";
       for (let i = 0; i < 10 + rnd(5); i++) {
         const w = rnd(2, 1);
         context.fillRect(rnd(256), rnd(120), w, w);
       }
+    } else {
+      context.fillStyle = "#FF0";
     }
 
-    for (let i = 2; i > 0; i--) {
+    const [s, x, y] = [rnd(16, 6), 9 + rnd(245), 4 + rnd(20)];
+    console.log(s, x, y);
+    for (let i = 3; --i; ) {
+      context.globalAlpha = 2 / (i * 3);
+
+      console.log(s / i);
+      context.arc(x, y + i, s * i, 0, 2 * Math.PI, false);
+      context.lineWidth = 0;
+      context.fill();
+      context.beginPath();
+    }
+
+    context.globalAlpha = 1;
+    for (let i = 1; i > 0; i--) {
       let x = 0;
-      context.fillStyle = "hsl(205, 15%, 53%)";
-      if (i === 2) {
-        context.fillStyle = "hsl(205, 15%, 38%)";
-      }
-      let w = 0;
+      //      context.fillStyle = "hsl(205, 15%, 53%)";
       while (x < 256) {
-        w = Math.round(rnd(16 + 16 * 2) / (i / 2));
-        let y = rnd(99, 80);
+        context.fillStyle = night ? "#345" : "#777";
+
+        let w = 36 + Math.round(16 * rnd(2));
+        let y = rnd(100, 48);
+        console.log(y);
         context.fillRect(x, y, w, 500);
 
-        Math.floor((x = x + w + rnd(10)));
-        // Windows
-        for (let num = rnd(5), i2 = 0; i2 < num; i2++) {
-          context.fillStyle = "hsl(205, 15%, 12%)";
-          context.fillRect(x + 10, 100, 10, 20);
+        context.stroke();
+        context.globalAlpha = 0.2;
+        for (let wx = 0; wx < w - 8; wx += 8) {
+          for (let hy = 6; hy < 500; hy += 16) {
+            context.fillStyle = rnd(2) ? "#000" : rnd(3) ? "#fff" : "#ff0";
+
+            context.fillRect(x + wx + 2, y + hy, 6, 8);
+          }
         }
+        context.stroke();
+        context.globalAlpha = 1;
+
+        // for (let num = rnd(5), i2 = 0; i2 < num; i2++) {
+        //   context.fillStyle = "hsl(205, 15%, 12%)";
+        //   context.fillRect(x + 10, 100, 10, 20);
+        // }
+        x = Math.floor(x + w + rnd(3));
       }
     }
 

@@ -2,6 +2,11 @@ import { CheckCollidingBody } from "./checkCollidingBody";
 import { GetBlocked } from "./getBlocked";
 export const EnemyVision = (enemy, player, platforms) => {
   // 1. Linje i se-riktning tills stöter i ett objekt, hoppa 8px åt gången
+
+  if (player.barrel && player.dx === 0) {
+    return false;
+  }
+
   let seen = false;
   [1, 16].forEach(y => {
     let sight = 0;

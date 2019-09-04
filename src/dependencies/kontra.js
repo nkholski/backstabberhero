@@ -1007,7 +1007,6 @@ function keydownEventHandler(evt) {
   let key = keyMap[evt.which];
   pressedKeys[key] = true;
   justPressed[key] = !wasPressed[key];
-  console.log(justPressed, wasPressed);
 
   wasPressed[key] = true;
   if (callbacks$1[key]) {
@@ -3147,7 +3146,6 @@ class SpriteSheet {
 
     for (name in animations) {
       let { frames, frameRate, loop, flipped } = animations[name];
-      console.log("Flipped", flipped);
       // array that holds the order of the animation
       sequence = [];
 

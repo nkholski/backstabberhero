@@ -6,6 +6,7 @@ interface IEnemy {
 interface ILevel {
   platforms: any[];
   enemies: any[];
+  items: any[];
   stars?: { x: number; y: number; t: number }[];
   player?: { x: number; y: number };
 }
@@ -15,7 +16,7 @@ import { Levels } from "./../common/levels";
 export const getLevel = (levelIndex: number) => {
   const data = Levels.split(" ")[levelIndex];
   const [ground, lvl] = data.split("!");
-  const level: ILevel = { platforms: [], enemies: [] };
+  const level: ILevel = { platforms: [], enemies: [], items: [] };
   for (let i = ground.length - 1; i > 0; i -= 2) {
     let [y, w] = decode(ground.charCodeAt(i));
     let [h, x] = decode(ground.charCodeAt(i - 1));
@@ -27,9 +28,7 @@ export const getLevel = (levelIndex: number) => {
     let [y0, x0] = decode(lvl.charCodeAt(i - 2));
     let [y1, x1] = decode(lvl.charCodeAt(i - 1));
     let [t0, t1] = decode(lvl.charCodeAt(i));
-    console.log(x0, y0, x1, y1);
-    level.stars = [{ x: x0, y: y0, t: t0 }, { x: x1, y: y1, t: t1 }];
-    console.log(level.stars);
+    level.stars = [{ x: x0, y: y0, t: t0 + 1 }, { x: x1, y: y1, t: t1 + 1 }];
     level.player = { x: x * 16, y: y * 16 };
   }
   for (let i = lvl.length - 1; i > 3; i -= 2) {
@@ -44,7 +43,8 @@ export const getLevel = (levelIndex: number) => {
     });
 
     if (!enemy.isEnemy) {
-      console.log("barell", enemy.facing);
+      level.items.push({ type: "berrel", x, y });
+      continue;
     }
 
     level.enemies.push({
