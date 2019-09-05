@@ -187,7 +187,7 @@ export const GameScene = (lvl: number) => {
             player.dy = 0;
           }
 
-          if (keyPressed("down")) {
+          if (keyPressed("down") && !player.barrel) {
             anim = "duck";
             player.standing = false;
             player.y += 16;
