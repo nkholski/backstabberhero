@@ -162,6 +162,7 @@ export const levelSelectScene = (lvl?, stars?) => {
         selectLevel();
       } else {
         writeText(font, "LEVEL " + (currentChoice + 1), -1, 50, 3);
+
         // writeText(font, Levels[currentChoice].t, -1, 90, 2);
       }
     }

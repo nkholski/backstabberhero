@@ -12,7 +12,8 @@ const baseAnims = [
   ["dead", 10, null, false],
   ["star", 8, null, false],
   ["barrelPlayer", "12..13", 3, true],
-  ["barrel", 14, null, false]
+  ["barrel", 14, null, false],
+  ["sleep", "15..16", 3, true]
 ];
 
 const createAltGfx = assets => {

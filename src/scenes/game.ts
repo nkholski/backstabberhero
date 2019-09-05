@@ -58,7 +58,7 @@ export const GameScene = (lvl: number) => {
     stabTimer: -1,
     gameOver: -1,
     animations: spriteSheets[0].animations,
-    barrel: false
+    barrel: null
   });
 
   knife = Sprite({
@@ -328,23 +328,6 @@ export const GameScene = (lvl: number) => {
     render: function() {
       context.drawImage(background, 0, 0);
 
-      if (gameOver) {
-        stars = [];
-        if (wellDone) {
-          writeText(
-            assets.font,
-            ["OK", "GOOD", "GREAT"][starCount] + " STABBING",
-            -1,
-            50,
-            2
-          ); // OK, GOOD eller GREATz
-        } else {
-          writeText(assets.font, "STAB OVER", 56, 50, 2);
-        }
-        if (flash && okToQuit) {
-          writeText(assets.font, " PRESS Z", 56 + 36, 70, 1);
-        }
-      }
       if (knife.visible) {
         knife.render();
       }
@@ -364,7 +347,15 @@ export const GameScene = (lvl: number) => {
       enemies.forEach(enemy => {
         //if (!enemy.dead || flash) {
         if (enemy.gotPlayer) {
-          writeText(assets.font, "HEY!", -(enemy.x + 8), enemy.y - 9, 1);
+          writeText(
+            assets.font,
+            "HEY!",
+            -(enemy.x + 8),
+            enemy.y - 9,
+            1,
+            2,
+            tick * 2
+          );
         }
 
         counter(enemy);
@@ -376,6 +367,24 @@ export const GameScene = (lvl: number) => {
       items.forEach(item => {
         item.render();
       });
+
+      if (gameOver) {
+        stars = [];
+        if (wellDone) {
+          writeText(
+            assets.font,
+            ["OK", "GOOD", "GREAT"][starCount] + " STABBING",
+            -1,
+            50,
+            2
+          ); // OK, GOOD eller GREATz
+        } else {
+          writeText(assets.font, "STAB OVER", 56, 50, 2);
+        }
+        if (flash && okToQuit) {
+          writeText(assets.font, " PRESS Z", 56 + 36, 70, 1);
+        }
+      }
     }
   });
 

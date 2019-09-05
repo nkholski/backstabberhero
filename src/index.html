@@ -11,7 +11,57 @@
     background: #998346;
   }
 </style>
+
+<!--body >div {
+  display: flex;
+  flex-direction: row;
+}
+.c {
+flex-grow: 1;
+display: flex;
+}
+.v {
+flex-direction: column;
+flex-grow: 0.5;
+
+}
+
+
+.c >div {
+display: flex;
+
+flex-grow: 1;
+border: 2px solid white;
+background-color: darkgrey;
+margin: 10px;
+vertical-align: center;
+justify-content: center;
+align-items: center;
+font-size: 2em;
+font-weight: bold;
+}
+
+
+.m{
+width: 100%;
+}*/
+<div>
+  <div class="c">
+    <div id="l">Left</div>
+    <div id="r">Right</div>
+  </div>
+  <div id="m">
+    <canvas height="240px" width="256px"></canvas>
+  </div>
+  <div class="c v">
+    <div id="s">Stab</div>
+    <div id="j">Jump</div>
+    <div id="d">Duck</div>
+  </div>
+</div>
+-->
 <canvas height="240px" width="256px"></canvas>
+
 <script>
   playMusic = () => {
     with (new AudioContext())
