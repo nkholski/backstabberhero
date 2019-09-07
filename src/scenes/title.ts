@@ -4,6 +4,8 @@ import { GetFlash } from "../functions/getFlash";
 import writeText from "../functions/writeText";
 import { levelSelectScene } from "./levelSelect";
 import { GetState } from "../functions/state";
+import { playMusic } from "../functions/music";
+import { Touch } from "../functions/touch";
 
 export const Title = () => {
   let tick = 0;
@@ -11,7 +13,8 @@ export const Title = () => {
   let heroOpacity = 0;
   let state = -1;
   let { context, assets, font } = GetState();
-  window["playMusic"]();
+  // window["playMusic"]();
+  playMusic();
 
   let loop = GameLoop({
     update: () => {
@@ -35,13 +38,15 @@ export const Title = () => {
       context.drawImage(assets.gfx8colors, 64, 0, 32, 32, 0, 120, 120, 120);
       writeText(font, "BACKSTABBER", -1, 50, 2, amplitude, tick++);
       context.globalAlpha = heroOpacity / 100;
-      writeText(assets.font, "HERO", -1, 85 - heroOpacity / 5, 5.5);
+      writeText(font, "HERO", -1, 85 - heroOpacity / 5, 5.5);
       context.globalAlpha = (0.4 * heroOpacity) / 100;
-      writeText(assets.font, "HERO", -130, 85 + 3 - heroOpacity / 5, 5);
+      writeText(font, "HERO", -130, 85 + 3 - heroOpacity / 5, 5);
       context.globalAlpha = 1;
       if (heroOpacity === 100 && GetFlash(tick / 9)) {
-        writeText(assets.font, "PRESS Z TO STAB", 75, 110, 1);
+        writeText(font, "PRESS Z TO STAB", -1, 110, 1);
       }
+
+      writeText(font, "-2019 NIKLAS BERG", 110, 225);
     }
   });
   loop.start();

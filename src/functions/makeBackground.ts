@@ -1,7 +1,12 @@
+import { Touch } from "./touch";
 import { MakeTempCanvas } from "./makeTempCanvas";
 import { makeRandom } from "./makeRandom";
+import { GetState } from "./state";
+
 export const MakeBackground = (lvl: number, level, assets) => {
   return MakeTempCanvas((context: CanvasRenderingContext2D) => {
+    const { mobile } = GetState();
+
     const rnd = makeRandom(lvl);
     const night = lvl % 2;
     context.beginPath();
@@ -21,11 +26,9 @@ export const MakeBackground = (lvl: number, level, assets) => {
     }
 
     const [s, x, y] = [rnd(16, 6), 9 + rnd(245), 4 + rnd(20)];
-    console.log(s, x, y);
+
     for (let i = 3; --i; ) {
       context.globalAlpha = 2 / (i * 3);
-
-      console.log(s / i);
       context.arc(x, y + i, s * i, 0, 2 * Math.PI, false);
       context.lineWidth = 0;
       context.fill();
@@ -35,7 +38,6 @@ export const MakeBackground = (lvl: number, level, assets) => {
     context.globalAlpha = 1;
     for (let i = 1; i > 0; i--) {
       let x = 0;
-      //      context.fillStyle = "hsl(205, 15%, 53%)";
       while (x < 256) {
         context.fillStyle = night ? "#345" : "#777";
 
@@ -55,11 +57,6 @@ export const MakeBackground = (lvl: number, level, assets) => {
         }
         context.stroke();
         context.globalAlpha = 1;
-
-        // for (let num = rnd(5), i2 = 0; i2 < num; i2++) {
-        //   context.fillStyle = "hsl(205, 15%, 12%)";
-        //   context.fillRect(x + 10, 100, 10, 20);
-        // }
         x = Math.floor(x + w + rnd(3));
       }
     }
@@ -83,5 +80,6 @@ export const MakeBackground = (lvl: number, level, assets) => {
         }
       }
     });
+    mobile ? Touch.draw(context) : null;
   });
 };

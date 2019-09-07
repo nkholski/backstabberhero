@@ -25,7 +25,7 @@ export const GameScene = (lvl: number) => {
   //const { l: level, e: enemyData, h: heroCoordinates } = getLevel(lvl);
   const level = getLevel(lvl);
   console.log(level);
-  const { spriteSheets, assets, context } = GetState();
+  const { spriteSheets, assets, context, font } = GetState();
   let turnTimer = 100;
   let starCount = 0;
 
@@ -54,7 +54,7 @@ export const GameScene = (lvl: number) => {
     height: 32,
     blocked: { ...CDefaultBlocked },
     standing: true,
-    facing: EFacing.Right,
+    facing: level.player.x > 120 ? EFacing.Left : EFacing.Right,
     stabTimer: -1,
     gameOver: -1,
     animations: spriteSheets[0].animations,
@@ -99,13 +99,7 @@ export const GameScene = (lvl: number) => {
       subject.sleepTimer = 0;
     }
     if (subject.sleepTimer > 0 && !subject.dead) {
-      writeText(
-        assets.font,
-        "" + sleepLeft,
-        -(subject.x + 8),
-        subject.y - 9,
-        1
-      );
+      writeText(font, "" + sleepLeft, -(subject.x + 8), subject.y - 9, 1);
     }
   };
 
@@ -347,15 +341,7 @@ export const GameScene = (lvl: number) => {
       enemies.forEach(enemy => {
         //if (!enemy.dead || flash) {
         if (enemy.gotPlayer) {
-          writeText(
-            assets.font,
-            "HEY!",
-            -(enemy.x + 8),
-            enemy.y - 9,
-            1,
-            2,
-            tick * 2
-          );
+          writeText(font, "HEY/", -(enemy.x + 8), enemy.y - 9, 1, 2, tick * 2);
         }
 
         counter(enemy);
@@ -372,17 +358,17 @@ export const GameScene = (lvl: number) => {
         stars = [];
         if (wellDone) {
           writeText(
-            assets.font,
+            font,
             ["OK", "GOOD", "GREAT"][starCount] + " STABBING",
             -1,
             50,
             2
           ); // OK, GOOD eller GREATz
         } else {
-          writeText(assets.font, "STAB OVER", 56, 50, 2);
+          writeText(font, "STAB OVER", 56, 50, 2);
         }
         if (flash && okToQuit) {
-          writeText(assets.font, " PRESS Z", 56 + 36, 70, 1);
+          writeText(font, " PRESS Z", 56 + 36, 70, 1);
         }
       }
     }

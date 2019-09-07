@@ -1,3 +1,5 @@
+import { helpScene } from "./help";
+import { Title } from "./title";
 import { MakeTempCanvas } from "./../functions/makeTempCanvas";
 import { Levels } from "../common/levels";
 import { GetFlash } from "../functions/getFlash";
@@ -18,7 +20,7 @@ import { GetState } from "../functions/state";
 import { zzfx } from "../dependencies/zzfx";
 
 const resetLocalStorage = () => {
-  const progress = new Array(25).fill(-1);
+  const progress = new Array(99).fill(-1);
   updateLocalStorage(progress);
   return progress;
 };
@@ -47,12 +49,12 @@ export const levelSelectScene = (lvl?, stars?) => {
   let currentChoice = next;
 
   const backgroundImage = MakeTempCanvas(context => {
-    for (let i = 0; i < 25; i++) {
+    for (let i = 0; i < 20; i++) {
+      context.beginPath();
       const x = i % 5;
       const y = (i - x) / 5;
 
       if (i > next && context.globalAlpha == 1) {
-        context.stroke();
         context.globalAlpha = 0.5;
       }
 
@@ -83,25 +85,58 @@ export const levelSelectScene = (lvl?, stars?) => {
         null,
         context
       );
+      context.stroke();
     }
-    context.stroke();
+    context.globalAlpha = 1;
+
+    context.fillStyle = "rgba(99,99,99,0.5)";
+
+    for (let i = 0; i < 3; i++) {
+      context.beginPath();
+
+      if (i == 2) {
+        context.globalAlpha = 0.2;
+      }
+
+      context.rect(i * 75 + 16, 4 * 45 + 12, 70, 40);
+      context.fill();
+
+      writeText(
+        font,
+        ["TITLE", "HELP", "NEXT"][i],
+        -(i * 75 + 16 + 37 - 4),
+        4 * 45 + 12 + 3 + 10,
+        1,
+        null,
+        null,
+        context
+      );
+
+      context.stroke();
+    }
   });
 
   const selectLevel = () => {
-    context.beginPath();
-
     context.drawImage(backgroundImage, 0, 0);
 
+    context.beginPath();
+
     context.strokeStyle = "#fff";
+    context.fillStyle = "rgba(255,255,255,0.3)";
 
     if (GetFlash(++tick / 9)) {
-      context.rect(
-        (currentChoice % 5) * 45 + 16,
-        Math.floor(currentChoice / 5) * 45 + 12,
-        40,
-        40
-      );
+      if (currentChoice < 20) {
+        context.rect(
+          (currentChoice % 5) * 45 + 16,
+          Math.floor(currentChoice / 5) * 45 + 12,
+          40,
+          40
+        );
+      } else {
+        context.rect((currentChoice % 5) * 75 + 16, 4 * 45 + 12, 70, 40);
+      }
     }
+    context.fill();
 
     context.stroke();
   };
@@ -142,17 +177,22 @@ export const levelSelectScene = (lvl?, stars?) => {
         }
 
         currentChoice =
-          currentChoice > 24 ? 24 : currentChoice < 0 ? 0 : currentChoice;
+          currentChoice > 22 ? 22 : currentChoice < 0 ? 0 : currentChoice;
 
         if (keyPressed("z")) {
           killme = true;
           transition = true;
+          if (currentChoice > 19) {
+            gameLoop.stop();
+            currentChoice === 20 ? Title() : helpScene();
+            return;
+          }
           setTimeout(() => {
             context.stroke();
             context.restore();
             GameScene(currentChoice);
             gameLoop.stop();
-          }, 2e3);
+          }, 1e3);
         }
       }
     },
