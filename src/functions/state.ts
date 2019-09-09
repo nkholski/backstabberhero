@@ -12,12 +12,30 @@ export const SetState = (state: any) => {
     images[name] = new Image();
     images[name].src = imgSrc[i];
   });
+  const context = getContext();
+  if (!state.hasTouchEvent) {
+    state.hasTouchEvent = true;
+    const update = e => {
+      const touches = [];
+      const ratio = screen.width / 256;
+      for (let i = 0; i < e.touches.length; i++) {
+        touches[i] = {
+          x: e.touches[i].pageX / ratio,
+          y: e.touches[i].pageY / ratio
+        };
+      }
+
+      SetState({ touches });
+    };
+    context.canvas.ontouchstart = update;
+    context.canvas.ontouchend = update;
+  }
 
   window["nkholski"] = {
     ...globalState,
     ...state,
-    context: getContext(),
-    mobile: screen.width < 800,
+    context,
+    mobile: "ontouchstart" in window,
     ...images
   };
 };

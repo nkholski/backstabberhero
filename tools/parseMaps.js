@@ -35,10 +35,11 @@ while (tryNextFile) {
 }
 
 parsedString = parsedString.replace(/\s$/, "");
+bas64string = Buffer.from(parsedString, "binary").toString("base64");
 
 fs.writeFileSync(
   "../src/common/levels.ts",
-  `export const Levels = "${parsedString}";`
+  `export const Levels = atob("${bas64string}");`
 );
 
 function parseFile(data) {

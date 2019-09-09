@@ -1,3 +1,13 @@
+<head>
+  <meta
+    name="monetization"
+    content="$coil.xrptipbot.com/FpG5bRAeSVuJbdCJddtAgw"
+  />
+  <meta
+    name="viewport"
+    content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0"
+  />
+</head>
 <style>
   body {
     margin: 0;
@@ -8,7 +18,42 @@
     image-rendering: pixelated;
     background: #984;
   }
+
+  body > div {
+    display: flex;
+    flex-direction: row;
+  }
+  .c {
+    flex-grow: 1;
+    display: flex;
+  }
+  .v {
+    flex-direction: column;
+    flex-grow: 0.5;
+  }
+
+  .c > div {
+    display: flex;
+
+    flex-grow: 1;
+    border: 2px solid white;
+    background-color: darkgrey;
+    margin: 10px;
+    vertical-align: center;
+    justify-content: center;
+    align-items: center;
+    font-size: 2em;
+    font-weight: bold;
+  }
+
+  .m {
+    width: 100%;
+  }
 </style>
+
+<div id="controls">
+  <div></div>
+</div>
 
 <!--body >div {
   display: flex;
@@ -41,24 +86,31 @@ font-weight: bold;
 
 
 .m{
-width: 100%;
-}*/
+width: 100%;  
+}*/-->
+
 <div>
-  <div class="c">
+  <div class="c a">
     <div id="l">Left</div>
     <div id="r">Right</div>
   </div>
   <div id="m">
     <canvas height="240px" width="256px"></canvas>
   </div>
-  <div class="c v">
-    <div id="s">Stab</div>
-    <div id="j">Jump</div>
-    <div id="d">Duck</div>
+  <div class="c v rightone">
+    <div class="c b">
+      <!-- <div id="l">Left</div>
+      <div id="r">Right</div> -->
+    </div>
+    <div class="c v">
+      <!-- <div id="s">Stab</div>
+      <div id="j">Jump</div>
+      <div id="d">Duck</div> -->
+    </div>
   </div>
 </div>
--->
-<canvas height="240px" width="256px"></canvas>
+
+<!-- <canvas height="240px" width="256px"></canvas> -->
 
 <script>
   playMusic = () => {

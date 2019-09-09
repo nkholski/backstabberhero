@@ -40,8 +40,8 @@ SEEN HIRS FACE///`;
           `USE ARROW KEYS TO MOVE JUMP
 AND DUCK. PRESS Z TO STAB.
 STUDY YOUR ENEMIES TO TIME
-YOUR ATTACKS. NO ONE CARE
-ABOUT IMMOBILE BARRELS/`.substring(0, letter - storyLength),
+YOUR ATTACKS. AN IMMOBILE
+BARREL GOES UNNOTICED/`.substring(0, letter - storyLength),
           4,
           120 + 24,
           1
@@ -56,7 +56,7 @@ ABOUT IMMOBILE BARRELS/`.substring(0, letter - storyLength),
       ++tick;
       letter = tick / 3;
 
-      if (keyPressed("z") && tick > 99) {
+      if ((keyPressed("z") || GetState().touches[0]) && tick > 99) {
         gameLoop.stop();
         Title();
       }

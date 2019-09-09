@@ -23,7 +23,7 @@ export const Title = () => {
       } else if (heroOpacity < 100) {
         heroOpacity++;
       }
-      if (keyPressed("z")) {
+      if (keyPressed("z") || GetState().touches.length > 0) {
         zzfx(1, 0.1, 568, 0.5, 0.9, 1.5, 0, 4.5, 0.69);
         if (state == 1) {
           loop.stop();

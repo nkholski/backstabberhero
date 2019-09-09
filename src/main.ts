@@ -15,13 +15,16 @@ const rotateDevice = () => {
     canvas.width = 256;
     return;
   }
-  alert("Rotate device");
-  setTimeout(rotateDevice, 500);
+  // setTimeout(rotateDevice, 500);
 };
 
 init();
 const assets = {};
 (() => {
+  //@ts-ignore
+  if (document.monetization && document.monetization.state === "started") {
+    alert("hej");
+  }
   let l = 1;
   window["zzfx_x"] = new AudioContext();
   ["gfx8colors"].forEach(file => {
@@ -32,7 +35,7 @@ const assets = {};
     assets[file].onload = () => {
       if (!--l) {
         let spriteSheets = GetSpriteSheets(assets);
-        const state: any = { assets, spriteSheets };
+        const state: any = { assets, spriteSheets, touches: {} };
         SetState(state);
         console.log(GetState());
         //@ts-ignore;

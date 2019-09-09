@@ -114,22 +114,26 @@ export const GameScene = (lvl: number) => {
   };
 
   const background = MakeBackground(lvl, level, assets);
+  let turnState;
 
   // Define gameLoop
   const gameLoop = GameLoop({
     update: function() {
+      turnState =
+        turnTimer < 290
+          ? ETurnState.Walk
+          : turnTimer < 310
+          ? ETurnState.AboutToTurn
+          : turnTimer === 310 || turnTimer === 330
+          ? ETurnState.Turn
+          : ETurnState.Watch;
       const state = {
         level,
         player,
         enemies,
         gameOver,
         tick,
-        turnState:
-          turnTimer < 300
-            ? ETurnState.Walk
-            : turnTimer === 310 || turnTimer === 330
-            ? ETurnState.Turn
-            : ETurnState.Watch
+        turnState
       };
       const wasGameOver = gameOver;
 
@@ -346,7 +350,15 @@ export const GameScene = (lvl: number) => {
 
         counter(enemy);
 
-        enemy.render();
+        if (
+          !(
+            enemy.turns &&
+            turnState === ETurnState.AboutToTurn &&
+            GetFlash(tick)
+          )
+        ) {
+          enemy.render();
+        }
         // }
       });
 

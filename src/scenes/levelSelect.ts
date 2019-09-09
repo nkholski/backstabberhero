@@ -147,8 +147,9 @@ export const levelSelectScene = (lvl?, stars?) => {
         if (killme) {
           return;
         }
+        const touches = GetState().touches;
 
-        if (keyPressed("any")) {
+        if (keyPressed("any") || touches.length > 0) {
           if (!okToStart) {
             return;
           }
@@ -179,7 +180,18 @@ export const levelSelectScene = (lvl?, stars?) => {
         currentChoice =
           currentChoice > 22 ? 22 : currentChoice < 0 ? 0 : currentChoice;
 
-        if (keyPressed("z")) {
+        console.log(touches.length);
+        if (touches[0]) {
+          const { x, y } = touches[0];
+          currentChoice =
+            5 * Math.round((y + 12) / 45) + // Y
+            Math.round((x + 12) / 45) - // X
+            6; // -1 for X and -5 for Y
+          currentChoice =
+            currentChoice < 20 ? currentChoice : currentChoice < 22 ? 20 : 21;
+        }
+
+        if (keyPressed("z") || touches[0]) {
           killme = true;
           transition = true;
           if (currentChoice > 19) {

@@ -11,11 +11,10 @@ export const EnemyUpdate = (
   const cliff = !CheckCliff(enemy, level.platforms).bottom;
   let anim = "idle";
   enemy.dy += 0.2;
-  if (enemy.dead) {
+  if (enemy.dead || enemy.gotPlayer) {
     return;
   }
   if (enemy.sleepTimer > 0) {
-    console.log(enemy.sleepTimer);
     enemy.playAnimation("sleepRight");
     return;
   }
@@ -50,9 +49,7 @@ export const EnemyUpdate = (
     if (enemy.sleeper && enemy.sleepTimer === 0) {
       enemy.facing = GetFlash(tick / 20) ? 1 : -1;
     }
-    if (enemy.sleeper) {
-      debugger;
-    }
+
     anim = enemy.walks && turnState === ETurnState.Walk ? "walk" : "idle";
   }
 

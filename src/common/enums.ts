@@ -12,9 +12,9 @@ export enum EEnemyType {
 
 export enum ETurnState {
   Walk,
+  AboutToTurn,
   Turn,
-  Watch,
-  TurnBack
+  Watch
 }
 
 export enum ETurnTimes {
