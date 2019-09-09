@@ -153,8 +153,13 @@ export const GameScene = (lvl: number) => {
         gameOver = true;
       }
 
+      const keys = {};
+      ["left", "right", "up", "down", "z"].forEach(key => {
+        keys[key] = keyPressed(key) || GetState().keys[key];
+      });
+
       if (gameOver) {
-        if (keyPressed("z") && okToQuit && sceneState === 1) {
+        if (keys["z"] && okToQuit && sceneState === 1) {
           sceneState = 2;
           gameLoop.stop();
           levelSelectScene(wellDone ? lvl : -1, starCount + 1);
@@ -167,38 +172,38 @@ export const GameScene = (lvl: number) => {
           player.height = 32;
         }
         anim = "idle";
-        if (keyPressed("left")) {
+        if (keys["left"]) {
           player.dx = -1;
           player.facing = EFacing.Left;
           anim = "walk";
         }
-        if (keyPressed("right")) {
+        if (keys["right"]) {
           player.dx = 1;
           player.facing = EFacing.Right;
           anim = "walk";
         }
 
-        jumpReleased = jumpReleased || !keyPressed("up");
+        jumpReleased = jumpReleased || !keys["up"];
 
         if (player.blocked.bottom) {
           if (player.dy > 0) {
             player.dy = 0;
           }
 
-          if (keyPressed("down") && !player.barrel) {
+          if (keys["down"] && !player.barrel) {
             anim = "duck";
             player.standing = false;
             player.y += 16;
             player.height = 16;
             player.dx = 0;
-          } else if (keyPressed("up") && jumpReleased) {
+          } else if (keys["up"] && jumpReleased) {
             zzfx(1, 0, 200, 0.4, 0, 2, 0, 0, 5); // ZzFX 6010
             player.dy = -4.5;
             jumpReleased = false;
           }
         }
 
-        if (keyPressed("z") && player.stabTimer < -7 && player.standing) {
+        if (keys["z"] && player.stabTimer < -7 && player.standing) {
           // 7 tick > 100ms
           zzfx(1, 0.1, 800, 0.1, 0.66, 1.1, 3.1, 0.1, 0.85);
           player.stabTimer = 9; // 1 = 16ms, => 9 * 16ms

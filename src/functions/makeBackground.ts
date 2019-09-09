@@ -1,4 +1,4 @@
-import { Touch } from "./touch";
+// import { Touch } from "./touch";
 import { MakeTempCanvas } from "./makeTempCanvas";
 import { makeRandom } from "./makeRandom";
 import { GetState } from "./state";
@@ -80,6 +80,6 @@ export const MakeBackground = (lvl: number, level, assets) => {
         }
       }
     });
-    mobile ? Touch.draw(context) : null;
+    // mobile ? Touch.draw(context) : null;
   });
 };

@@ -8,182 +8,95 @@
     content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0"
   />
 </head>
-<style>
-  body {
-    margin: 0;
-    text-align: center;
-    background-color: 0;
-  }
-  canvas {
-    image-rendering: pixelated;
-    background: #984;
-  }
 
-  body > div {
-    display: flex;
-    flex-direction: row;
-  }
-  .c {
-    flex-grow: 1;
-    display: flex;
-  }
-  .v {
-    flex-direction: column;
-    flex-grow: 0.5;
-  }
-
-  .c > div {
-    display: flex;
-
-    flex-grow: 1;
-    border: 2px solid white;
-    background-color: darkgrey;
-    margin: 10px;
-    vertical-align: center;
-    justify-content: center;
-    align-items: center;
-    font-size: 2em;
-    font-weight: bold;
-  }
-
-  .m {
-    width: 100%;
-  }
-</style>
-
-<div id="controls">
-  <div></div>
-</div>
-
-<!--body >div {
-  display: flex;
-  flex-direction: row;
-}
-.c {
-flex-grow: 1;
-display: flex;
-}
-.v {
-flex-direction: column;
-flex-grow: 0.5;
-
-}
-
-
-.c >div {
-display: flex;
-
-flex-grow: 1;
-border: 2px solid white;
-background-color: darkgrey;
-margin: 10px;
-vertical-align: center;
-justify-content: center;
-align-items: center;
-font-size: 2em;
-font-weight: bold;
-}
-
-
-.m{
-width: 100%;  
-}*/-->
-
-<div>
-  <div class="c a">
-    <div id="l">Left</div>
-    <div id="r">Right</div>
-  </div>
-  <div id="m">
+<body class="desktop">
+  <div>
+    <div class="left-controls lan">
+      <div id="left">LEFT</div>
+      <div id="right">RIGHT</div>
+    </div>
     <canvas height="240px" width="256px"></canvas>
-  </div>
-  <div class="c v rightone">
-    <div class="c b">
-      <!-- <div id="l">Left</div>
-      <div id="r">Right</div> -->
-    </div>
-    <div class="c v">
-      <!-- <div id="s">Stab</div>
-      <div id="j">Jump</div>
-      <div id="d">Duck</div> -->
-    </div>
-  </div>
-</div>
 
-<!-- <canvas height="240px" width="256px"></canvas> -->
+    <div class="right-controls">
+      <div class="arrows por">
+        <div id="left">LEFT</div>
+        <div id="right">RIGHT</div>
+      </div>
+      <div class="buttons">
+        <div id="up">A</div>
+        <div id="z">B</div>
+        <div id="down">C</div>
+      </div>
+    </div>
+  </div>
 
-<script>
-  playMusic = () => {
-    with (new AudioContext())
-      with ((G = createGain()))
-        for (i in (D = [
-          13,
-          13,
-          13,
-          13,
-          13,
-          13,
-          13,
-          13,
-          13,
-          13,
-          13,
-          13,
-          13,
-          ,
-          ,
-          13,
-          13,
-          ,
-          ,
-          13,
-          13,
-          ,
-          ,
-          13,
-          13,
-          12,
-          ,
-          11,
-          ,
-          13,
-          13,
-          ,
-          ,
-          13,
-          13,
-          ,
-          ,
-          13,
-          13,
-          12,
-          ,
-          9,
-          ,
-          13,
-          13,
-          ,
-          ,
-          13,
-          13,
-          ,
-          ,
-          13,
-          13,
-          14,
-          14,
-          15,
-          15
-        ]))
-          with (createOscillator())
-            if (D[i])
-              connect(G),
-                G.connect(destination),
-                start(i * 0.1),
-                frequency.setValueAtTime(340 * 1.06 ** (13 - D[i]), i * 0.1),
-                (type = "triangle"),
-                gain.setValueAtTime(1, i * 0.1),
-                gain.setTargetAtTime(0.0001, i * 0.1 + 0.08, 0.005),
-                stop(i * 0.1 + 0.09);
-  };
-</script>
+  <style>
+    body {
+      margin: 0;
+      overflow: hidden;
+      background: #000;
+    }
+    body.mobile {
+      color: #fff;
+    }
+    body.por .left-controls {
+      display: none;
+    }
+    body:not(.por) .arrows {
+      display: none;
+    }
+
+    body div {
+      display: flex;
+      flex: 1;
+    }
+    body > div {
+      height: 100vh;
+    }
+
+    body.por > div {
+      flex-direction: column; /* POR */
+    }
+
+    canvas {
+      background-color: #aaa;
+    }
+
+    body.por canvas {
+      height: 100vw;
+    }
+
+    body:not(.por) canvas {
+      margin: auto;
+      height: 100vh;
+    }
+
+    /* .left-controls {
+      flex-shrink: 1;
+    } */
+    .right-controls {
+      display: flex;
+      flex-shrink: 1;
+      /* flex-direction: column;*/
+    }
+    .left-controls div,
+    .right-controls > div > div {
+      align-items: center;
+      justify-content: center;
+    }
+
+    .arrows div {
+      flex-grow: 1;
+      max-width: 100px;
+    }
+
+    .buttons {
+      flex-direction: column;
+    }
+    .buttons div {
+      width: 100%; /* Landscape */
+      min-width: 50%;
+      margin-left: auto;
+    }
+  </style>
+</body>

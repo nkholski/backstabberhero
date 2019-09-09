@@ -7,13 +7,18 @@ import { helpScene } from "./scenes/help";
 
 const canvas = document.getElementsByTagName("canvas")[0];
 
+const setKey = (id, val) => {
+  const keys = GetState().keys;
+  keys[id] = val;
+  SetState({ keys });
+};
+
 const rotateDevice = () => {
-  console.log("LYSS");
+  let bodyClasses = document.getElementsByTagName("body")[0].classList;
+  bodyClasses.add("mobile");
+  bodyClasses.remove("por");
   if (screen.width < screen.height) {
-    console.log("FIX");
-    canvas.height = screen.availHeight * (256 / screen.availWidth);
-    canvas.width = 256;
-    return;
+    bodyClasses.add("por");
   }
   // setTimeout(rotateDevice, 500);
 };
@@ -35,18 +40,17 @@ const assets = {};
     assets[file].onload = () => {
       if (!--l) {
         let spriteSheets = GetSpriteSheets(assets);
-        const state: any = { assets, spriteSheets, touches: {} };
+        const state: any = { assets, spriteSheets, touches: {}, keys: {} };
         SetState(state);
-        console.log(GetState());
-        //@ts-ignore;
-        console.log("canvas", canvas);
         if (GetState().mobile) {
-          console.log("LYSNNA");
-          window.onorientationchange = () => rotateDevice;
+          window.onorientationchange = rotateDevice;
+          ["left", "right", "up", "z", "down"].forEach(id => {
+            const btn = document.getElementById(id);
+            btn.ontouchstart = () => setKey(id, true);
+            btn.ontouchend = () => setKey(id, false);
+          });
+
           rotateDevice();
-          canvas.style.width = "100%";
-        } else {
-          canvas.style.height = "100%";
         }
         Title();
       }

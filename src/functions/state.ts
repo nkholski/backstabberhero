@@ -38,6 +38,10 @@ export const SetState = (state: any) => {
     mobile: "ontouchstart" in window,
     ...images
   };
+
+  if (state.keys) {
+    console.log("keys update", window["nkholski"]);
+  }
 };
 
 export const GetState = () => {
