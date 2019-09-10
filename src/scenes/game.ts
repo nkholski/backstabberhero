@@ -1,3 +1,4 @@
+import { Ekeys } from "../functions/input";
 import { getLevel } from "./../functions/getLevel";
 import { GetState } from "./../functions/state";
 import { MakeBackground } from "./../functions/makeBackground";
@@ -9,17 +10,13 @@ import { GetBlocked } from "./../functions/physics/getBlocked";
 import { CDefaultBlocked } from "./../common/constants";
 import { EFacing, ETurnState, ETurnTimes } from "./../common/enums";
 import { GetFlash } from "../functions/getFlash";
-import {
-  Sprite,
-  GameLoop,
-  initKeys,
-  keyPressed
-} from "../dependencies/kontra.js";
+import { Sprite, GameLoop, initKeys } from "../dependencies/kontra.js";
 import { zzfx } from "../dependencies/zzfx";
 
 import writeText from "../functions/writeText";
 import { EnemyUpdate } from "../functions/enemyUpdate";
 import { levelSelectScene } from "./levelSelect";
+import { keyPressed } from "../functions/input";
 
 export const GameScene = (lvl: number) => {
   //const { l: level, e: enemyData, h: heroCoordinates } = getLevel(lvl);
@@ -153,13 +150,13 @@ export const GameScene = (lvl: number) => {
         gameOver = true;
       }
 
-      const keys = {};
-      ["left", "right", "up", "down", "z"].forEach(key => {
-        keys[key] = keyPressed(key) || GetState().keys[key];
-      });
+      // const keys = {};
+      // ["left", "right", "up", "down", "z"].forEach(key => {
+      //   keys[key] = keyPressed(key) || GetState().keys[key];
+      // });
 
       if (gameOver) {
-        if (keys["z"] && okToQuit && sceneState === 1) {
+        if (keyPressed(Ekeys.Action) && okToQuit && sceneState === 1) {
           sceneState = 2;
           gameLoop.stop();
           levelSelectScene(wellDone ? lvl : -1, starCount + 1);
@@ -172,38 +169,42 @@ export const GameScene = (lvl: number) => {
           player.height = 32;
         }
         anim = "idle";
-        if (keys["left"]) {
+        if (keyPressed(Ekeys.Left)) {
           player.dx = -1;
           player.facing = EFacing.Left;
           anim = "walk";
         }
-        if (keys["right"]) {
+        if (keyPressed(Ekeys.Right)) {
           player.dx = 1;
           player.facing = EFacing.Right;
           anim = "walk";
         }
 
-        jumpReleased = jumpReleased || !keys["up"];
+        jumpReleased = jumpReleased || !keyPressed(Ekeys.Jump);
 
         if (player.blocked.bottom) {
           if (player.dy > 0) {
             player.dy = 0;
           }
 
-          if (keys["down"] && !player.barrel) {
+          if (keyPressed(Ekeys.Duck) && !player.barrel) {
             anim = "duck";
             player.standing = false;
             player.y += 16;
             player.height = 16;
             player.dx = 0;
-          } else if (keys["up"] && jumpReleased) {
+          } else if (keyPressed(Ekeys.Jump) && jumpReleased) {
             zzfx(1, 0, 200, 0.4, 0, 2, 0, 0, 5); // ZzFX 6010
             player.dy = -4.5;
             jumpReleased = false;
           }
         }
 
-        if (keys["z"] && player.stabTimer < -7 && player.standing) {
+        if (
+          keyPressed(Ekeys.Stab) &&
+          player.stabTimer < -7 &&
+          player.standing
+        ) {
           // 7 tick > 100ms
           zzfx(1, 0.1, 800, 0.1, 0.66, 1.1, 3.1, 0.1, 0.85);
           player.stabTimer = 9; // 1 = 16ms, => 9 * 16ms
@@ -249,7 +250,6 @@ export const GameScene = (lvl: number) => {
       }
       if (player.barrel) {
         anim = "barrel" + (anim === "walk" ? "Player" : "");
-        console.log(anim);
       }
 
       player.playAnimation(

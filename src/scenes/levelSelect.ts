@@ -3,21 +3,13 @@ import { Title } from "./title";
 import { MakeTempCanvas } from "./../functions/makeTempCanvas";
 import { Levels } from "../common/levels";
 import { GetFlash } from "../functions/getFlash";
-import {
-  init,
-  Sprite,
-  SpriteSheet,
-  GameLoop,
-  getContext,
-  initKeys,
-  keyPressed,
-  keyJustPressed
-} from "../dependencies/kontra.js";
+import { GameLoop, getContext } from "../dependencies/kontra.js";
 import writeText from "../functions/writeText";
 import { GameScene } from "./game";
 import { start } from "repl";
 import { GetState } from "../functions/state";
 import { zzfx } from "../dependencies/zzfx";
+import { keyPressed, Ekeys, getTouches } from "../functions/input";
 
 const resetLocalStorage = () => {
   const progress = new Array(99).fill(-1);
@@ -30,7 +22,7 @@ const updateLocalStorage = progress => {
 };
 
 export const levelSelectScene = (lvl?, stars?) => {
-  const { font, assets, spriteSheets } = GetState();
+  const { font, assets } = GetState();
   let transition;
   let killme = false;
   let tick = 0;
@@ -147,29 +139,27 @@ export const levelSelectScene = (lvl?, stars?) => {
         if (killme) {
           return;
         }
-        const touches = GetState().touches;
+        const touches = getTouches();
 
-        if (keyPressed("any") || touches.length > 0) {
-          if (!okToStart) {
-            return;
-          }
-          okToStart = false;
-        } else {
-          okToStart = true;
+        okToStart = okToStart || !keyPressed(Ekeys.Any);
+
+        if (!okToStart || !keyPressed(Ekeys.Any)) {
+          return;
         }
+        okToStart = false;
 
         let wasCurrentChoice = currentChoice;
 
-        if (keyJustPressed("up")) {
+        if (keyPressed(Ekeys.Up)) {
           currentChoice -= 5;
         }
-        if (keyPressed("down")) {
+        if (keyPressed(Ekeys.Duck)) {
           currentChoice += 5;
         }
-        if (keyJustPressed("left")) {
+        if (keyPressed(Ekeys.Left)) {
           currentChoice--;
         }
-        if (keyPressed("right")) {
+        if (keyPressed(Ekeys.Right)) {
           currentChoice++;
         }
 
@@ -177,21 +167,18 @@ export const levelSelectScene = (lvl?, stars?) => {
           zzfx(1, 0.3, 100, 0.4, 0.27, 0.1, 2, 2.9, 0.68);
         }
 
-        currentChoice =
-          currentChoice > 22 ? 22 : currentChoice < 0 ? 0 : currentChoice;
-
-        console.log(touches.length);
         if (touches[0]) {
           const { x, y } = touches[0];
           currentChoice =
-            5 * Math.round((y + 12) / 45) + // Y
-            Math.round((x + 12) / 45) - // X
-            6; // -1 for X and -5 for Y
+            Math.floor((x - 16) / 45) + 5 * Math.floor((y - 12) / 45);
           currentChoice =
             currentChoice < 20 ? currentChoice : currentChoice < 22 ? 20 : 21;
         }
 
-        if (keyPressed("z") || touches[0]) {
+        currentChoice =
+          currentChoice > 22 ? 22 : currentChoice < 0 ? 0 : currentChoice;
+
+        if (keyPressed(Ekeys.Action)) {
           killme = true;
           transition = true;
           if (currentChoice > 19) {

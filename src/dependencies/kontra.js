@@ -117,24 +117,21 @@ function getContext() {
  *
  * @returns {Object} An object with properties `canvas` and `context`. `canvas` it the canvas element for the game and `context` is the context object the game draws to.
  */
-function init(canvas) {
+function init() {
   // check if canvas is a string first, an element next, or default to getting
   // first canvas on page
-  canvasEl =
-    document.getElementById(canvas) ||
-    canvas ||
-    document.querySelector("canvas");
+  canvasEl = document.querySelector("canvas");
 
   // @if DEBUG
-  if (!canvasEl) {
-    throw Error("You must provide a canvas element for the game");
-  }
-  // @endif
+  // if (!canvasEl) {
+  //   throw Error("You must provide a canvas element for the game");
+  // }
+  // // @endif
 
   context = canvasEl.getContext("2d");
   context.imageSmoothingEnabled = false;
 
-  emit("init");
+  // emit("init");
 
   return { canvas: canvasEl, context };
 }
@@ -3593,9 +3590,7 @@ function TileEngine(properties = {}) {
       // @if DEBUG
       if (!source) {
         throw Error(
-          `You must load the tileset source "${
-            tileset.source
-          }" before loading the tileset`
+          `You must load the tileset source "${tileset.source}" before loading the tileset`
         );
       }
       // @endif
@@ -3619,9 +3614,7 @@ function TileEngine(properties = {}) {
       // @if DEBUG
       if (!image) {
         throw Error(
-          `You must load the image "${
-            tileset.image
-          }" before loading the tileset`
+          `You must load the image "${tileset.image}" before loading the tileset`
         );
       }
       // @endif

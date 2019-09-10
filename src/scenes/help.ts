@@ -7,11 +7,11 @@ import {
   GameLoop,
   getContext,
   initKeys,
-  keyPressed,
   keyJustPressed
 } from "../dependencies/kontra.js";
 import writeText from "../functions/writeText";
 import { GetState } from "../functions/state";
+import { keyPressed, Ekeys } from "../functions/input";
 
 export const helpScene = () => {
   const { font } = GetState();
@@ -56,7 +56,7 @@ BARREL GOES UNNOTICED/`.substring(0, letter - storyLength),
       ++tick;
       letter = tick / 3;
 
-      if ((keyPressed("z") || GetState().touches[0]) && tick > 99) {
+      if ((keyPressed(Ekeys.Any) || GetState().touches[0]) && tick > 99) {
         gameLoop.stop();
         Title();
       }

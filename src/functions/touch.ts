@@ -1,3 +1,5 @@
+/* ABANDONED NICER LOOKING TOUCH GUI :-( */
+
 import { GetState } from "./state";
 import writeText from "./writeText";
 
@@ -36,8 +38,6 @@ export const Touch = {
       );
       context.stroke();
     });
-
-    console.log("ehj");
 
     //@ts-ignore
     // context.canvas.ontouchstart = (a, b) => {

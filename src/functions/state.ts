@@ -1,6 +1,8 @@
 import { getContext } from "../dependencies/kontra.js";
 
 export const SetState = (state: any) => {
+  const body = document.getElementsByTagName("body")[0];
+
   const globalState: any = window["nkholski"] || {};
   const images = {};
   const pngText = "data:image/png;base64,";
@@ -13,35 +15,15 @@ export const SetState = (state: any) => {
     images[name].src = imgSrc[i];
   });
   const context = getContext();
-  if (!state.hasTouchEvent) {
-    state.hasTouchEvent = true;
-    const update = e => {
-      const touches = [];
-      const ratio = screen.width / 256;
-      for (let i = 0; i < e.touches.length; i++) {
-        touches[i] = {
-          x: e.touches[i].pageX / ratio,
-          y: e.touches[i].pageY / ratio
-        };
-      }
-
-      SetState({ touches });
-    };
-    context.canvas.ontouchstart = update;
-    context.canvas.ontouchend = update;
-  }
 
   window["nkholski"] = {
+    body,
     ...globalState,
     ...state,
     context,
     mobile: "ontouchstart" in window,
     ...images
   };
-
-  if (state.keys) {
-    console.log("keys update", window["nkholski"]);
-  }
 };
 
 export const GetState = () => {
