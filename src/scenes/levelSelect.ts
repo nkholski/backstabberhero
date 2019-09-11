@@ -1,3 +1,4 @@
+import { SetState } from "./../functions/state";
 import { helpScene } from "./help";
 import { Title } from "./title";
 import { MakeTempCanvas } from "./../functions/makeTempCanvas";
@@ -10,6 +11,7 @@ import { start } from "repl";
 import { GetState } from "../functions/state";
 import { zzfx } from "../dependencies/zzfx";
 import { keyPressed, Ekeys, getTouches } from "../functions/input";
+import GetSpriteSheets from "../functions/getSpriteSheets";
 
 const resetLocalStorage = () => {
   const progress = new Array(99).fill(-1);
@@ -22,7 +24,7 @@ const updateLocalStorage = progress => {
 };
 
 export const levelSelectScene = (lvl?, stars?) => {
-  const { font, assets } = GetState();
+  const { font, gfx } = GetState();
   let transition;
   let killme = false;
   let tick = 0;
@@ -36,6 +38,9 @@ export const levelSelectScene = (lvl?, stars?) => {
     progress[lvl] = stars;
     updateLocalStorage(progress);
   }
+
+  let spriteSheets = GetSpriteSheets(gfx);
+  SetState({ spriteSheets }); // Renew skin colors
 
   const next = progress.indexOf(-1);
   let currentChoice = next;
@@ -54,7 +59,7 @@ export const levelSelectScene = (lvl?, stars?) => {
         const x = i % 5;
         const y = (i - x) / 5;
         context.drawImage(
-          assets.gfx,
+          gfx,
           6 * 16,
           16,
           8,

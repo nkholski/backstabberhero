@@ -14,7 +14,10 @@ export const Title = () => {
   let amplitude = 100;
   let heroOpacity = 0;
   let state = -1;
-  let { context, assets, font, body } = GetState();
+  let { context, spriteSheets, font } = GetState();
+  context.imageSmoothingEnabled = false;
+
+  console.log(GetState());
   // window["playMusic"]();
   playMusic();
 
@@ -38,7 +41,7 @@ export const Title = () => {
       }
     },
     render: () => {
-      context.drawImage(assets.gfx, 48, 0, 32, 32, 0, 120, 120, 120);
+      context.drawImage(spriteSheets[0].image, 48, 0, 32, 32, 0, 120, 120, 120);
       writeText(font, "BACKSTABBER", -1, 50, 2, amplitude, tick++);
       context.globalAlpha = heroOpacity / 100;
       writeText(font, "HERO", -1, 85 - heroOpacity / 5, 5.5);

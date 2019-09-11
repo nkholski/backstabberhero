@@ -3,9 +3,9 @@ import { MakeTempCanvas } from "./makeTempCanvas";
 import { makeRandom } from "./makeRandom";
 import { GetState } from "./state";
 
-export const MakeBackground = (lvl: number, level, assets) => {
+export const MakeBackground = (lvl: number, level) => {
   return MakeTempCanvas((context: CanvasRenderingContext2D) => {
-    const { mobile } = GetState();
+    const { mobile, gfx } = GetState();
 
     const rnd = makeRandom(lvl);
     const night = lvl % 2;
@@ -67,7 +67,7 @@ export const MakeBackground = (lvl: number, level, assets) => {
           const top = -16 * (y === 0 ? 1 : 0);
           // @ts-ignore
           context.drawImage(
-            assets.gfx,
+            gfx,
             8 * 16,
             16 + top,
             16,

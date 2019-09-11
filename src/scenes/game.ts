@@ -110,7 +110,7 @@ export const GameScene = (lvl: number) => {
     player.barrel = null;
   };
 
-  const background = MakeBackground(lvl, level, assets);
+  const background = MakeBackground(lvl, level);
   let turnState;
 
   // Define gameLoop

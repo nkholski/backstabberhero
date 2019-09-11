@@ -4,20 +4,30 @@ type IRGB = number[][];
 const hex2rgb = hexColor => {
   const rgb = [];
   for (let i = 0; i < 3; i++) {
-    rgb[i] = parseInt(hexColor.substr(i * 2, 2), 16);
+    rgb[i] = 0xb * parseInt(hexColor.substr(i, 1), 16);
   }
+  console.log(hexColor, rgb);
+
   return rgb;
 };
 
 const skin = [
-  "fee3c6",
-  "fde7ad",
-  "ecc091",
-  "f2c280",
-  "bb6536",
-  "ad8a60",
-  "733f17",
-  "291709"
+  "fec",
+  "fea",
+  "ec9",
+  "fc8",
+  "b63",
+  "a86",
+  "731",
+  "210"
+  // "fee3c6",
+  // "fde7ad",
+  // "ecc091",
+  // "f2c280",
+  // "bb6536",
+  // "ad8a60",
+  // "733f17",
+  // "291709"
 ];
 
 const baseAnims = [
@@ -39,7 +49,7 @@ const baseAnims = [
   ["sleep", "9..10", 3, true]
 ];
 
-const createAltGfx = assets => {
+const createAltGfx = gfx => {
   let spriteSheets = [];
   let animations = {};
   baseAnims.forEach(anim => {
@@ -54,39 +64,13 @@ const createAltGfx = assets => {
     };
   });
 
-  [
-    [94, 94, 3],
-    [173, 87, 38],
-    [12, 38, 255],
-    [
-      Math.floor(255 * Math.random()),
-      Math.floor(255 * Math.random()),
-      Math.floor(255 * Math.random())
-    ],
-    [
-      Math.floor(255 * Math.random()),
-      Math.floor(255 * Math.random()),
-      Math.floor(255 * Math.random())
-    ],
-    [
-      Math.floor(255 * Math.random()),
-      Math.floor(255 * Math.random()),
-      Math.floor(255 * Math.random())
-    ],
-    [
-      Math.floor(255 * Math.random()),
-      Math.floor(255 * Math.random()),
-      Math.floor(255 * Math.random())
-    ],
-    [
-      Math.floor(255 * Math.random()),
-      Math.floor(255 * Math.random()),
-      Math.floor(255 * Math.random())
-    ]
-  ].forEach((rgb, t) => {
+  let skinfix = false;
+
+  ["9CF", "F9F", "0C0", "60C", "396", "630", "0CF"].forEach((hexColor, t) => {
+    const rgb = hex2rgb(hexColor);
     const tmpCanvas = document.createElement("canvas");
     const tmpContext = tmpCanvas.getContext("2d");
-    const img = assets.gfx;
+    const img = gfx;
     tmpCanvas.width = 260; // 224 px plus 32 px for barrel animations
     tmpCanvas.height = 64;
     tmpContext.drawImage(img, 0, 0);
@@ -95,11 +79,17 @@ const createAltGfx = assets => {
     tmpContext.drawImage(img, 32, 26, 16, 6, 240, 26, 16, 6); // Second feet
     tmpContext.drawImage(img, 112, 5, 16, 27, 240, 1, 16, 27); // Second barrel
 
-    var imageData = tmpContext.getImageData(0, 0, img.width, img.height);
+    var imageData = tmpContext.getImageData(0, 0, 260, 64);
+
     const r = Math.round(Math.random() * 7);
     const color = hex2rgb(skin[r]);
 
     for (let i = 0; i < imageData.data.length; i += 4) {
+      if (imageData[i] != 0 && !skinfix) {
+        console.log("Skin fix");
+        skinfix = true;
+      }
+
       if (imageData.data[i] === 118) {
         imageData.data[i] = color[0];
         imageData.data[i + 1] = color[1];
@@ -114,6 +104,9 @@ const createAltGfx = assets => {
       }
     }
     tmpContext.putImageData(imageData, 0, 0);
+
+    console.log("k", tmpCanvas);
+
     spriteSheets[t] = SpriteSheet({
       image: tmpCanvas,
       frameWidth: 16,
@@ -125,7 +118,7 @@ const createAltGfx = assets => {
   return spriteSheets;
 };
 
-const GetSpriteSheets = assets => {
-  return createAltGfx(assets);
+const GetSpriteSheets = gfx => {
+  return createAltGfx(gfx);
 };
 export default GetSpriteSheets;

@@ -52,7 +52,7 @@ export const getLevel = (levelIndex: number) => {
       x: x * 16,
       y: y * 16,
       //@ts-ignore Boolean is used as a number (0 = false, 1 = true) and Typescript rightly protests
-      color: enemy.turns + enemy.sleeper * 2 + enemy.walks * 4,
+      color: 1 + enemy.turns + (enemy.sleeper * 2 || enemy.walks * 4), // First color is for the player
       facing: enemy.facing ? -1 : 1,
       data
     });
