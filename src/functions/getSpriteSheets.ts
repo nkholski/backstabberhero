@@ -30,6 +30,23 @@ const skin = [
   // "291709"
 ];
 
+// export enum AnimationNames {
+//   JumpUp,
+//   JumpDown,
+//   Walk,
+//   Idle,
+//   Duck,
+//   Stab,
+//   Knife,
+//   enemyDead,
+//   enemyIdle,
+//   enemyWalk,
+//   Star,
+//   Barrel = 99,
+//   BarrelPlayer,
+//   Sleep
+// }
+
 const baseAnims = [
   ["jumpUp", 2, null, false],
   ["jumpDown", 0, null, false],
@@ -40,9 +57,7 @@ const baseAnims = [
   ["knife", 4, null, false],
   ["dead", 11, null, false],
   ["enemyIdle", 12, null, false],
-
   ["enemyWalk", "12..13", 3, true],
-
   ["star", 6, null, false],
   ["barrelPlayer", "14..15", 3, true],
   ["barrel", 7, null, false],

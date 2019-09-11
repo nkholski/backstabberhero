@@ -7,17 +7,6 @@
          "name":"ground",
          "objects":[
                 {
-                 "height":32,
-                 "id":4,
-                 "name":"",
-                 "rotation":0,
-                 "type":"ground",
-                 "visible":true,
-                 "width":256,
-                 "x":0,
-                 "y":208
-                }, 
-                {
                  "gid":1,
                  "height":16,
                  "id":13,
@@ -26,19 +15,8 @@
                  "type":"",
                  "visible":true,
                  "width":16,
-                 "x":16,
-                 "y":64
-                }, 
-                {
-                 "height":32,
-                 "id":40,
-                 "name":"",
-                 "rotation":0,
-                 "type":"ground",
-                 "visible":true,
-                 "width":80,
                  "x":0,
-                 "y":80
+                 "y":176
                 }, 
                 {
                  "gid":5,
@@ -49,14 +27,14 @@
                         {
                          "name":"time",
                          "type":"int",
-                         "value":1
+                         "value":5
                         }],
                  "rotation":0,
                  "type":"",
                  "visible":true,
                  "width":16,
-                 "x":80,
-                 "y":160
+                 "x":208,
+                 "y":192
                 }, 
                 {
                  "gid":5,
@@ -73,38 +51,20 @@
                  "type":"",
                  "visible":true,
                  "width":16,
-                 "x":160,
-                 "y":160
-                }, 
-                {
-                 "height":48,
-                 "id":57,
-                 "name":"",
-                 "rotation":0,
-                 "type":"ground",
-                 "visible":true,
-                 "width":96,
-                 "x":160,
-                 "y":176
-                }, 
-                {
-                 "gid":4,
-                 "height":16,
-                 "id":60,
-                 "name":"",
-                 "rotation":0,
-                 "type":"",
-                 "visible":true,
-                 "width":16,
                  "x":224,
-                 "y":160
+                 "y":96
                 }, 
                 {
-                 "gid":14,
+                 "gid":2,
                  "height":16,
-                 "id":61,
+                 "id":67,
                  "name":"",
                  "properties":[
+                        {
+                         "name":"facingLeft",
+                         "type":"bool",
+                         "value":true
+                        }, 
                         {
                          "name":"turns",
                          "type":"bool",
@@ -114,8 +74,122 @@
                  "type":"",
                  "visible":true,
                  "width":16,
-                 "x":32,
+                 "x":128,
+                 "y":176
+                }, 
+                {
+                 "height":16,
+                 "id":68,
+                 "name":"",
+                 "rotation":0,
+                 "type":"ground",
+                 "visible":true,
+                 "width":64,
+                 "x":192,
+                 "y":208
+                }, 
+                {
+                 "height":16,
+                 "id":70,
+                 "name":"",
+                 "rotation":0,
+                 "type":"ground",
+                 "visible":true,
+                 "width":128,
+                 "x":48,
                  "y":192
+                }, 
+                {
+                 "height":16,
+                 "id":71,
+                 "name":"",
+                 "rotation":0,
+                 "type":"ground",
+                 "visible":true,
+                 "width":128,
+                 "x":96,
+                 "y":112
+                }, 
+                {
+                 "height":16,
+                 "id":72,
+                 "name":"",
+                 "rotation":0,
+                 "type":"ground",
+                 "visible":true,
+                 "width":48,
+                 "x":0,
+                 "y":208
+                }, 
+                {
+                 "height":32,
+                 "id":74,
+                 "name":"",
+                 "rotation":0,
+                 "type":"ground",
+                 "visible":true,
+                 "width":32,
+                 "x":64,
+                 "y":160
+                }, 
+                {
+                 "gid":4,
+                 "height":16,
+                 "id":79,
+                 "name":"",
+                 "properties":[
+                        {
+                         "name":"sleeps",
+                         "type":"int",
+                         "value":3
+                        }],
+                 "rotation":0,
+                 "type":"",
+                 "visible":true,
+                 "width":16,
+                 "x":160,
+                 "y":176
+                }, 
+                {
+                 "gid":4,
+                 "height":16,
+                 "id":80,
+                 "name":"",
+                 "properties":[
+                        {
+                         "name":"sleeps",
+                         "type":"int",
+                         "value":1
+                        }],
+                 "rotation":0,
+                 "type":"",
+                 "visible":true,
+                 "width":16,
+                 "x":160,
+                 "y":96
+                }, 
+                {
+                 "gid":2,
+                 "height":16,
+                 "id":82,
+                 "name":"",
+                 "properties":[
+                        {
+                         "name":"facingLeft",
+                         "type":"bool",
+                         "value":true
+                        }, 
+                        {
+                         "name":"turns",
+                         "type":"bool",
+                         "value":true
+                        }],
+                 "rotation":0,
+                 "type":"",
+                 "visible":true,
+                 "width":16,
+                 "x":80,
+                 "y":144
                 }],
          "opacity":1,
          "properties":[
@@ -155,7 +229,7 @@
          "y":0
         }],
  "nextlayerid":5,
- "nextobjectid":62,
+ "nextobjectid":83,
  "orientation":"orthogonal",
  "renderorder":"right-down",
  "tiledversion":"1.2.4",

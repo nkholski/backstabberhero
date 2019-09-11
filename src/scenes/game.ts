@@ -144,7 +144,7 @@ export const GameScene = (lvl: number) => {
       player.dy += 0.2;
 
       player.dx = 0;
-      let anim = wellDone ? "idle" : "duck";
+      let anim: any = wellDone ? "idle" : "duck";
 
       if (player.y > 400) {
         gameOver = true;
@@ -258,7 +258,7 @@ export const GameScene = (lvl: number) => {
 
       player.update();
 
-      GetBlocked(player, level.platforms);
+      GetBlocked(player, level.platforms, 24);
       knife.x = player.x + player.facing * 16;
       knife.y = player.y;
 

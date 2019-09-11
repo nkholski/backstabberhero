@@ -1,7 +1,14 @@
 import { CDefaultBlocked } from "./../../common/constants";
-export const GetBlocked = (body, platforms) => {
+export const GetBlocked = (body, platforms, height = null) => {
   body.blocked = { ...CDefaultBlocked, left: body.x < 0, right: body.x > 240 };
   body.x = body.blocked.left ? 0 : body.x;
+  let debug = false;
+  if (height) {
+    debug = true;
+  }
+  let adjY = height ? body.height - height : 0;
+  let y = body.y + adjY;
+  height = height ? height : body.height;
 
   const col = body.blocked;
 
@@ -18,8 +25,8 @@ export const GetBlocked = (body, platforms) => {
 
     overlap.left = platform.x + platform.w - body.x; // Överlapp på vänster sida
     overlap.right = 16 + body.x - platform.x; // Överlapp på höger sida
-    overlap.top = platform.y + platform.h - body.y;
-    overlap.bottom = body.height + body.y - platform.y;
+    overlap.top = platform.y + platform.h - y;
+    overlap.bottom = height + y - platform.y;
 
     // All sides overlap == collision
     if (
@@ -40,8 +47,16 @@ export const GetBlocked = (body, platforms) => {
       col[cdir] = true;
       col.any = true;
       // Separate bodies
-      body.y = col.top || col.bottom ? 16 * Math.round(body.y / 16) : body.y;
+      body.y =
+        col.top || col.bottom
+          ? 16 * Math.round(body.y / 16) + (col.top ? adjY : 0)
+          : body.y;
       body.x = col.left || col.right ? 16 * Math.round(body.x / 16) : body.x;
+
+      if (debug && body.dy < 0) {
+        console.log(body, y, height);
+        debugger;
+      }
 
       // Stop velocity if colliding
       body.dx = col.left || col.right ? 0 : body.dx;

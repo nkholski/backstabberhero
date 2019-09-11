@@ -30,15 +30,15 @@
                  "y":192
                 }, 
                 {
-                 "height":32,
+                 "height":16,
                  "id":40,
                  "name":"",
                  "rotation":0,
                  "type":"ground",
                  "visible":true,
-                 "width":80,
-                 "x":0,
-                 "y":80
+                 "width":64,
+                 "x":32,
+                 "y":160
                 }, 
                 {
                  "gid":5,
@@ -55,8 +55,8 @@
                  "type":"",
                  "visible":true,
                  "width":16,
-                 "x":80,
-                 "y":160
+                 "x":32,
+                 "y":144
                 }, 
                 {
                  "gid":5,
@@ -67,7 +67,7 @@
                         {
                          "name":"time",
                          "type":"int",
-                         "value":5
+                         "value":1
                         }],
                  "rotation":0,
                  "type":"",
@@ -77,30 +77,18 @@
                  "y":144
                 }, 
                 {
-                 "gid":6,
                  "height":16,
-                 "id":54,
-                 "name":"",
-                 "rotation":0,
-                 "type":"",
-                 "visible":true,
-                 "width":16,
-                 "x":192,
-                 "y":48
-                }, 
-                {
-                 "height":32,
                  "id":55,
                  "name":"",
                  "rotation":0,
                  "type":"ground",
                  "visible":true,
                  "width":144,
-                 "x":112,
-                 "y":80
+                 "x":96,
+                 "y":112
                 }, 
                 {
-                 "height":16,
+                 "height":48,
                  "id":57,
                  "name":"",
                  "rotation":0,
@@ -127,6 +115,29 @@
                  "width":16,
                  "x":160,
                  "y":160
+                }, 
+                {
+                 "gid":14,
+                 "height":16,
+                 "id":62,
+                 "name":"",
+                 "properties":[
+                        {
+                         "name":"turns",
+                         "type":"bool",
+                         "value":true
+                        }, 
+                        {
+                         "name":"walks",
+                         "type":"int",
+                         "value":1
+                        }],
+                 "rotation":0,
+                 "type":"",
+                 "visible":true,
+                 "width":16,
+                 "x":96,
+                 "y":96
                 }],
          "opacity":1,
          "properties":[
@@ -166,7 +177,7 @@
          "y":0
         }],
  "nextlayerid":5,
- "nextobjectid":62,
+ "nextobjectid":63,
  "orientation":"orthogonal",
  "renderorder":"right-down",
  "tiledversion":"1.2.4",
