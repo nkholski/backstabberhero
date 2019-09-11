@@ -241,7 +241,7 @@ export const GameScene = (lvl: number) => {
         if (stabbedEnemy) {
           zzfx(1, 0, 100, 0.4, 0, 0.9, 7, 15, 0);
           stabbedEnemy.dead = true;
-          stabbedEnemy.dx = player.facing * 1;
+          stabbedEnemy.dx = player.facing * 1.5;
           stabbedEnemy.dy = -2;
           stabbedEnemy.playAnimation(
             "dead" + (player.facing === 1 ? "Left" : "Right")

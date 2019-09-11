@@ -67,8 +67,8 @@ export const MakeBackground = (lvl: number, level, assets) => {
           const top = -16 * (y === 0 ? 1 : 0);
           // @ts-ignore
           context.drawImage(
-            assets.gfx8colors,
-            9 * 16,
+            assets.gfx,
+            8 * 16,
             16 + top,
             16,
             16,

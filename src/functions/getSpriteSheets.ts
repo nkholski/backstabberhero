@@ -1,19 +1,42 @@
 import { SpriteSheet } from "../dependencies/kontra";
 type IRGB = number[][];
 
+const hex2rgb = hexColor => {
+  const rgb = [];
+  for (let i = 0; i < 3; i++) {
+    rgb[i] = parseInt(hexColor.substr(i * 2, 2), 16);
+  }
+  return rgb;
+};
+
+const skin = [
+  "fee3c6",
+  "fde7ad",
+  "ecc091",
+  "f2c280",
+  "bb6536",
+  "ad8a60",
+  "733f17",
+  "291709"
+];
+
 const baseAnims = [
-  ["jumpUp", 0, null, false],
-  ["jumpDown", 1, null, false],
-  ["walk", "0..3", 3, true],
-  ["idle", 6, null, false],
-  ["duck", 7, null, false],
-  ["stab", 4, null, false],
-  ["knife", 5, null, false],
-  ["dead", 10, null, false],
-  ["star", 8, null, false],
-  ["barrelPlayer", "12..13", 3, true],
-  ["barrel", 14, null, false],
-  ["sleep", "15..16", 3, true]
+  ["jumpUp", 2, null, false],
+  ["jumpDown", 0, null, false],
+  ["walk", [1, 0, 2, 0], 4, true],
+  ["idle", 0, null, false],
+  ["duck", 5, null, false],
+  ["stab", 3, null, false],
+  ["knife", 4, null, false],
+  ["dead", 11, null, false],
+  ["enemyIdle", 12, null, false],
+
+  ["enemyWalk", "12..13", 3, true],
+
+  ["star", 6, null, false],
+  ["barrelPlayer", "14..15", 3, true],
+  ["barrel", 7, null, false],
+  ["sleep", "9..10", 3, true]
 ];
 
 const createAltGfx = assets => {
@@ -32,7 +55,7 @@ const createAltGfx = assets => {
   });
 
   [
-    [104, 38, 104],
+    [94, 94, 3],
     [173, 87, 38],
     [12, 38, 255],
     [
@@ -63,28 +86,27 @@ const createAltGfx = assets => {
   ].forEach((rgb, t) => {
     const tmpCanvas = document.createElement("canvas");
     const tmpContext = tmpCanvas.getContext("2d");
-    const img = assets.gfx8colors;
-    tmpCanvas.width = img.width;
-    tmpCanvas.height = img.height;
+    const img = assets.gfx;
+    tmpCanvas.width = 260; // 224 px plus 32 px for barrel animations
+    tmpCanvas.height = 64;
     tmpContext.drawImage(img, 0, 0);
+    tmpContext.drawImage(img, 0, 26, 16, 6, 224, 26, 16, 6); // First feet
+    tmpContext.drawImage(img, 112, 5, 16, 27, 224, 0, 16, 27); // First barrel
+    tmpContext.drawImage(img, 32, 26, 16, 6, 240, 26, 16, 6); // Second feet
+    tmpContext.drawImage(img, 112, 5, 16, 27, 240, 1, 16, 27); // Second barrel
+
     var imageData = tmpContext.getImageData(0, 0, img.width, img.height);
+    const r = Math.round(Math.random() * 7);
+    const color = hex2rgb(skin[r]);
 
     for (let i = 0; i < imageData.data.length; i += 4) {
-      // if (
-      //   imageData.data[i] !== 0 &&
-      //   imageData.data[i] !== 227 &&
-      //   imageData.data[i] !== 87 &&
-      //   imageData.data[i] !== 57 &&
-      //   imageData.data[i] !== 32 &&
-      //   imageData.data[i] !== 252
-      // ) {
-      //   console.log(i, imageData.data[i]);
-      //   debugger;
-      // }
+      if (imageData.data[i] === 118) {
+        imageData.data[i] = color[0];
+        imageData.data[i + 1] = color[1];
+        imageData.data[i + 2] = color[2];
+      }
       if (
-        imageData.data[i] == 7 // &&
-        // imageData.data[i + 1] == 57 &&
-        // imageData.data[i + 2] == 239
+        imageData.data[i] == 148 // &&
       ) {
         imageData.data[i] = rgb[0];
         imageData.data[i + 1] = rgb[1];

@@ -54,12 +54,12 @@ export const levelSelectScene = (lvl?, stars?) => {
         const x = i % 5;
         const y = (i - x) / 5;
         context.drawImage(
-          assets.gfx8colors,
-          11 * 16 + 8,
-          0,
+          assets.gfx,
+          6 * 16,
+          16,
           8,
           8,
-          x * 45 + 16 + 19 - 8 - 10 + knife * 10,
+          x * 45 + 16 + 19 - 8 - 6 + knife * 10,
           y * 45 + 12 + 3 + 18,
           16,
           16

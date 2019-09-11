@@ -38,7 +38,7 @@ export const Title = () => {
       }
     },
     render: () => {
-      context.drawImage(assets.gfx8colors, 64, 0, 32, 32, 0, 120, 120, 120);
+      context.drawImage(assets.gfx, 48, 0, 32, 32, 0, 120, 120, 120);
       writeText(font, "BACKSTABBER", -1, 50, 2, amplitude, tick++);
       context.globalAlpha = heroOpacity / 100;
       writeText(font, "HERO", -1, 85 - heroOpacity / 5, 5.5);

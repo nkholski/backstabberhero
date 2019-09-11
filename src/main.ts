@@ -30,7 +30,7 @@ const assets = {};
   }
   let l = 1;
   window["zzfx_x"] = new AudioContext();
-  ["gfx8colors"].forEach(file => {
+  ["gfx"].forEach(file => {
     assets[file] = new Image();
     assets[file].src = `assets/${file}.png`;
     assets[file].onload = () => {
@@ -42,7 +42,8 @@ const assets = {};
           window.onorientationchange = rotateDevice;
           rotateDevice();
         }
-        Title();
+        //       Title();
+        GameScene(3);
       }
     };
   });
