@@ -1,7 +1,7 @@
 # Backstabber Hero 13kb
 This is my contribution the Js13kGames JavaScript coding competition. The rules are simple, you got one month to fill your 13kb with code and assets. It will challenge you, 13kb is about 0.5 seconds of low quality mp3 song or 0.4 percent of a normal photo you take with your camera. The theme for 2019 was "back" which gave me the idea for backstabber hero.
 
-![Screenshot](/nkholski/backstabber13kb/gitscreenshot.png?raw=true)
+![Screenshot](/nkholski/backstabber-js13k/blob/master/gitscreenshot.png?raw=true)
 
 ## This repository
 Everything is a mess right now after struggeling to fit as much as possible and meet the deadline. It might be fun to poke around but a lot is far from best practise. I use Typescript for some features, but have disabled most warnings when I thought that the correct way would cause a larger code base. Don't try to learn from it :-) I hope however I'll find the strength to go back and tidy it up a bit or at least remove dead files.
