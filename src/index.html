@@ -13,100 +13,26 @@
 <body class="desktop">
   <div id="c">
     <div class="left-controls lan">
-      <div id="l">LEFT</div>
-      <div id="r">RIGHT</div>
+      <div id="l">&larr;</div>
+      <div id="r">&rarr;</div>
     </div>
     <canvas height="240px" width="256px"></canvas>
 
     <div class="right-controls">
       <div class="arrows por">
-        <div id="l2">LEFT</div>
-        <div id="r2">RIGHT</div>
+        <div id="l2">&larr;</div>
+        <div id="r2">&rarr;</div>
       </div>
       <div class="buttons">
-        <div id="j">A</div>
-        <div id="s">B</div>
-        <div id="d">C</div>
+        <div id="j">Jump</div>
+        <div id="s">Stab</div>
+        <div id="d">Duck</div>
       </div>
     </div>
   </div>
 
   <style>
-    body {
-      user-select: none;
-      margin: 0;
-      overflow: hidden;
-      background: #000;
-    }
-    body.mobile {
-      color: #fff;
-    }
-
-    #c {
-      height: 100vh;
-    }
-
-    body.por .left-controls {
-      display: none;
-    }
-    body:not(.por) .arrows {
-      display: none;
-    }
-
-    body div {
-      display: flex;
-      flex: 1;
-    }
-
-    body.por > div {
-      flex-direction: column; /* POR */
-    }
-
-    canvas {
-      background-color: #aaa;
-    }
-
-    body.por canvas {
-      height: 100vw;
-    }
-
-    body:not(.por) canvas {
-      margin: auto;
-      height: 100vh;
-    }
-
-    /* .left-controls {
-      flex-shrink: 1;
-    } */
-    .right-controls {
-      display: flex;
-      flex-shrink: 1;
-      /* flex-direction: column;*/
-    }
-    .left-controls div,
-    .right-controls > div > div {
-      align-items: center;
-      justify-content: center;
-    }
-
-    .arrows div {
-      flex-grow: 1;
-      max-width: 100px;
-    }
-
-    .buttons {
-      flex-direction: column;
-    }
-    .buttons div {
-      width: 100%; /* Landscape */
-      min-width: 50%;
-      margin-left: auto;
-    }
-    canvas {
-      image-rendering: -moz-crisp-edges;
-      image-rendering: -webkit-crisp-edges;
-      image-rendering: pixelated;
-    }
+  body{user-select:none;margin:0;overflow:hidden;background:#000}body.mobile{color:#fff}#c{height:100vh}body.por .left-controls{display:none}body:not(.por) .arrows{display:none}body div{display:flex;flex:1}body.por > div{flex-direction:column}canvas{background-color:#aaa}body.por canvas{height:100vw}body:not(.por) canvas{margin:auto;height:100vh}.right-controls{display:flex;flex-shrink:1}.left-controls div,.right-controls > div > div{align-items:center;justify-content:center}.arrows div{flex-grow:1;max-width:100px}.buttons{flex-direction:column}.buttons div{width:100%;min-width:50%;margin-left:auto}canvas{image-rendering:-moz-crisp-edges;image-rendering:-webkit-crisp-edges;image-rendering:pixelated}
   </style>
-  <script src="getSW.js"></script>
+  <script src="gsw.js"></script>
 </body>
