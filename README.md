@@ -3,6 +3,8 @@ This is my contribution the Js13kGames JavaScript coding competition. The rules 
 
 ![Screenshot](https://raw.githubusercontent.com/nkholski/backstabberhero/master/gitscreenshot.png)
 
+[Click here to play the game at js13kgames.com](https://js13kgames.com/entries/backstabber-hero)
+
 ## This repository
 Everything is a mess right now after struggeling to fit as much as possible and meet the deadline. It might be fun to poke around but a lot is far from best practise. I use Typescript for some features, but have disabled most warnings when I thought that the correct way would cause a larger code base. Don't try to learn from it :-) I hope however I'll find the strength to go back and tidy it up a bit or at least remove dead files.
 

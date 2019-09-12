@@ -1,4 +1,4 @@
-import { Title } from './scenes/title';
+import { Title } from "./scenes/title";
 import { init } from "./dependencies/kontra";
 import GetSpriteSheets from "./functions/getSpriteSheets";
 import { SetState, GetState } from "./functions/state";
@@ -11,12 +11,12 @@ const resize = () => {
 };
 
 const rotateDevice = () => {
+  /* .p = portrait *.m =mobile */
   let bodyClasses = GetState().body.classList;
-  bodyClasses.add("mobile");
-  bodyClasses.remove("por");
-
+  bodyClasses.add("m");
+  bodyClasses.remove("p");
   if (screen.width < screen.height) {
-    bodyClasses.add("por");
+    bodyClasses.add("p");
   }
   // setTimeout(rotateDevice, 500);
 };
@@ -60,7 +60,7 @@ const assets = {};
       window.onresize = resize;
       rotateDevice();
     }
-       Title();
+    Title();
   };
   //@ts-ignore
 

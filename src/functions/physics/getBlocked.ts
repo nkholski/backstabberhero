@@ -1,14 +1,14 @@
 import { CDefaultBlocked } from "./../../common/constants";
 export const GetBlocked = (body, platforms, height = null) => {
   body.blocked = { ...CDefaultBlocked, left: body.x < 0, right: body.x > 240 };
- // body.x = body.blocked.left ? 0 : body.x;
+  // body.x = body.blocked.left ? 0 : body.x;
   let adjY = height ? body.height - height : 0;
   let y = body.y + adjY;
   height = height ? height : body.height;
 
   const col = body.blocked;
 
-  platforms.forEach((platform, i) => {
+  platforms.forEach(platform => {
     const overlap: any = {};
 
     // Break out share with body collision
@@ -42,16 +42,19 @@ export const GetBlocked = (body, platforms, height = null) => {
       });
       col[cdir] = true;
       col.any = true;
-      // Separate bodies
+
+      // Separate bodies - Need this insiede the loop but other stuff outside, no time to solve it
       body.y =
         col.top || col.bottom
           ? 16 * Math.round(body.y / 16) + (col.top ? adjY : 0)
           : body.y;
-      body.x = col.left || col.right ? 16 * Math.round(body.x / 16) : body.x;
-      // Stop velocity if colliding
-      body.dx = col.left || col.right ? 0 : body.dx;
-      body.dy = col.top || col.bottom ? 0 : body.dy;
     }
+
+    body.x = col.left || col.right ? 16 * Math.round(body.x / 16) : body.x;
+
+    // Stop velocity if colliding
+    body.dx = col.left || col.right ? 0 : body.dx;
+    body.dy = col.top || col.bottom ? 0 : body.dy;
   });
 
   return col;

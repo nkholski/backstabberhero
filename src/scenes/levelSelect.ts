@@ -20,7 +20,7 @@ const resetLocalStorage = () => {
 };
 
 const updateLocalStorage = progress => {
-  localStorage.setItem("nkholski", JSON.stringify(progress));
+  localStorage.setItem("bkstb", JSON.stringify(progress));
 };
 
 export const levelSelectScene = (lvl?, stars?) => {
@@ -32,8 +32,8 @@ export const levelSelectScene = (lvl?, stars?) => {
   // playMusic();
 
   context.save();
-  const progress = localStorage.getItem("nkholski")
-    ? JSON.parse(localStorage.getItem("nkholski"))
+  const progress = localStorage.getItem("bkstb")
+    ? JSON.parse(localStorage.getItem("bkstb"))
     : resetLocalStorage();
   if (lvl > -1 && progress[lvl] < stars) {
     progress[lvl] = stars;
@@ -175,7 +175,6 @@ export const levelSelectScene = (lvl?, stars?) => {
             Math.floor((x - 16) / 45) + 5 * Math.floor((y - 12) / 45);
 
           if (currentChoice > 19) {
-            console.log(x);
             currentChoice = x < 88 ? 20 : x > 160 ? 22 : 21;
           }
         }
@@ -187,7 +186,6 @@ export const levelSelectScene = (lvl?, stars?) => {
           currentChoice < 20 && currentChoice > maxChoice
             ? maxChoice
             : currentChoice;
-        console.log(currentChoice, maxChoice);
 
         if (keyPressed(Ekeys.Action)) {
           killme = true;
