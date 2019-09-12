@@ -3,17 +3,14 @@ import { Ekeys } from "../functions/input";
 import { getLevel } from "./../functions/getLevel";
 import { GetState } from "./../functions/state";
 import { MakeBackground } from "./../functions/makeBackground";
-import { Levels } from "./../common/levels";
 import { MakeEnemies } from "./../functions/makeEnemies";
-import { Title } from "./title";
 import { CheckCollidingBody } from "./../functions/physics/checkCollidingBody";
 import { GetBlocked } from "./../functions/physics/getBlocked";
 import { CDefaultBlocked } from "./../common/constants";
-import { EFacing, ETurnState, ETurnTimes } from "./../common/enums";
+import { EFacing, ETurnState, } from "./../common/enums";
 import { GetFlash } from "../functions/getFlash";
-import { Sprite, GameLoop, initKeys } from "../dependencies/kontra.js";
+import { Sprite, GameLoop } from "../dependencies/kontra.js";
 import { zzfx } from "../dependencies/zzfx";
-
 import writeText from "../functions/writeText";
 import { EnemyUpdate } from "../functions/enemyUpdate";
 import { levelSelectScene } from "./levelSelect";
@@ -46,7 +43,7 @@ export const GameScene = (lvl: number) => {
   player = Sprite({
     x: level.player.x, // starting x,y position of the sprite
     y: level.player.y,
-    width: 16, // width and height of the sprite rectangle
+    //width: 16, // width and height of the sprite rectangle
     height: 32,
     blocked: { ...CDefaultBlocked },
     standing: true,
@@ -58,7 +55,7 @@ export const GameScene = (lvl: number) => {
   });
 
   knife = Sprite({
-    width: 16, // width and height of the sprite rectangle
+    //width: 16, // width and height of the sprite rectangle
     height: 32,
     animations: spriteSheets[0].animations
   });

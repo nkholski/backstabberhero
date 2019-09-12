@@ -8,7 +8,7 @@ export const MakeEnemies = (enemiesData, spriteSheets) => {
     enemies.push(
       Sprite({
         ...enemy,
-        width: 16, // width and height of the sprite rectangle
+        // width: 16, // width and height of the sprite rectangle
         height: 32,
         blocked: { ...CDefaultBlocked },
         speed: enemy.walks ? (1 + enemy.data) / 4 : 0,

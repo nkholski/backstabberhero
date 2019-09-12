@@ -2276,14 +2276,14 @@ class Vector {
    *
    * @returns {kontra.Vector} A new kontra.Vector instance.
    */
-  add(vec, dt) {
-    console.log(vec, dt);
-    debugger;
-    return vectorFactory(
-      this.x + (vec.x || 0) * (dt || 1),
-      this.y + (vec.y || 0) * (dt || 1)
-    );
-  }
+  // add(vec, dt) {
+  //   console.log(vec, dt);
+  //   debugger;
+  //   return vectorFactory(
+  //     this.x + (vec.x || 0) * (dt || 1),
+  //     this.y + (vec.y || 0) * (dt || 1)
+  //   );
+  // }
 
   /**
    * Clamp the Vector between two points, preventing `x` and `y` from going below or above the minimum and maximum values. Perfect for keeping a sprite from going outside the game boundaries.

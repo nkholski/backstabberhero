@@ -5,7 +5,6 @@ self.addEventListener("install", e => {
     caches
       .open(CACHE)
       .then(cache => cache.addAll(FILES))
-      .then(self.skipWaiting())
   );
 });
 self.addEventListener("activate", e => {
@@ -21,5 +20,3 @@ self.addEventListener("activate", e => {
     })
   );
 });
-
-self.addEventListener("fetch", function(event) {});

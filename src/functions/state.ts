@@ -3,13 +3,13 @@ import { getContext } from "../dependencies/kontra.js";
 export const SetState = (state: any) => {
   const body = document.getElementsByTagName("body")[0];
 
-  const globalState: any = window["nkholski"] || {};
+  const globalState: any = window["s"] || {};
 
   const context = getContext();
 
   let mobile = "ontouchstart" in window;
 
-  window["nkholski"] = {
+  window["s"] = {
     body,
     ...globalState,
     ...state,
@@ -20,5 +20,5 @@ export const SetState = (state: any) => {
 };
 
 export const GetState = () => {
-  return window["nkholski"];
+  return window["s"];
 };

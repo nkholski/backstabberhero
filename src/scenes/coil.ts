@@ -29,7 +29,6 @@ export const Coil = () => {
 
       if (okToLeave && touches.length === 0 && keyPressed(Ekeys.Any)) {
         touches[0] = { x: 0, y: 121 };
-        console.log("ALIVE");
       }
 
       if (touches[0]) {
@@ -94,7 +93,7 @@ export const Coil = () => {
         context.beginPath();
         context.rect(-9, 70, 265, 11);
         context.fill();
-        writeText(font, "ONLY FOR COIL SUBSCRIBERS", -1, 72, 1);
+        writeText(font, "COIL SUBSCRIBERS ONLY", -1, 72, 1);
         context.stroke();
       }
 

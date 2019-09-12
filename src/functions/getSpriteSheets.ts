@@ -97,10 +97,9 @@ const createAltGfx = (gfx, custom) => {
     tmpContext.drawImage(img, 32, 26, 16, 6, 240, 26, 16, 6); // Second feet
     tmpContext.drawImage(img, 112, 5, 16, 27, 240, 1, 16, 27); // Second barrel
 
-    var imageData = tmpContext.getImageData(0, 0, 260, 64);
+    let imageData = tmpContext.getImageData(0, 0, 260, 64);
 
-    const r = Math.round(Math.random() * 7);
-    const color = hex2rgb(skin[r]);
+    const color = hex2rgb(skin[Math.round(Math.random() * 7)]);
 
     for (let i = 0; i < imageData.data.length; i += 4) {
       if (imageData[i] != 0 && !skinfix) {

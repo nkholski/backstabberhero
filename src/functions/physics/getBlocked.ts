@@ -1,11 +1,7 @@
 import { CDefaultBlocked } from "./../../common/constants";
 export const GetBlocked = (body, platforms, height = null) => {
   body.blocked = { ...CDefaultBlocked, left: body.x < 0, right: body.x > 240 };
-  body.x = body.blocked.left ? 0 : body.x;
-  let debug = false;
-  if (height) {
-    debug = true;
-  }
+ // body.x = body.blocked.left ? 0 : body.x;
   let adjY = height ? body.height - height : 0;
   let y = body.y + adjY;
   height = height ? height : body.height;
