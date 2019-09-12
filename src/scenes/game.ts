@@ -120,7 +120,7 @@ export const GameScene = (lvl: number) => {
           ? ETurnState.Walk
           : turnTimer < 310
           ? ETurnState.AboutToTurn
-          : turnTimer === 310 || turnTimer === 330
+          : turnTimer === 310 || turnTimer === 350
           ? ETurnState.Turn
           : ETurnState.Watch;
       const state = {
@@ -133,7 +133,7 @@ export const GameScene = (lvl: number) => {
       };
       const wasGameOver = gameOver;
 
-      turnTimer += turnTimer === 330 ? -turnTimer : 1;
+      turnTimer += turnTimer === 350 ? -turnTimer : 1;
 
       tick++;
       elapsedTime = tick / 60; // Elapsed time in ms
