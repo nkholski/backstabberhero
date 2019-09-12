@@ -11,7 +11,7 @@ import { GetBlocked } from "./../functions/physics/getBlocked";
 import { CDefaultBlocked } from "./../common/constants";
 import { EFacing, ETurnState, ETurnTimes } from "./../common/enums";
 import { GetFlash } from "../functions/getFlash";
-import { Sprite, GameLoop } from "../dependencies/kontra.js";
+import { Sprite, GameLoop, initKeys } from "../dependencies/kontra.js";
 import { zzfx } from "../dependencies/zzfx";
 
 import writeText from "../functions/writeText";
@@ -256,7 +256,7 @@ export const GameScene = (lvl: number) => {
         anim + (player.facing === EFacing.Left ? "Left" : "Right")
       );
 
-      player.update();
+      player.advance();
 
       GetBlocked(player, level.platforms, 24);
       knife.x = player.x + player.facing * 16;
@@ -280,7 +280,7 @@ export const GameScene = (lvl: number) => {
         }
         if (item.dx) {
           item.dy += 0.1;
-          item.update();
+          item.advance();
         }
       });
 
@@ -300,7 +300,7 @@ export const GameScene = (lvl: number) => {
 
       enemies.forEach(enemy => {
         EnemyUpdate(enemy, state);
-        enemy.update();
+        enemy.advance();
         if (!enemy.dead) {
           wellDone = false;
           GetBlocked(enemy, level.platforms);
