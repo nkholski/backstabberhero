@@ -11,7 +11,7 @@ import { GetBlocked } from "./../functions/physics/getBlocked";
 import { CDefaultBlocked } from "./../common/constants";
 import { EFacing, ETurnState, ETurnTimes } from "./../common/enums";
 import { GetFlash } from "../functions/getFlash";
-import { Sprite, GameLoop, initKeys } from "../dependencies/kontra.js";
+import { Sprite, GameLoop } from "../dependencies/kontra.js";
 import { zzfx } from "../dependencies/zzfx";
 
 import writeText from "../functions/writeText";
@@ -44,7 +44,6 @@ export const GameScene = (lvl: number) => {
   // Parse Level
   wellDone = false;
   gameOver = false;
-  initKeys();
   player = Sprite({
     x: level.player.x, // starting x,y position of the sprite
     y: level.player.y,

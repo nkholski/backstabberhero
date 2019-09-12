@@ -9,3 +9,8 @@ X Banor
 - const -> let
 - closure compiler
 - rensa kontra (debug kvar)
+
+Kontra:
+* Gameloop
+* Sprite
+* GetContext

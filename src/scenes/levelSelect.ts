@@ -5,7 +5,7 @@ import { Title } from "./title";
 import { MakeTempCanvas } from "./../functions/makeTempCanvas";
 import { Levels } from "../common/levels";
 import { GetFlash } from "../functions/getFlash";
-import { GameLoop, getContext } from "../dependencies/kontra.js";
+import { GameLoop } from "../dependencies/kontra.js";
 import writeText from "../functions/writeText";
 import { GameScene } from "./game";
 import { start } from "repl";

@@ -6,7 +6,6 @@ import writeText from "../functions/writeText";
 import { levelSelectScene } from "./levelSelect";
 import { GetState } from "../functions/state";
 // import { playMusic } from "../functions/music";
-import { Touch } from "../functions/touch";
 import { keyPressed } from "../functions/input";
 
 export const Title = () => {

@@ -2,7 +2,7 @@ import { GetFlash } from "./../functions/getFlash";
 import { SetState } from "./../functions/state";
 import { Title } from "./title";
 import { Ekeys, getTouches, keyPressed } from "../functions/input";
-import { GameLoop, Sprite } from "../dependencies/kontra.js";
+import { GameLoop } from "../dependencies/kontra.js";
 import writeText from "../functions/writeText";
 import { GetState } from "../functions/state";
 import GetSpriteSheets from "../functions/getSpriteSheets";
