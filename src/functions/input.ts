@@ -78,11 +78,12 @@ export function initKeys() {
   const update = e => {
     touches = [];
     const ratio = 256 / canvas.offsetWidth;
-    for (let i = 0; i < e.touches.length; i++) {
-      console.log("x=", e.touches[i].clientX, e.target.offsetLeft);
 
+    console.log(e);
+
+    for (let i = 0; i < e.touches.length; i++) {
       touches[i] = {
-        x: (e.touches[i].clientX - e.target.offsetLeft) * ratio,
+        x: (e.touches[i].clientX - canvas.offsetLeft) * ratio,
         y: e.touches[i].clientY * ratio
       };
     }
@@ -91,6 +92,12 @@ export function initKeys() {
   };
   canvas.ontouchstart = update;
   canvas.ontouchend = update;
+
+  const updateMouse = e => {
+    update({ touches: e.type === "mouseup" ? [] : [e] });
+  };
+  canvas.onmousedown = updateMouse;
+  canvas.onmouseup = updateMouse;
 }
 
 export function keyPressed(key) {

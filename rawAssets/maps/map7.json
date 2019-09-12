@@ -177,7 +177,7 @@
                         {
                          "name":"facingLeft",
                          "type":"bool",
-                         "value":true
+                         "value":false
                         }, 
                         {
                          "name":"turns",

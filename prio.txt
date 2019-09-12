@@ -3,3 +3,9 @@ X Banor
 * Ljudeffekter
 * Musik
 * 13k!
+* Screenshot
+
+
+- const -> let
+- closure compiler
+- rensa kontra (debug kvar)

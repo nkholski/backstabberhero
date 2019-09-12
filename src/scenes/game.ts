@@ -1,3 +1,4 @@
+// import { stopMusic } from "./../functions/music";
 import { Ekeys } from "../functions/input";
 import { getLevel } from "./../functions/getLevel";
 import { GetState } from "./../functions/state";
@@ -19,6 +20,7 @@ import { levelSelectScene } from "./levelSelect";
 import { keyPressed } from "../functions/input";
 
 export const GameScene = (lvl: number) => {
+  // stopMusic();
   //const { l: level, e: enemyData, h: heroCoordinates } = getLevel(lvl);
   const level = getLevel(lvl);
   console.log(level);
@@ -46,7 +48,6 @@ export const GameScene = (lvl: number) => {
   player = Sprite({
     x: level.player.x, // starting x,y position of the sprite
     y: level.player.y,
-    color: "red", // fill color of the sprite rectangle
     width: 16, // width and height of the sprite rectangle
     height: 32,
     blocked: { ...CDefaultBlocked },

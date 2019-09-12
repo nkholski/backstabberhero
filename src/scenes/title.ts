@@ -5,7 +5,7 @@ import { GetFlash } from "../functions/getFlash";
 import writeText from "../functions/writeText";
 import { levelSelectScene } from "./levelSelect";
 import { GetState } from "../functions/state";
-import { playMusic } from "../functions/music";
+// import { playMusic } from "../functions/music";
 import { Touch } from "../functions/touch";
 import { keyPressed } from "../functions/input";
 
@@ -17,9 +17,11 @@ export const Title = () => {
   let { context, spriteSheets, font } = GetState();
   context.imageSmoothingEnabled = false;
 
-  console.log(GetState());
   // window["playMusic"]();
-  playMusic();
+  //stopMusic();
+
+  // playMusic();
+  //setState({music: true});
 
   let loop = GameLoop({
     update: () => {
@@ -42,14 +44,14 @@ export const Title = () => {
     },
     render: () => {
       context.drawImage(spriteSheets[0].image, 48, 0, 32, 32, 0, 120, 120, 120);
-      writeText(font, "BACKSTABBER", -1, 50, 2, amplitude, tick++);
+      writeText(font, "BACKSTABBER", -1, 30, 2, amplitude, tick++);
       context.globalAlpha = heroOpacity / 100;
-      writeText(font, "HERO", -1, 85 - heroOpacity / 5, 5.5);
+      writeText(font, "HERO", -1, 70 - heroOpacity / 5, 5.5);
       context.globalAlpha = (0.4 * heroOpacity) / 100;
-      writeText(font, "HERO", -130, 85 + 3 - heroOpacity / 5, 5);
+      writeText(font, "HERO", -130, 70 + 3 - heroOpacity / 5, 5);
       context.globalAlpha = 1;
       if (heroOpacity === 100 && GetFlash(tick / 9)) {
-        writeText(font, "PRESS Z TO STAB", -1, 110, 1);
+        writeText(font, "PRESS Z TO STAB", -1, 100, 1);
       }
 
       writeText(font, "-2019 NIKLAS BERG", 110, 225);

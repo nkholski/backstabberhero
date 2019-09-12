@@ -52,12 +52,6 @@ export const GetBlocked = (body, platforms, height = null) => {
           ? 16 * Math.round(body.y / 16) + (col.top ? adjY : 0)
           : body.y;
       body.x = col.left || col.right ? 16 * Math.round(body.x / 16) : body.x;
-
-      if (debug && body.dy < 0) {
-        console.log(body, y, height);
-        debugger;
-      }
-
       // Stop velocity if colliding
       body.dx = col.left || col.right ? 0 : body.dx;
       body.dy = col.top || col.bottom ? 0 : body.dy;

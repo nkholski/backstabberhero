@@ -10,7 +10,7 @@
 </head>
 
 <body class="desktop">
-  <div>
+  <div id="c">
     <div class="left-controls lan">
       <div id="l">LEFT</div>
       <div id="r">RIGHT</div>
@@ -40,6 +40,11 @@
     body.mobile {
       color: #fff;
     }
+
+    #c {
+      height: 100vh;
+    }
+
     body.por .left-controls {
       display: none;
     }
@@ -50,9 +55,6 @@
     body div {
       display: flex;
       flex: 1;
-    }
-    body > div {
-      height: 100vh;
     }
 
     body.por > div {

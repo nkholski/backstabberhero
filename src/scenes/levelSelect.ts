@@ -1,3 +1,4 @@
+// import { playMusic } from "./../functions/music";
 import { SetState } from "./../functions/state";
 import { helpScene } from "./help";
 import { Title } from "./title";
@@ -12,6 +13,7 @@ import { GetState } from "../functions/state";
 import { zzfx } from "../dependencies/zzfx";
 import { keyPressed, Ekeys, getTouches } from "../functions/input";
 import GetSpriteSheets from "../functions/getSpriteSheets";
+import { Coil } from "./coil";
 
 const resetLocalStorage = () => {
   const progress = new Array(99).fill(-1);
@@ -24,12 +26,13 @@ const updateLocalStorage = progress => {
 };
 
 export const levelSelectScene = (lvl?, stars?) => {
-  const { font, gfx } = GetState();
+  const { font, gfx, context, customColors } = GetState();
   let transition;
   let killme = false;
   let tick = 0;
   let okToStart = false;
-  const context = getContext();
+  // playMusic();
+
   context.save();
   const progress = localStorage.getItem("nkholski")
     ? JSON.parse(localStorage.getItem("nkholski"))
@@ -39,11 +42,11 @@ export const levelSelectScene = (lvl?, stars?) => {
     updateLocalStorage(progress);
   }
 
-  let spriteSheets = GetSpriteSheets(gfx);
+  let spriteSheets = GetSpriteSheets(gfx, customColors);
   SetState({ spriteSheets }); // Renew skin colors
 
   const next = progress.indexOf(-1);
-  let currentChoice = next;
+  let currentChoice = next < 20 ? next : 0;
 
   const backgroundImage = MakeTempCanvas(context => {
     for (let i = 0; i < 20; i++) {
@@ -90,17 +93,12 @@ export const levelSelectScene = (lvl?, stars?) => {
 
     for (let i = 0; i < 3; i++) {
       context.beginPath();
-
-      if (i == 2) {
-        context.globalAlpha = 0.2;
-      }
-
       context.rect(i * 75 + 16, 4 * 45 + 12, 70, 40);
       context.fill();
 
       writeText(
         font,
-        ["TITLE", "HELP", "NEXT"][i],
+        ["TITLE", "HELP", "CUSTOM"][i],
         -(i * 75 + 16 + 37 - 4),
         4 * 45 + 12 + 3 + 10,
         1,
@@ -176,8 +174,11 @@ export const levelSelectScene = (lvl?, stars?) => {
           const { x, y } = touches[0];
           currentChoice =
             Math.floor((x - 16) / 45) + 5 * Math.floor((y - 12) / 45);
-          currentChoice =
-            currentChoice < 20 ? currentChoice : currentChoice < 22 ? 20 : 21;
+
+          if (currentChoice > 19) {
+            console.log(x);
+            currentChoice = x < 88 ? 20 : x > 160 ? 22 : 21;
+          }
         }
 
         currentChoice =
@@ -188,7 +189,11 @@ export const levelSelectScene = (lvl?, stars?) => {
           transition = true;
           if (currentChoice > 19) {
             gameLoop.stop();
-            currentChoice === 20 ? Title() : helpScene();
+            currentChoice === 20
+              ? Title()
+              : currentChoice === 21
+              ? helpScene()
+              : Coil();
             return;
           }
           setTimeout(() => {

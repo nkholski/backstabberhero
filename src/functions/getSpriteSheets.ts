@@ -6,8 +6,6 @@ const hex2rgb = hexColor => {
   for (let i = 0; i < 3; i++) {
     rgb[i] = 0xb * parseInt(hexColor.substr(i, 1), 16);
   }
-  console.log(hexColor, rgb);
-
   return rgb;
 };
 
@@ -64,7 +62,7 @@ const baseAnims = [
   ["sleep", "9..10", 3, true]
 ];
 
-const createAltGfx = gfx => {
+const createAltGfx = (gfx, custom) => {
   let spriteSheets = [];
   let animations = {};
   baseAnims.forEach(anim => {
@@ -82,7 +80,12 @@ const createAltGfx = gfx => {
   let skinfix = false;
 
   ["9CF", "F9F", "0C0", "60C", "396", "630", "0CF"].forEach((hexColor, t) => {
-    const rgb = hex2rgb(hexColor);
+    let rgb;
+    if (t > 0) {
+      rgb = hex2rgb(hexColor);
+    } else {
+      rgb = custom;
+    }
     const tmpCanvas = document.createElement("canvas");
     const tmpContext = tmpCanvas.getContext("2d");
     const img = gfx;
@@ -101,7 +104,6 @@ const createAltGfx = gfx => {
 
     for (let i = 0; i < imageData.data.length; i += 4) {
       if (imageData[i] != 0 && !skinfix) {
-        console.log("Skin fix");
         skinfix = true;
       }
 
@@ -120,8 +122,6 @@ const createAltGfx = gfx => {
     }
     tmpContext.putImageData(imageData, 0, 0);
 
-    console.log("k", tmpCanvas);
-
     spriteSheets[t] = SpriteSheet({
       image: tmpCanvas,
       frameWidth: 16,
@@ -133,7 +133,7 @@ const createAltGfx = gfx => {
   return spriteSheets;
 };
 
-const GetSpriteSheets = gfx => {
-  return createAltGfx(gfx);
+const GetSpriteSheets = (gfx, custom) => {
+  return createAltGfx(gfx, custom);
 };
 export default GetSpriteSheets;
