@@ -7,12 +7,15 @@ export const SetState = (state: any) => {
 
   const context = getContext();
 
+  let mobile = "ontouchstart" in window;
+
   window["nkholski"] = {
     body,
     ...globalState,
     ...state,
     context,
-    mobile: "ontouchstart" in window
+    mobile,
+    press: (mobile ? "TOUCH" : "PRESS Z") + " TO CONTINUE"
   };
 };
 

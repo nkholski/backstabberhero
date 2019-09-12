@@ -14,7 +14,7 @@ import { GetState } from "../functions/state";
 import { keyPressed, Ekeys } from "../functions/input";
 
 export const helpScene = () => {
-  const { font } = GetState();
+  const { font, press } = GetState();
   let tick = 0;
   let letter = 0;
   let story = `THIS IS THE UNTOLD STORY OF THE
@@ -49,7 +49,7 @@ BARREL GOES UNNOTICED/`.substring(0, letter - storyLength),
       }
 
       if (tick > 999 && GetFlash(tick / 9)) {
-        writeText(font, "PRESS Z TO CONTINUE", -1, 220, 1);
+        writeText(font, press, -1, 220, 1);
       }
     },
     update: () => {

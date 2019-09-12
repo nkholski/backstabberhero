@@ -8,7 +8,7 @@ import { GetState } from "../functions/state";
 import GetSpriteSheets from "../functions/getSpriteSheets";
 
 export const Coil = () => {
-  let { font, spriteSheets, context, customColors, gfx } = GetState();
+  let { font, spriteSheets, context, customColors, gfx, press } = GetState();
   const clickys = [];
   let allowed =
     //@ts-ignore
@@ -68,7 +68,7 @@ export const Coil = () => {
       writeText(font, "CUSTOMIZATION", -1, 32, 2);
 
       if (GetFlash(tick / 9) && tick > 99) {
-        writeText(font, "PRESS T FOR TITLE", 100, 150, 1);
+        writeText(font, press, 100, 150, 1);
       }
       context.beginPath();
 

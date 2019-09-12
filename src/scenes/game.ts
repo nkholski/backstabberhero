@@ -23,7 +23,7 @@ export const GameScene = (lvl: number) => {
   // stopMusic();
   //const { l: level, e: enemyData, h: heroCoordinates } = getLevel(lvl);
   const level = getLevel(lvl);
-  const { spriteSheets, assets, context, font } = GetState();
+  const { spriteSheets, press, context, font } = GetState();
   let turnTimer = 100;
   let starCount = 0;
 
@@ -381,10 +381,10 @@ export const GameScene = (lvl: number) => {
             2
           ); // OK, GOOD eller GREATz
         } else {
-          writeText(font, "STAB OVER", 56, 50, 2);
+          writeText(font, "STAB OVER", -1, 50, 2);
         }
         if (flash && okToQuit) {
-          writeText(font, " PRESS Z", 56 + 36, 70, 1);
+          writeText(font, press, -1, 70, 1);
         }
       }
     }

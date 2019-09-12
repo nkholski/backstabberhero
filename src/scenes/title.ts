@@ -13,7 +13,7 @@ export const Title = () => {
   let amplitude = 100;
   let heroOpacity = 0;
   let state = -1;
-  let { context, spriteSheets, font } = GetState();
+  let { context, spriteSheets, font, press } = GetState();
   context.imageSmoothingEnabled = false;
 
   // window["playMusic"]();
@@ -50,7 +50,7 @@ export const Title = () => {
       writeText(font, "HERO", -130, 70 + 3 - heroOpacity / 5, 5);
       context.globalAlpha = 1;
       if (heroOpacity === 100 && GetFlash(tick / 9)) {
-        writeText(font, "PRESS Z TO STAB", -1, 100, 1);
+        writeText(font, press, -1, 100, 1);
       }
 
       writeText(font, "-2019 NIKLAS BERG", 110, 225);
