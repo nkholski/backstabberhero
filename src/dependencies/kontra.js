@@ -283,31 +283,25 @@ class Animation {
    * @param {Number} [properties.height] - height of the sprite. Defaults to [Animation.height](#height).
    * @param {Canvas​Rendering​Context2D} [properties.context] - The context the animation should draw to. Defaults to [core.getContext()](api/core#getContext).
    */
-  render({
-    x,
-    y,
-    width = this.width,
-    height = this.height,
-    context = getContext()
-  } = {}) {
+  render({ x, y, height = this.height, context = getContext() } = {}) {
     // get the row and col of the frame
     let row = (this.frames[this._f] / this.spriteSheet._f) | 0;
     let col = this.frames[this._f] % this.spriteSheet._f | 0;
 
     if (this.flipped) {
       context.scale(-1, 1);
-      x -= width;
+      x -= 16;
     }
 
     context.drawImage(
       this.spriteSheet.image,
-      col * width + (col * 2 + 1) * this.margin,
-      row * height + (row * 2 + 1) * this.margin,
-      width,
+      col * 16,
+      row * height,
+      16,
       height,
       Math.round(x),
       Math.round(y),
-      width,
+      16,
       height
     );
   }
@@ -823,10 +817,10 @@ function clear() {
 function GameLoop({ fps = 60, clearCanvas = true, update, render } = {}) {
   // check for required functions
   // @if DEBUG
-  if (!(update && render)) {
-    throw Error("You must provide update() and render() functions");
-  }
-  // @endif
+  // if (!(update && render)) {
+  //   throw Error("You must provide update() and render() functions");
+  // }
+  // // @endif
 
   // animation variables
   let accumulator = 0;
@@ -851,7 +845,7 @@ function GameLoop({ fps = 60, clearCanvas = true, update, render } = {}) {
       return;
     }
 
-    emit("tick");
+    // emit("tick");
     accumulator += dt;
 
     while (accumulator >= delta) {
@@ -923,14 +917,14 @@ function GameLoop({ fps = 60, clearCanvas = true, update, render } = {}) {
     stop() {
       this.isStopped = true;
       cancelAnimationFrame(rAF);
-    },
+    }
 
     // expose properties for testing
     // @if DEBUG
-    _frame: frame,
-    set _last(value) {
-      last = value;
-    }
+    // _frame: frame,
+    // set _last(value) {
+    //   last = value;
+    // }
     // @endif
   };
 
@@ -2283,6 +2277,8 @@ class Vector {
    * @returns {kontra.Vector} A new kontra.Vector instance.
    */
   add(vec, dt) {
+    console.log(vec, dt);
+    debugger;
     return vectorFactory(
       this.x + (vec.x || 0) * (dt || 1),
       this.y + (vec.y || 0) * (dt || 1)
@@ -2365,8 +2361,8 @@ vectorFactory.class = Vector;
  * @param {Number} properties.y - Y coordinate of the position vector.
  * @param {Number} [properties.dx] - X coordinate of the velocity vector.
  * @param {Number} [properties.dy] - Y coordinate of the velocity vector.
- * @param {Number} [properties.ddx] - X coordinate of the acceleration vector.
- * @param {Number} [properties.ddy] - Y coordinate of the acceleration vector.
+//  * @param {Number} [properties.ddx] - X coordinate of the acceleration vector.
+//  * @param {Number} [properties.ddy] - Y coordinate of the acceleration vector.
  *
  * @param {String} [properties.color] - Fill color for the sprite if no image or animation is provided.
  * @param {Number} [properties.width] - Width of the sprite.
@@ -2402,7 +2398,7 @@ class Sprite {
    * @param {Object} properties - Properties of the sprite.
    */
   init(properties = {}) {
-    let { x, y, dx, dy, ddx, ddy, width, height, image } = properties;
+    let { x, y, dx, dy, image } = properties;
 
     /**
      * The sprites position vector.
@@ -2423,7 +2419,7 @@ class Sprite {
      * @memberof Sprite
      * @property {kontra.Vector} acceleration
      */
-    this.acceleration = vectorFactory(ddx, ddy);
+    // this.acceleration = vectorFactory(ddx, ddy);
 
     // defaults
 
@@ -2444,14 +2440,7 @@ class Sprite {
      * @memberof Sprite
      * @property {Number} rotation
      */
-    this.width = this.height = this.rotation = 0;
-
-    /**
-     * How may frames the sprite should be alive. Primarily used by kontra.Pool to know when to recycle an object.
-     * @memberof Sprite
-     * @property {Number} ttl
-     */
-    this.ttl = Infinity;
+    this.height = 16; //this.rotation = 0;
 
     /**
      * The x and y origin of the sprite. {x:0, y:0} is the top left corner of the sprite, {x:1, y:1} is the bottom right corner.
@@ -2495,7 +2484,7 @@ class Sprite {
      * sprite.x = 450;
      * sprite.render();
      */
-    this.anchor = { x: 0, y: 0 };
+    // this.anchor = { x: 0, y: 0 };
 
     /**
      * The context the sprite will draw to.
@@ -2572,18 +2561,18 @@ class Sprite {
    * @memberof Sprite
    * @property {Number} ddx
    */
-  get ddx() {
-    return this.acceleration.x;
-  }
+  // get ddx() {
+  //   return this.acceleration.x;
+  // }
 
-  /**
-   * Y coordinate of the acceleration vector.
-   * @memberof Sprite
-   * @property {Number} ddy
-   */
-  get ddy() {
-    return this.acceleration.y;
-  }
+  // /**
+  //  * Y coordinate of the acceleration vector.
+  //  * @memberof Sprite
+  //  * @property {Number} ddy
+  //  */
+  // get ddy() {
+  //   return this.acceleration.y;
+  // }
 
   /**
    * An object of [Animations](animation) from a kontra.SpriteSheet to animate the sprite. Each animation is named so that it can can be used by name for the sprites [playAnimation()](#playAnimation) function.
@@ -2631,12 +2620,12 @@ class Sprite {
   set dy(value) {
     this.velocity.y = value;
   }
-  set ddx(value) {
-    this.acceleration.x = value;
-  }
-  set ddy(value) {
-    this.acceleration.y = value;
-  }
+  // set ddx(value) {
+  //   this.acceleration.x = value;
+  // }
+  // set ddy(value) {
+  //   this.acceleration.y = value;
+  // }
 
   set animations(value) {
     let prop, firstAnimation;
@@ -2657,7 +2646,7 @@ class Sprite {
      * @property {kontra.Animation} currentAnimation
      */
     this.currentAnimation = firstAnimation;
-    this.width = this.width || firstAnimation.width;
+    this.width = 16;
     this.height = this.height || firstAnimation.height;
   }
 
@@ -2668,9 +2657,9 @@ class Sprite {
    *
    * @returns {Boolean} `true` if the sprites [ttl](#ttl) property is above `0`, `false` otherwise.
    */
-  isAlive() {
-    return this.ttl > 0;
-  }
+  // isAlive() {
+  //   return this.ttl > 0;
+  // }
 
   /**
    * Check if the sprite collide with the object. Uses a simple [Axis-Aligned Bounding Box (AABB) collision check](https://developer.mozilla.org/en-US/docs/Games/Techniques/2D_collision_detection#Axis-Aligned_Bounding_Box). Takes into account the sprites [anchor](#anchor).
@@ -2736,27 +2725,27 @@ class Sprite {
    *
    * @returns {Boolean|null} `true` if the objects collide, `false` otherwise. Will return `null` if the either of the two objects are rotated.
    */
-  collidesWith(object) {
-    if (this.rotation || object.rotation) return null;
+  // collidesWith(object) {
+  //   if (this.rotation || object.rotation) return null;
 
-    // take into account sprite anchors
-    let x = this.x - this.width * this.anchor.x;
-    let y = this.y - this.height * this.anchor.y;
+  //   // take into account sprite anchors
+  //   let x = this.x - this.width * this.anchor.x;
+  //   let y = this.y - this.height * this.anchor.y;
 
-    let objX = object.x;
-    let objY = object.y;
-    if (object.anchor) {
-      objX -= object.width * object.anchor.x;
-      objY -= object.height * object.anchor.y;
-    }
+  //   let objX = object.x;
+  //   let objY = object.y;
+  //   if (object.anchor) {
+  //     objX -= object.width * object.anchor.x;
+  //     objY -= object.height * object.anchor.y;
+  //   }
 
-    return (
-      x < objX + object.width &&
-      x + this.width > objX &&
-      y < objY + object.height &&
-      y + this.height > objY
-    );
-  }
+  //   return (
+  //     x < objX + object.width &&
+  //     x + this.width > objX &&
+  //     y < objY + object.height &&
+  //     y + this.height > objY
+  //   );
+  // }
 
   /**
    * Update the sprites position based on its velocity and acceleration. Calls the sprites [advance()](#advance) function.
@@ -2765,18 +2754,18 @@ class Sprite {
    *
    * @param {Number} [dt] - Time since last update.
    */
-  update(dt) {
-    this.advance(dt);
-  }
+  // update(dt) {
+  //   this.advance(dt);
+  // }
 
   /**
    * Render the sprite. Calls the sprites [draw()](#draw) function.
    * @memberof Sprite
    * @function render
    */
-  render() {
-    this.draw();
-  }
+  // render() {
+  //   this.draw();
+  // }
 
   /**
    * Set the currently playing animation of an animation sprite.
@@ -2855,11 +2844,8 @@ class Sprite {
    *
    */
   advance(dt) {
-    this.velocity = this.velocity.add(this.acceleration, dt);
-    this.position = this.position.add(this.velocity, dt);
-
-    this.ttl--;
-
+    // this.velocity = this.velocity.add(this.acceleration, dt);
+    this.position = { x: this.x + this.dx, y: this.y + this.dy }; //this.position.add(this.velocity, dt);
     if (this.currentAnimation) {
       this.currentAnimation.update(dt);
     }
@@ -2896,41 +2882,36 @@ class Sprite {
    * @memberof Sprite
    * @function draw
    */
-  draw() {
-    let anchorWidth = -this.width * this.anchor.x;
-    let anchorHeight = -this.height * this.anchor.y;
-
+  render() {
     this.context.save();
     this.context.translate(this.x, this.y);
 
-    if (this.rotation) {
-      this.context.rotate(this.rotation);
-    }
-
-    if (this.image) {
-      this.context.drawImage(
-        this.image,
-        0,
-        0,
-        this.image.width,
-        this.image.height,
-        anchorWidth,
-        anchorHeight,
-        this.width,
-        this.height
-      );
-    } else if (this.currentAnimation) {
-      this.currentAnimation.render({
-        x: anchorWidth,
-        y: anchorHeight,
-        width: this.width,
-        height: this.height,
-        context: this.context
-      });
-    } else {
-      this.context.fillStyle = this.color;
-      this.context.fillRect(anchorWidth, anchorHeight, this.width, this.height);
-    }
+    // if (this.image) {
+    //   this.context.drawImage(
+    //     this.image,
+    //     0,
+    //     0,
+    //     this.image.width,
+    //     this.image.height,
+    //     0,
+    //     0,
+    //     this.width,
+    //     this.height
+    //   );
+    // } else if (this.currentAnimation) {
+    //
+    this.currentAnimation.render({
+      x: 0,
+      y: 0,
+      width: this.width,
+      height: this.height,
+      context: this.context
+    });
+    //}
+    // else {
+    //   this.context.fillStyle = this.color;
+    //   this.context.fillRect(0, 0, this.width, this.height);
+    // }
 
     this.context.restore();
   }
@@ -2949,37 +2930,38 @@ spriteFactory.class = Sprite;
  *
  * @returns {Number|Number[]} List of frames.
  */
-function parseFrames(consecutiveFrames) {
-  // return a single number frame
-  // @see https://github.com/jed/140bytes/wiki/Byte-saving-techniques#coercion-to-test-for-types
-  if (+consecutiveFrames === consecutiveFrames) {
-    return consecutiveFrames;
-  }
+// function parseFrames(consecutiveFrames) {
+//   // return a single number frame
+//   // @see https://github.com/jed/140bytes/wiki/Byte-saving-techniques#coercion-to-test-for-types
 
-  let sequence = [];
-  let frames = consecutiveFrames.split("..");
+//   if (+consecutiveFrames === consecutiveFrames) {
+//     return consecutiveFrames;
+//   }
 
-  // coerce string to number
-  // @see https://github.com/jed/140bytes/wiki/Byte-saving-techniques#coercion-to-test-for-types
-  let start = +frames[0];
-  let end = +frames[1];
-  let i = start;
+//   let sequence = [];
+//   let frames = consecutiveFrames.split("..");
 
-  // ascending frame order
-  if (start < end) {
-    for (; i <= end; i++) {
-      sequence.push(i);
-    }
-  }
-  // descending order
-  else {
-    for (; i >= end; i--) {
-      sequence.push(i);
-    }
-  }
+//   // coerce string to number
+//   // @see https://github.com/jed/140bytes/wiki/Byte-saving-techniques#coercion-to-test-for-types
+//   let start = +frames[0];
+//   let end = +frames[1];
+//   let i = start;
 
-  return sequence;
-}
+//   // ascending frame order
+//   if (start < end) {
+//     for (; i <= end; i++) {
+//       sequence.push(i);
+//     }
+//   }
+//   // descending order
+//   else {
+//     for (; i >= end; i--) {
+//       sequence.push(i);
+//     }
+//   }
+
+//   return sequence;
+// }
 
 /**
  * A sprite sheet to animate a sequence of images. Used to create [animation sprites](./Sprite#animation-sprite).
@@ -3033,15 +3015,14 @@ function parseFrames(consecutiveFrames) {
 class SpriteSheet {
   constructor({
     image,
-    frameWidth,
     frameHeight,
-    frameMargin,
+    // frameMargin,
     animations
   } = {}) {
     // @if DEBUG
-    if (!image) {
-      throw Error("You must provide an Image for the SpriteSheet");
-    }
+    // if (!image) {
+    //   throw Error("You must provide an Image for the SpriteSheet");
+    // }
     // @endif
     /**
      * An object of named kontra.Animation objects. Typically you pass this object into kontra.Sprite to create an [animation sprites](./Sprite#animation-sprite).
@@ -3065,13 +3046,13 @@ class SpriteSheet {
      * @property {Object} frame
      */
     this.frame = {
-      width: frameWidth,
-      height: frameHeight,
-      margin: frameMargin
+      width: 16,
+      height: frameHeight
+      // margin: frameMargin
     };
 
     // f = framesPerRow
-    this._f = (image.width / frameWidth) | 0;
+    this._f = 99; // ONLY ONE ROW
 
     this.createAnimations(animations);
   }
@@ -3147,15 +3128,16 @@ class SpriteSheet {
       sequence = [];
 
       // @if DEBUG
-      if (frames === undefined) {
-        throw Error("Animation " + name + " must provide a frames property");
-      }
+      // if (frames === undefined) {
+      //   throw Error("Animation " + name + " must provide a frames property");
+      // }
       // @endif
 
       // add new frames to the end of the array
-      [].concat(frames).map(frame => {
-        sequence = sequence.concat(parseFrames(frame));
-      });
+      // [].concat(frames).map(frame => {
+      //   sequence = sequence.concat(parseFrames(frame));
+      // });
+      sequence = +frames == frames ? [frames] : frames;
 
       this.animations[name] = animationFactory({
         flipped,

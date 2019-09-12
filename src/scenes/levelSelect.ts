@@ -3,12 +3,10 @@ import { SetState } from "./../functions/state";
 import { helpScene } from "./help";
 import { Title } from "./title";
 import { MakeTempCanvas } from "./../functions/makeTempCanvas";
-import { Levels } from "../common/levels";
 import { GetFlash } from "../functions/getFlash";
 import { GameLoop } from "../dependencies/kontra.js";
 import writeText from "../functions/writeText";
 import { GameScene } from "./game";
-import { start } from "repl";
 import { GetState } from "../functions/state";
 import { zzfx } from "../dependencies/zzfx";
 import { keyPressed, Ekeys, getTouches } from "../functions/input";
@@ -47,6 +45,7 @@ export const levelSelectScene = (lvl?, stars?) => {
 
   const next = progress.indexOf(-1);
   let currentChoice = next < 20 ? next : 0;
+  const maxChoice = next;
 
   const backgroundImage = MakeTempCanvas(context => {
     for (let i = 0; i < 20; i++) {
@@ -184,6 +183,12 @@ export const levelSelectScene = (lvl?, stars?) => {
         currentChoice =
           currentChoice > 22 ? 22 : currentChoice < 0 ? 0 : currentChoice;
 
+        currentChoice =
+          currentChoice < 20 && currentChoice > maxChoice
+            ? maxChoice
+            : currentChoice;
+        console.log(currentChoice, maxChoice);
+
         if (keyPressed(Ekeys.Action)) {
           killme = true;
           transition = true;
@@ -211,8 +216,6 @@ export const levelSelectScene = (lvl?, stars?) => {
         selectLevel();
       } else {
         writeText(font, "LEVEL " + (currentChoice + 1), -1, 50, 3);
-
-        // writeText(font, Levels[currentChoice].t, -1, 90, 2);
       }
     }
   });

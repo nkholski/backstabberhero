@@ -1,8 +1,7 @@
-import { Coil } from "./scenes/coil";
+import { Title } from "./scenes/title";
 import { init } from "./dependencies/kontra";
 import GetSpriteSheets from "./functions/getSpriteSheets";
 import { SetState, GetState } from "./functions/state";
-import { Title } from "./scenes/title";
 import { initKeys } from "./functions/input";
 
 const resize = () => {

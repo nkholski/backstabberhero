@@ -79,8 +79,6 @@ export function initKeys() {
     touches = [];
     const ratio = 256 / canvas.offsetWidth;
 
-    console.log(e);
-
     for (let i = 0; i < e.touches.length; i++) {
       touches[i] = {
         x: (e.touches[i].clientX - canvas.offsetLeft) * ratio,

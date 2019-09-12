@@ -41,7 +41,6 @@ export const Touch = {
 
     //@ts-ignore
     // context.canvas.ontouchstart = (a, b) => {
-    //   console.log(a, b);
     // };
 
     // @ts-ignore

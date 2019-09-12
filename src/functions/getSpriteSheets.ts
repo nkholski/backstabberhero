@@ -46,20 +46,20 @@ const skin = [
 // }
 
 const baseAnims = [
-  ["jumpUp", 2, null, false],
-  ["jumpDown", 0, null, false],
-  ["walk", [1, 0, 2, 0], 4, true],
-  ["idle", 0, null, false],
-  ["duck", 5, null, false],
-  ["stab", 3, null, false],
-  ["knife", 4, null, false],
-  ["dead", 11, null, false],
-  ["enemyIdle", 12, null, false],
-  ["enemyWalk", "12..13", 3, true],
-  ["star", 6, null, false],
-  ["barrelPlayer", "14..15", 3, true],
-  ["barrel", 7, null, false],
-  ["sleep", "9..10", 3, true]
+  ["jumpUp", 2],
+  ["jumpDown", 0],
+  ["walk", [1, 0, 2, 0], 4],
+  ["idle", 0],
+  ["duck", 5],
+  ["stab", 3],
+  ["knife", 4],
+  ["dead", 11],
+  ["enemyIdle", 12],
+  ["enemyWalk", [12, 13], 3],
+  ["star", 6],
+  ["barrelPlayer", [14, 15], 3],
+  ["barrel", 7],
+  ["sleep", [9, 10], 3]
 ];
 
 const createAltGfx = (gfx, custom) => {

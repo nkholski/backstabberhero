@@ -43,7 +43,6 @@ export const MakeBackground = (lvl: number, level) => {
 
         let w = 36 + Math.round(16 * rnd(2));
         let y = rnd(100, 48);
-        console.log(y);
         context.fillRect(x, y, w, 500);
 
         context.stroke();

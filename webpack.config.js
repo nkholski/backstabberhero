@@ -115,6 +115,6 @@ module.exports = {
       files: ["index.html"],
       disabled: isDev
     }),
-    new CopyWebpackPlugin([{ from: "assets", to: "assets" }])
+    new CopyWebpackPlugin([{ from: "assets", to: "" }])
   ]
 };

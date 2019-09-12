@@ -29,11 +29,12 @@ export const Coil = () => {
 
       if (okToLeave && touches.length === 0 && keyPressed(Ekeys.Any)) {
         touches[0] = { x: 0, y: 121 };
+        console.log("ALIVE");
       }
 
       if (touches[0]) {
         let { x, y } = touches[0];
-        if (y > 120) {
+        if (y > 120 && tick > 99) {
           gameLoop.stop();
           Title();
         }
@@ -66,7 +67,7 @@ export const Coil = () => {
       writeText(font, "BACKSTABBER", -1, 16, 2);
       writeText(font, "CUSTOMIZATION", -1, 32, 2);
 
-      if (GetFlash(tick / 9)) {
+      if (GetFlash(tick / 9) && tick > 99) {
         writeText(font, "PRESS T FOR TITLE", 100, 150, 1);
       }
       context.beginPath();

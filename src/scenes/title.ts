@@ -6,7 +6,6 @@ import writeText from "../functions/writeText";
 import { levelSelectScene } from "./levelSelect";
 import { GetState } from "../functions/state";
 // import { playMusic } from "../functions/music";
-import { Touch } from "../functions/touch";
 import { keyPressed } from "../functions/input";
 
 export const Title = () => {
@@ -30,7 +29,7 @@ export const Title = () => {
       } else if (heroOpacity < 100) {
         heroOpacity++;
       }
-      if (keyPressed(Ekeys.Any) || GetState().touches.length > 0) {
+      if (keyPressed(Ekeys.Any) && tick > 99) {
         //@ts-ignore
         zzfx(1, 0.1, 568, 0.5, 0.9, 1.5, 0, 4.5, 0.69);
         if (state == 1) {

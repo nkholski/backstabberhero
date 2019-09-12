@@ -23,7 +23,6 @@ export const GameScene = (lvl: number) => {
   // stopMusic();
   //const { l: level, e: enemyData, h: heroCoordinates } = getLevel(lvl);
   const level = getLevel(lvl);
-  console.log(level);
   const { spriteSheets, assets, context, font } = GetState();
   let turnTimer = 100;
   let starCount = 0;
