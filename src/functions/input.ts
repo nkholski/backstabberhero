@@ -51,7 +51,12 @@ export function initKeys() {
     38: Ekeys.Up, // UpArrow
     39: Ekeys.Right, // RightArrow
     40: Ekeys.Duck, // DownArrow,
-    90: Ekeys.Stab // Z
+    90: Ekeys.Stab, // Z
+    65: Ekeys.Left, // A
+    87: Ekeys.Up, // W
+    68: Ekeys.Right, // S
+    83: Ekeys.Duck, // D,
+    
   };
   window.addEventListener("keydown", keydownEventHandler);
   window.addEventListener("keyup", keyupEventHandler);
