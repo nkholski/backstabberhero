@@ -1,13 +1,13 @@
 // import { stopMusic } from "./../functions/music";
 import { Ekeys } from "../functions/input";
-import { getLevel } from "./../functions/getLevel";
-import { GetState } from "./../functions/state";
-import { MakeBackground } from "./../functions/makeBackground";
-import { MakeEnemies } from "./../functions/makeEnemies";
-import { CheckCollidingBody } from "./../functions/physics/checkCollidingBody";
-import { GetBlocked } from "./../functions/physics/getBlocked";
-import { CDefaultBlocked } from "./../common/constants";
-import { EFacing, ETurnState, } from "./../common/enums";
+import { getLevel } from "../functions/getLevel";
+import { GetState } from "../functions/state";
+import { MakeBackground } from "../functions/makeBackground";
+import { MakeEnemies } from "../functions/makeEnemies";
+import { CheckCollidingBody } from "../functions/physics/checkCollidingBody";
+import { GetBlocked } from "../functions/physics/getBlocked";
+import { CDefaultBlocked } from "../common/constants";
+import { EFacing, ETurnState, } from "../common/enums";
 import { GetFlash } from "../functions/getFlash";
 import { Sprite, GameLoop } from "../dependencies/kontra.js";
 import { zzfx } from "../dependencies/zzfx";
@@ -49,7 +49,7 @@ export const GameScene = (lvl: number) => {
     stabTimer: -1,
     gameOver: -1,
     animations: spriteSheets[0].animations,
-    brl: null
+    barrel: null
   });
 
   knife = Sprite({
@@ -68,7 +68,7 @@ export const GameScene = (lvl: number) => {
       animations: spriteSheets[0].animations
     });
     stars.push(s);
-    s.playAnimation("starL");
+    s.playAnimation("starLeft");
   });
 
   enemies = MakeEnemies(level.enemies, spriteSheets);
@@ -81,7 +81,7 @@ export const GameScene = (lvl: number) => {
       animations: spriteSheets[0].animations
     });
     items.push(s);
-    s.playAnimation("brlL");
+    s.playAnimation("barrelLeft");
   });
 
   const counter = subject => {
@@ -95,13 +95,13 @@ export const GameScene = (lvl: number) => {
   };
 
   const removeBarrel = dir => {
-    let b = player.brl;
+    let b = player.barrel;
     items.push(b);
     b.x = player.x;
     b.y = player.y;
     b.dx = player.facing * dir;
     b.dy = -2;
-    player.brl = null;
+    player.barrel = null;
   };
 
   const background = MakeBackground(lvl, level);
@@ -181,7 +181,7 @@ export const GameScene = (lvl: number) => {
             player.dy = 0;
           }
 
-          if (keyPressed(Ekeys.Duck) && !player.brl) {
+          if (keyPressed(Ekeys.Duck) && !player.barrel) {
             anim = "duck";
             player.standing = false;
             player.y += 16;
@@ -202,7 +202,7 @@ export const GameScene = (lvl: number) => {
           // 7 tick > 100ms
           swish();
           player.stabTimer = 9; // 1 = 16ms, => 9 * 16ms
-          if (player.brl) {
+          if (player.barrel) {
             removeBarrel(1);
           }
         }
@@ -213,7 +213,7 @@ export const GameScene = (lvl: number) => {
         }
 
         if (!player.blocked.bottom) {
-          anim = player.dy > 0 ? "jD" : "jU";
+          anim = player.dy > 0 ? "jumpDown" : "jumpUp";
         }
       }
 
@@ -222,7 +222,7 @@ export const GameScene = (lvl: number) => {
         anim = "stab";
         knife.visible = true;
         knife.playAnimation(
-          "knife" + (player.facing === -1 ? "L" : "R")
+          "knife" + (player.facing === -1 ? "Left" : "Right")
         );
         const stabbedEnemy = CheckCollidingBody(
           {
@@ -238,16 +238,16 @@ export const GameScene = (lvl: number) => {
           stabbedEnemy.dx = player.facing * 1.5;
           stabbedEnemy.dy = -2;
           stabbedEnemy.playAnimation(
-            "dead" + (player.facing === 1 ? "L" : "R")
+            "dead" + (player.facing === 1 ? "Left" : "Right")
           );
         }
       }
-      if (player.brl) {
-        anim = "brl" + (anim === "walk" ? "Player" : "");
+      if (player.barrel) {
+        anim = "barrel" + (anim === "walk" ? "Player" : "");
       }
 
       player.playAnimation(
-        anim + (player.facing === EFacing.Left ? "L" : "R")
+        anim + (player.facing === EFacing.Left ? "Left" : "Right")
       );
 
       player.advance();
@@ -270,7 +270,7 @@ export const GameScene = (lvl: number) => {
       items.forEach((item, i) => {
         if (!item.dx && CheckCollidingBody(player, [item])) {
           pick();
-          player.brl = item;
+          player.barrel = item;
           items.splice(i, 1);
         }
         if (item.dx) {
@@ -281,7 +281,7 @@ export const GameScene = (lvl: number) => {
 
       // Run into enemy
       const collidingBody = CheckCollidingBody(player, enemies);
-      if (collidingBody && !player.brl) {
+      if (collidingBody && !player.barrel) {
         collidingBody.facing =
           collidingBody.x < player.x ? EFacing.Right : EFacing.Left;
 
@@ -314,7 +314,7 @@ export const GameScene = (lvl: number) => {
         gameOver = true;
       }
       if (gameOver && !wasGameOver) {
-        if (player.brl) {
+        if (player.barrel) {
           removeBarrel(-1);
         }
 
