@@ -3,7 +3,7 @@ import { GetBlocked } from "./getBlocked";
 export const EnemyVision = (enemy, player, platforms) => {
   // 1. Linje i se-riktning tills stöter i ett objekt, hoppa 8px åt gången
 
-  if (player.barrel && player.dx === 0 && player.dy === 0) {
+  if (player.brl && player.dx === 0 && player.dy === 0) {
     return false;
   }
 

@@ -49,7 +49,7 @@ export const GameScene = (lvl: number) => {
     stabTimer: -1,
     gameOver: -1,
     animations: spriteSheets[0].animations,
-    barrel: null
+    brl: null
   });
 
   knife = Sprite({
@@ -81,7 +81,7 @@ export const GameScene = (lvl: number) => {
       animations: spriteSheets[0].animations
     });
     items.push(s);
-    s.playAnimation("barrelL");
+    s.playAnimation("brlL");
   });
 
   const counter = subject => {
@@ -95,13 +95,13 @@ export const GameScene = (lvl: number) => {
   };
 
   const removeBarrel = dir => {
-    let b = player.barrel;
+    let b = player.brl;
     items.push(b);
     b.x = player.x;
     b.y = player.y;
     b.dx = player.facing * dir;
     b.dy = -2;
-    player.barrel = null;
+    player.brl = null;
   };
 
   const background = MakeBackground(lvl, level);
@@ -181,7 +181,7 @@ export const GameScene = (lvl: number) => {
             player.dy = 0;
           }
 
-          if (keyPressed(Ekeys.Duck) && !player.barrel) {
+          if (keyPressed(Ekeys.Duck) && !player.brl) {
             anim = "duck";
             player.standing = false;
             player.y += 16;
@@ -202,7 +202,7 @@ export const GameScene = (lvl: number) => {
           // 7 tick > 100ms
           swish();
           player.stabTimer = 9; // 1 = 16ms, => 9 * 16ms
-          if (player.barrel) {
+          if (player.brl) {
             removeBarrel(1);
           }
         }
@@ -213,7 +213,7 @@ export const GameScene = (lvl: number) => {
         }
 
         if (!player.blocked.bottom) {
-          anim = player.dy > 0 ? "jumpDown" : "jumpUp";
+          anim = player.dy > 0 ? "jD" : "jU";
         }
       }
 
@@ -242,8 +242,8 @@ export const GameScene = (lvl: number) => {
           );
         }
       }
-      if (player.barrel) {
-        anim = "barrel" + (anim === "walk" ? "Player" : "");
+      if (player.brl) {
+        anim = "brl" + (anim === "walk" ? "Player" : "");
       }
 
       player.playAnimation(
@@ -270,7 +270,7 @@ export const GameScene = (lvl: number) => {
       items.forEach((item, i) => {
         if (!item.dx && CheckCollidingBody(player, [item])) {
           pick();
-          player.barrel = item;
+          player.brl = item;
           items.splice(i, 1);
         }
         if (item.dx) {
@@ -281,7 +281,7 @@ export const GameScene = (lvl: number) => {
 
       // Run into enemy
       const collidingBody = CheckCollidingBody(player, enemies);
-      if (collidingBody && !player.barrel) {
+      if (collidingBody && !player.brl) {
         collidingBody.facing =
           collidingBody.x < player.x ? EFacing.Right : EFacing.Left;
 
@@ -314,7 +314,7 @@ export const GameScene = (lvl: number) => {
         gameOver = true;
       }
       if (gameOver && !wasGameOver) {
-        if (player.barrel) {
+        if (player.brl) {
           removeBarrel(-1);
         }
 

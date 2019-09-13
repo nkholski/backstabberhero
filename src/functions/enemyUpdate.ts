@@ -52,7 +52,7 @@ export const EnemyUpdate = (
 
     anim = enemy.walks && turnState === ETurnState.Walk ? "Walk" : "Idle";
   }
-  enemy.playAnimation("enemy" + anim + (enemy.facing == -1 ? "L" : "R"));
+  enemy.playAnimation("e" + anim + (enemy.facing == -1 ? "L" : "R"));
 
   return gameOver;
 };

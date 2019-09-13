@@ -46,19 +46,19 @@ const skin = [
 // }
 
 const baseAnims = [
-  ["jumpUp", 2],
-  ["jumpDown", 0],
+  ["jU", 2],
+  ["jD", 0],
   ["walk", [1, 0, 2, 0], 4],
   ["idle", 0],
   ["duck", 5],
   ["stab", 3],
   ["knife", 4],
   ["dead", 11],
-  ["enemyIdle", 12],
-  ["enemyWalk", [12, 13], 3],
+  ["eIdle", 12],
+  ["eWalk", [12, 13], 3],
   ["star", 6],
-  ["barrelPlayer", [14, 15], 3],
-  ["barrel", 7],
+  ["brlPlayer", [14, 15], 3],
+  ["brl", 7],
   ["sleep", [9, 10], 3]
 ];
 
@@ -89,13 +89,13 @@ const createAltGfx = (gfx, custom) => {
     const tmpCanvas = document.createElement("canvas");
     const tmpContext = tmpCanvas.getContext("2d");
     const img = gfx;
-    tmpCanvas.width = 260; // 224 px plus 32 px for barrel animations
+    tmpCanvas.width = 260; // 224 px plus 32 px for brl animations
     tmpCanvas.height = 64;
     tmpContext.drawImage(img, 0, 0);
     tmpContext.drawImage(img, 0, 26, 16, 6, 224, 26, 16, 6); // First feet
-    tmpContext.drawImage(img, 112, 5, 16, 27, 224, 0, 16, 27); // First barrel
+    tmpContext.drawImage(img, 112, 5, 16, 27, 224, 0, 16, 27); // First brl
     tmpContext.drawImage(img, 32, 26, 16, 6, 240, 26, 16, 6); // Second feet
-    tmpContext.drawImage(img, 112, 5, 16, 27, 240, 1, 16, 27); // Second barrel
+    tmpContext.drawImage(img, 112, 5, 16, 27, 240, 1, 16, 27); // Second brl
 
     let imageData = tmpContext.getImageData(0, 0, 260, 64);
 
