@@ -1,5 +1,4 @@
-// import { stopMusic } from "./../functions/music";
-import { Ekeys } from "../functions/input";
+import { Ekeys, keyPressed } from "../functions/input";
 import { getLevel } from "../functions/getLevel";
 import { GetState } from "../functions/state";
 import { MakeBackground } from "../functions/makeBackground";
@@ -14,7 +13,6 @@ import { zzfx } from "../dependencies/zzfx";
 import writeText from "../functions/writeText";
 import { EnemyUpdate } from "../functions/enemyUpdate";
 import { levelSelectScene } from "./levelSelect";
-import { keyPressed } from "../functions/input";
 
 export const GameScene = (lvl: number) => {
   const level = getLevel(lvl);
