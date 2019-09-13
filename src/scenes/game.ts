@@ -17,11 +17,9 @@ import { levelSelectScene } from "./levelSelect";
 import { keyPressed } from "../functions/input";
 
 export const GameScene = (lvl: number) => {
-  // stopMusic();
-  //const { l: level, e: enemyData, h: heroCoordinates } = getLevel(lvl);
   const level = getLevel(lvl);
-  const { spriteSheets, press, context, font } = GetState();
-  let turnTimer = 100;
+  const { spriteSheets, press, context, font, blip, pick, swish } = GetState();
+  let turnTimer = 99;
   let starCount = 0;
 
   let player,
@@ -70,7 +68,7 @@ export const GameScene = (lvl: number) => {
       animations: spriteSheets[0].animations
     });
     stars.push(s);
-    s.playAnimation("starLeft");
+    s.playAnimation("starL");
   });
 
   enemies = MakeEnemies(level.enemies, spriteSheets);
@@ -83,7 +81,7 @@ export const GameScene = (lvl: number) => {
       animations: spriteSheets[0].animations
     });
     items.push(s);
-    s.playAnimation("barrelLeft");
+    s.playAnimation("barrelL");
   });
 
   const counter = subject => {
@@ -202,7 +200,7 @@ export const GameScene = (lvl: number) => {
           player.standing
         ) {
           // 7 tick > 100ms
-          zzfx(1, 0.1, 800, 0.1, 0.66, 1.1, 3.1, 0.1, 0.85);
+          swish();
           player.stabTimer = 9; // 1 = 16ms, => 9 * 16ms
           if (player.barrel) {
             removeBarrel(1);
@@ -224,7 +222,7 @@ export const GameScene = (lvl: number) => {
         anim = "stab";
         knife.visible = true;
         knife.playAnimation(
-          "knife" + (player.facing === -1 ? "Left" : "Right")
+          "knife" + (player.facing === -1 ? "L" : "R")
         );
         const stabbedEnemy = CheckCollidingBody(
           {
@@ -235,12 +233,12 @@ export const GameScene = (lvl: number) => {
           enemies
         );
         if (stabbedEnemy) {
-          zzfx(1, 0, 100, 0.4, 0, 0.9, 7, 15, 0);
+          zzfx(1, 0, 99, 0.4, 0, 1, 7, 15, 0);
           stabbedEnemy.dead = true;
           stabbedEnemy.dx = player.facing * 1.5;
           stabbedEnemy.dy = -2;
           stabbedEnemy.playAnimation(
-            "dead" + (player.facing === 1 ? "Left" : "Right")
+            "dead" + (player.facing === 1 ? "L" : "R")
           );
         }
       }
@@ -249,7 +247,7 @@ export const GameScene = (lvl: number) => {
       }
 
       player.playAnimation(
-        anim + (player.facing === EFacing.Left ? "Left" : "Right")
+        anim + (player.facing === EFacing.Left ? "L" : "R")
       );
 
       player.advance();
@@ -261,7 +259,7 @@ export const GameScene = (lvl: number) => {
       // Check stars
       stars.forEach((star, i) => {
         if (CheckCollidingBody(player, [star])) {
-          zzfx(1, 0, 400, 0.5, 0.5, 0, 0, 5, 0);
+         pick();
           //
           // zzfx(1,0,600,.1,.49,2.5,.5,-2,.75); // ZzFX 67823
           starCount++;
@@ -271,6 +269,7 @@ export const GameScene = (lvl: number) => {
 
       items.forEach((item, i) => {
         if (!item.dx && CheckCollidingBody(player, [item])) {
+          pick();
           player.barrel = item;
           items.splice(i, 1);
         }
@@ -321,7 +320,7 @@ export const GameScene = (lvl: number) => {
 
         setTimeout(() => {
           okToQuit = true;
-        }, 1000);
+        }, 1e3);
       }
     },
     render: function() {
@@ -338,7 +337,7 @@ export const GameScene = (lvl: number) => {
         counter(star);
         star.render();
         if (star.sleepTimer == 0) {
-          zzfx(1, 0, -250, 0.7, 0.7, 1.4, 0, 5, 1.49); // ZzFX 342
+          blip();
           stars.splice(i, 1);
         }
       });

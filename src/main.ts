@@ -3,6 +3,7 @@ import { init } from "./dependencies/kontra";
 import GetSpriteSheets from "./functions/getSpriteSheets";
 import { SetState, GetState } from "./functions/state";
 import { initKeys } from "./functions/input";
+import { zzfx } from "./dependencies/zzfx";
 
 const resize = () => {
   document
@@ -52,7 +53,10 @@ const assets = {};
       spriteSheets,
       touches: {},
       keys: {},
-      customColors
+      customColors,
+      blip: ()=>zzfx(1,.1,648,.3,.5,0,0,7,.7),
+      pick: ()=>zzfx(1,0,70,.2,.6,5,.1,8,.9),
+      swish: ()=>zzfx(1,0,657,.1,.5,.2,3,3,.6),
     };
     SetState(state);
     if (GetState().mobile) {

@@ -1,6 +1,5 @@
 import { Ekeys } from "../functions/input";
 import { GameLoop } from "../dependencies/kontra.js";
-import { zzfx } from "../dependencies/zzfx";
 import { GetFlash } from "../functions/getFlash";
 import writeText from "../functions/writeText";
 import { levelSelectScene } from "./levelSelect";
@@ -13,7 +12,7 @@ export const Title = () => {
   let amplitude = 100;
   let heroOpacity = 0;
   let state = -1;
-  let { context, spriteSheets, font, press } = GetState();
+  let { context, spriteSheets, font, press, blip } = GetState();
   context.imageSmoothingEnabled = false;
 
   // window["playMusic"]();
@@ -30,8 +29,7 @@ export const Title = () => {
         heroOpacity++;
       }
       if (keyPressed(Ekeys.Any) && tick > 99) {
-        //@ts-ignore
-        zzfx(1, 0.1, 568, 0.5, 0.9, 1.5, 0, 4.5, 0.69);
+        blip();
         if (state == 1) {
           loop.stop();
           levelSelectScene();

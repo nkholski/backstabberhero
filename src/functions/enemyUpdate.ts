@@ -15,7 +15,7 @@ export const EnemyUpdate = (
     return;
   }
   if (enemy.sleepTimer > 0) {
-    enemy.playAnimation("sleepRight");
+    enemy.playAnimation("sleepR");
     return;
   }
 
@@ -27,7 +27,7 @@ export const EnemyUpdate = (
     enemy.gotPlayer = true;
     player.facing = -enemy.facing;
 
-    zzfx(1, 0, 100, 0.7, 0.42, 1.5, 0.6, 0.7, 0.2);
+    zzfx(1, 0, 99, 0.7, 1, 1, 0.6, 0.7, 0.2);
     enemy.gotPlayer = true;
   } else if (!enemy.gotPlayer) {
     if (turnState === ETurnState.Turn) {
@@ -52,7 +52,7 @@ export const EnemyUpdate = (
 
     anim = enemy.walks && turnState === ETurnState.Walk ? "Walk" : "Idle";
   }
-  enemy.playAnimation("enemy" + anim + (enemy.facing == -1 ? "Left" : "Right"));
+  enemy.playAnimation("enemy" + anim + (enemy.facing == -1 ? "L" : "R"));
 
   return gameOver;
 };

@@ -8,7 +8,6 @@ import { GameLoop } from "../dependencies/kontra.js";
 import writeText from "../functions/writeText";
 import { GameScene } from "./game";
 import { GetState } from "../functions/state";
-import { zzfx } from "../dependencies/zzfx";
 import { keyPressed, Ekeys, getTouches } from "../functions/input";
 import GetSpriteSheets from "../functions/getSpriteSheets";
 import { Coil } from "./coil";
@@ -24,7 +23,7 @@ const updateLocalStorage = progress => {
 };
 
 export const levelSelectScene = (lvl?, stars?) => {
-  const { font, gfx, context, customColors } = GetState();
+  const { font, gfx, context, customColors, blip,swish } = GetState();
   let transition;
   let killme = false;
   let tick = 0;
@@ -165,9 +164,7 @@ export const levelSelectScene = (lvl?, stars?) => {
           currentChoice++;
         }
 
-        if (wasCurrentChoice !== currentChoice) {
-          zzfx(1, 0.3, 100, 0.4, 0.27, 0.1, 2, 2.9, 0.68);
-        }
+
 
         if (touches[0]) {
           const { x, y } = touches[0];
@@ -184,10 +181,15 @@ export const levelSelectScene = (lvl?, stars?) => {
 
         currentChoice =
           currentChoice < 20 && currentChoice > maxChoice
-            ? maxChoice
+            ? (wasCurrentChoice > currentChoice ? maxChoice : 20)
             : currentChoice;
 
+            if (wasCurrentChoice !== currentChoice) {
+              swish();
+            }
+
         if (keyPressed(Ekeys.Action)) {
+          blip(); // ZzFX 46671
           killme = true;
           transition = true;
           if (currentChoice > 19) {

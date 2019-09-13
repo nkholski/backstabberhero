@@ -66,13 +66,13 @@ const createAltGfx = (gfx, custom) => {
   let spriteSheets = [];
   let animations = {};
   baseAnims.forEach(anim => {
-    animations[anim[0] + "Right"] = {
+    animations[anim[0] + "R"] = {
       frames: anim[1],
       frameRate: anim[2],
       loop: anim[3]
     };
-    animations[anim[0] + "Left"] = {
-      ...animations[anim[0] + "Right"],
+    animations[anim[0] + "L"] = {
+      ...animations[anim[0] + "R"],
       flipped: true
     };
   });

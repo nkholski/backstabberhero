@@ -15,7 +15,7 @@ export const SetState = (state: any) => {
     ...state,
     context,
     mobile,
-    press: (mobile ? "TOUCH" : "PRESS Z") + " TO CONTINUE"
+    press: (mobile ? "TOUCH" : "PRESS Z") + " TO CONTINUE",
   };
 };
 

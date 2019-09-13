@@ -8,11 +8,11 @@ import { GetState } from "../functions/state";
 import GetSpriteSheets from "../functions/getSpriteSheets";
 
 export const Coil = () => {
-  let { font, spriteSheets, context, customColors, gfx, press } = GetState();
+  let { font, spriteSheets, context, customColors, gfx, press, mobile } = GetState();
   const clickys = [];
   let allowed =
     //@ts-ignore
-    document.monetization && document.monetization.state === "started";
+    mobile || document.monetization && document.monetization.state === "started";
   let tick = 0;
   let okToLeave = false;
   context.fillStyle = "#F00";
@@ -25,9 +25,7 @@ export const Coil = () => {
 
       let touches = [...getTouches()];
 
-      okToLeave = okToLeave || !keyPressed(Ekeys.Any);
-
-      if (okToLeave && touches.length === 0 && keyPressed(Ekeys.Any)) {
+      if (tick>99 && touches.length === 0 && keyPressed(Ekeys.Any)) {
         touches[0] = { x: 0, y: 121 };
       }
 
@@ -67,7 +65,7 @@ export const Coil = () => {
       writeText(font, "CUSTOMIZATION", -1, 32, 2);
 
       if (GetFlash(tick / 9) && tick > 99) {
-        writeText(font, press, 100, 150, 1);
+        writeText(font, press, 99, 150, 1);
       }
       context.beginPath();
 
@@ -80,7 +78,7 @@ export const Coil = () => {
         writeText(font, color, -(36 + i * 90), 9 + y, 1);
         writeText(
           font,
-          Math.round(100 * (customColors[i] / 255)),
+          Math.ceil(99 * (customColors[i] / 255)),
           -(36 + i * 90),
           22 + y,
           2
