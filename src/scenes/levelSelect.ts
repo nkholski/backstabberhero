@@ -65,8 +65,8 @@ export const levelSelectScene = (lvl?, stars?) => {
           16,
           8,
           8,
-          x * 45 + 16 + 19 - 8 - 6 + knife * 10,
-          y * 45 + 12 + 3 + 18,
+          x * 45 + 21 + knife * 10,
+          y * 45 + 33,
           16,
           16
         );
@@ -76,8 +76,8 @@ export const levelSelectScene = (lvl?, stars?) => {
       writeText(
         font,
         i + 1,
-        -(x * 45 + 16 + 19),
-        y * 45 + 12 + 3,
+        -(x * 45 + 35),
+        y * 45 + 15,
         2,
         null,
         null,
@@ -97,8 +97,8 @@ export const levelSelectScene = (lvl?, stars?) => {
       writeText(
         font,
         ["TITLE", "HELP", "CUSTOM"][i],
-        -(i * 75 + 16 + 37 - 4),
-        4 * 45 + 12 + 3 + 10,
+        -(i * 75 + 49),
+        4 * 45 + 25, // 12 + 3 + 10 = 25
         1,
         null,
         null,
@@ -126,7 +126,7 @@ export const levelSelectScene = (lvl?, stars?) => {
           40
         );
       } else {
-        context.rect((currentChoice % 5) * 75 + 16, 4 * 45 + 12, 70, 40);
+        context.rect((currentChoice % 5) * 75 + 16, 192, 70, 40); // 4 * 45 + 12 = 192
       }
     }
     context.fill();
