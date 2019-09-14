@@ -5,6 +5,7 @@ This is my contribution the Js13kGames JavaScript coding competition. The rules 
 ![Screenshot](https://raw.githubusercontent.com/nkholski/backstabberhero/master/gitscreenshot.png)
 
 [Click here to play the game at js13kgames.com](https://js13kgames.com/entries/backstabber-hero)
+[Click here for post competition build >13kb with IOS and Gamepad support](https://niklasberg.se/backstabber-hero/)
 
 ## This repository
 
