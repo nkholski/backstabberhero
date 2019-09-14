@@ -5,7 +5,7 @@ import { GetState } from "./state";
 
 export const MakeBackground = (lvl: number, level) => {
   return MakeTempCanvas((context: CanvasRenderingContext2D) => {
-    const { mobile, gfx } = GetState();
+    const { gfx } = GetState();
 
     const rnd = makeRandom(lvl);
     const night = lvl % 2;
@@ -67,7 +67,7 @@ export const MakeBackground = (lvl: number, level) => {
           // @ts-ignore
           context.drawImage(
             gfx,
-            8 * 16,
+            128,
             16 + top,
             16,
             16,

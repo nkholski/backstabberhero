@@ -57,6 +57,7 @@ BARREL GOES UNNOTICED/`.substring(0, letter - storyLength),
       letter = tick / 3;
 
       if ((keyPressed(Ekeys.Any) || GetState().touches[0]) && tick > 99) {
+        tick = -1e9;
         gameLoop.stop();
         Title();
       }

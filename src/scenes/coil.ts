@@ -8,11 +8,20 @@ import { GetState } from "../functions/state";
 import GetSpriteSheets from "../functions/getSpriteSheets";
 
 export const Coil = () => {
-  let { font, spriteSheets, context, customColors, gfx, press, mobile } = GetState();
+  let {
+    font,
+    spriteSheets,
+    context,
+    customColors,
+    gfx,
+    press,
+    mobile
+  } = GetState();
   const clickys = [];
   let allowed =
+    mobile ||
     //@ts-ignore
-    mobile || document.monetization && document.monetization.state === "started";
+    (document.monetization && document.monetization.state === "started");
   let tick = 0;
   let okToLeave = false;
   context.fillStyle = "#F00";
@@ -25,13 +34,14 @@ export const Coil = () => {
 
       let touches = [...getTouches()];
 
-      if (tick>99 && touches.length === 0 && keyPressed(Ekeys.Any)) {
+      if (touches.length === 0 && keyPressed(Ekeys.Any)) {
         touches[0] = { x: 0, y: 121 };
       }
 
       if (touches[0]) {
         let { x, y } = touches[0];
         if (y > 120 && tick > 99) {
+          tick = -1e9;
           gameLoop.stop();
           Title();
         }

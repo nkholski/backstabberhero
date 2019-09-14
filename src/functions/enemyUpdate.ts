@@ -9,7 +9,7 @@ export const EnemyUpdate = (
   { turnState, player, level, gameOver, tick }
 ) => {
   const cliff = !CheckCliff(enemy, level.platforms).bottom;
-  let anim: any = "Idle";
+  let anim: any = "I";
   enemy.dy += 0.2;
   if (enemy.dead || enemy.gotPlayer) {
     return;
@@ -50,7 +50,7 @@ export const EnemyUpdate = (
       enemy.facing = GetFlash(tick / 20) ? 1 : -1;
     }
 
-    anim = enemy.walks && turnState === ETurnState.Walk ? "Walk" : "Idle";
+    anim = enemy.walks && turnState === ETurnState.Walk ? "W" : "I";
   }
   enemy.playAnimation("e" + anim + (enemy.facing == -1 ? "L" : "R"));
 

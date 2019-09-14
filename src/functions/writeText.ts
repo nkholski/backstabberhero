@@ -11,7 +11,6 @@ const writeText = (
   context = getContext()
 ) => {
   text = "" + text;
-  let deb = false;
   x = x === -1 ? -128 : x;
   x = x < 0 ? Math.abs(x) - (text.length * 8 * scale) / 2 : x;
 

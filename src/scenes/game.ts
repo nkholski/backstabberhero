@@ -7,7 +7,7 @@ import { MakeEnemies } from "./../functions/makeEnemies";
 import { CheckCollidingBody } from "./../functions/physics/checkCollidingBody";
 import { GetBlocked } from "./../functions/physics/getBlocked";
 import { CDefaultBlocked } from "./../common/constants";
-import { EFacing, ETurnState, } from "./../common/enums";
+import { EFacing, ETurnState } from "./../common/enums";
 import { GetFlash } from "../functions/getFlash";
 import { Sprite, GameLoop } from "../dependencies/kontra.js";
 import { zzfx } from "../dependencies/zzfx";
@@ -138,7 +138,7 @@ export const GameScene = (lvl: number) => {
       player.dy += 0.2;
 
       player.dx = 0;
-      let anim: any = wellDone ? "idle" : "duck";
+      let anim: any = wellDone ? "i" : "d";
 
       if (player.y > 400) {
         gameOver = true;
@@ -162,16 +162,16 @@ export const GameScene = (lvl: number) => {
           player.y -= 16;
           player.height = 32;
         }
-        anim = "idle";
+        anim = "i";
         if (keyPressed(Ekeys.Left)) {
           player.dx = -1;
           player.facing = EFacing.Left;
-          anim = "walk";
+          anim = "w";
         }
         if (keyPressed(Ekeys.Right)) {
           player.dx = 1;
           player.facing = EFacing.Right;
-          anim = "walk";
+          anim = "w";
         }
 
         jumpReleased = jumpReleased || !keyPressed(Ekeys.Jump);
@@ -182,7 +182,7 @@ export const GameScene = (lvl: number) => {
           }
 
           if (keyPressed(Ekeys.Duck) && !player.brl) {
-            anim = "duck";
+            anim = "d";
             player.standing = false;
             player.y += 16;
             player.height = 16;
@@ -219,11 +219,9 @@ export const GameScene = (lvl: number) => {
 
       knife.visible = false;
       if (player.stabTimer > 0) {
-        anim = "stab";
+        anim = "st";
         knife.visible = true;
-        knife.playAnimation(
-          "knife" + (player.facing === -1 ? "L" : "R")
-        );
+        knife.playAnimation("kn" + (player.facing === -1 ? "L" : "R"));
         const stabbedEnemy = CheckCollidingBody(
           {
             height: 16,
@@ -237,18 +235,14 @@ export const GameScene = (lvl: number) => {
           stabbedEnemy.dead = true;
           stabbedEnemy.dx = player.facing * 1.5;
           stabbedEnemy.dy = -2;
-          stabbedEnemy.playAnimation(
-            "dead" + (player.facing === 1 ? "L" : "R")
-          );
+          stabbedEnemy.playAnimation("de" + (player.facing === 1 ? "L" : "R"));
         }
       }
       if (player.brl) {
-        anim = "brl" + (anim === "walk" ? "Player" : "");
+        anim = "brl" + (anim === "w" ? "Pl" : "");
       }
 
-      player.playAnimation(
-        anim + (player.facing === EFacing.Left ? "L" : "R")
-      );
+      player.playAnimation(anim + (player.facing === EFacing.Left ? "L" : "R"));
 
       player.advance();
 
@@ -259,7 +253,7 @@ export const GameScene = (lvl: number) => {
       // Check stars
       stars.forEach((star, i) => {
         if (CheckCollidingBody(player, [star])) {
-         pick();
+          pick();
           //
           // zzfx(1,0,600,.1,.49,2.5,.5,-2,.75); // ZzFX 67823
           starCount++;
