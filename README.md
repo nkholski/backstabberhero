@@ -12,11 +12,11 @@ Everything is a mess right now after struggeling to fit as much as possible and 
 
 ## Third party stuff
 
-I borrowed the webpacker and typescript conf from [Spacecraft js13k contribution 2018](https://github.com/tricsi/spacecraft). Sound effects was made with [ZZFX](https://zzfx.3d2k.com/). Finally I base the whole project on [Kontra.js](https://straker.github.io/kontra/) which was of great help, even the parts that I stripped away later or customised made it possible for progress while I used it. Great library for prototyping or small games.
+I borrowed the webpacker and typescript conf from [Spacecraft js13k contribution 2018](https://github.com/tricsi/spacecraft). Sound effects was made with [ZZFX](https://zzfx.3d2k.com/). Finally I base the whole project on [Kontra.js](https://straker.github.io/kontra/) which was of great help, even the parts that I stripped away later or customised made it possible for progress while I used it. Great library for prototyping or small games. It's still says Kontra in the dependencies folder but it's a massacred version of it.
 
 ## How to run
 
-Run `npm install` and then `npm run start`. The levels are built with [Tiled](https://www.mapeditor.org), then parsed with the node-script found in tools to build the "levels.ts" file. I run `nodemon --watch ..\rawAssets\maps\ .\parseMaps.js` in the tools folder to watch changes made with Tiled and instantly push updated a levels.ts-file to the src folder.
+Run `npm install` and then `npm run start`. The levels are built with [Tiled](https://www.mapeditor.org), then parsed with the node-script found in tools to build the "levels.ts" file. I run `nodemon --watch ..\rawAssets\maps\ .\parseMaps.js` in the tools folder to watch changes made with Tiled and instantly push updated a levels.ts-file to the src folder. One thing that might be confusing is that the assets in the assets folder is no longer used. Instead all assets are inlined as base64 strings.
 
 ## Post-mortem
 
